@@ -41,7 +41,20 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> list[str]:
-        return [self.frontend_url]
+        return [origin.strip() for origin in self.frontend_url.split(",") if origin.strip()]
+
+    @property
+    def sqlalchemy_url(self) -> str:
+        """`database_url` normalized for SQLAlchemy 2.x. Some managed
+        Postgres providers hand out `postgres://` (or bare
+        `postgresql://`) URLs — rewrite to the psycopg3 dialect
+        SQLAlchemy expects, so DATABASE_URL can be pasted in as-is."""
+        url = self.database_url
+        if url.startswith("postgres://"):
+            return "postgresql+psycopg://" + url[len("postgres://") :]
+        if url.startswith("postgresql://"):
+            return "postgresql+psycopg://" + url[len("postgresql://") :]
+        return url
 
 
 @lru_cache

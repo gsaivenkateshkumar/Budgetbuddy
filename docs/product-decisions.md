@@ -5,10 +5,26 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 14 — Account foundation** (complete). Next: Phase 15 —
-production preparation.
+**Phase 15 — Production preparation** (complete). Next: Phase 16 —
+deployment.
 
 ### Phase log
+
+- Phase 15 — Production preparation: done. `DATABASE_URL` now accepts a
+  bare `postgres://`/`postgresql://` (auto-normalized to
+  `postgresql+psycopg://`) alongside SQLite; `psycopg[binary]` added as a
+  runtime dependency. `FRONTEND_URL`/CORS now accepts a comma-separated
+  list. Frontend build set to `output: "standalone"` for containerless
+  Node hosting. Documented (in `docs/deployment.md`): migrations run as a
+  separate `alembic upgrade head` step, never from app startup; the
+  production start commands for both apps; required environment
+  variables per host. Security review pass: no stray secrets/print
+  statements, no `.env` ever committed, production-boot JWT-secret guard
+  verified both ways locally. Backend suite grows to 125 tests. Postgres
+  compatibility is verified by code review only (portable SQL throughout,
+  no SQLite-specific constructs) — not yet exercised against a live
+  Postgres instance, since Docker is off the table on this machine; the
+  first real deploy in Phase 16 is the actual integration test for that.
 
 - Phase 14 — Account foundation: done. Email/password auth
   (`POST /auth/register`, `POST /auth/login`, `GET /auth/me`) with

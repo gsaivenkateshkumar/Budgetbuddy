@@ -61,6 +61,25 @@ personalization sync) will.
   wrong-secret/expired/garbage JWTs are all rejected, hashes are salted
   differently per call, and no response ever echoes a password or hash.
 
+## Production readiness review (Phase 15)
+
+- Grepped the backend for stray `print()`/hardcoded secrets before this
+  phase's commit — none found; all logging goes through the structured
+  logger, and the only "secret-looking" strings in the tree are test
+  fixture placeholders (`test-key`, `sk-test`) in `tests/`.
+- Confirmed no `.env`/`.env.local` file has ever been committed
+  (`git ls-files | grep '\.env'` returns only `.env.example`).
+- `app/main.py` now hard-fails at import time if `APP_ENV=production` and
+  `JWT_SECRET` is still the insecure dev default — verified locally both
+  ways (refuses to boot with the default; boots and serves `/health`
+  with a real generated secret).
+- **Rate limiting is architected for but not implemented**: no request
+  throttling exists yet. Deferred deliberately — meaningful rate limiting
+  needs a shared store (Redis) across instances, which is out of scope
+  until scale requires it (per the product brief). A reverse proxy /
+  platform-level rate limit at the Phase 16 hosting provider is the
+  interim mitigation.
+
 ## Dependency hygiene
 
 Backend dependencies are pinned in `requirements.txt` /

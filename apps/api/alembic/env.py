@@ -20,7 +20,7 @@ if config.config_file_name is not None:
 
 # Drive the DB URL from application settings (DATABASE_URL env var) rather
 # than a hardcoded value in alembic.ini.
-config.set_main_option("sqlalchemy.url", get_settings().database_url)
+config.set_main_option("sqlalchemy.url", get_settings().sqlalchemy_url)
 
 target_metadata = Base.metadata
 
