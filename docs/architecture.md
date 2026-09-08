@@ -282,7 +282,30 @@ the model instead returns plain text, that's the final reply. A tool
 failure becomes a `{"error": ...}` message the model sees (so it can
 explain the limitation to the user), never a crash. Hitting the round
 limit returns an honest "couldn't finish in time" message rather than
-looping forever or fabricating an answer.
+looping forever or fabricating an answer. A `search_products` call that
+comes back with `total: 0` is tracked separately: after
+`MAX_EMPTY_CATALOG_SEARCHES` (2) empty searches in one turn, the loop
+stops early with an explicit "no matching products in the catalog"
+reply instead of grinding through the remaining rounds and surfacing the
+generic, catalog-blind timeout message.
+
+**Conversation memory — same-session only, client-held.** There is no
+server-side conversation/session store: no `Conversation` model, no DB
+table, no session ID. `components/ask/AskChat.tsx` holds the entire
+transcript in React `useState`; on every send it replays the full
+transcript back to the backend as `ChatRequest.history` (role + content
+only — tool calls/results from *earlier* turns are not round-tripped,
+only the current turn's own tool loop keeps those), and
+`run_agent_turn` prepends that history before the new message on every
+request — the backend itself is stateless per request. Consequences,
+verified by tracing (not assumed): a page refresh, closing the tab, or
+navigating away from `/ask` discards the conversation immediately (nothing
+to restore — there is no persistence layer to restore it from); logging
+out/in has no effect either way, since the chat was never tied to the
+account. This satisfies "reliable multi-turn conversational context within
+one session" (the actual requirement) without the structured long-term
+shopping-session state (intent/budget/brand memory beyond one page load)
+described as future scope in the product brief.
 
 `ChatMessage.tool_calls` (added this phase) lets an assistant's tool-call
 request round-trip back through *either* provider's own wire format on

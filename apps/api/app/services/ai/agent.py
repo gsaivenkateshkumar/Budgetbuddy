@@ -31,10 +31,27 @@ wouldn't change your answer.
 results (price, specs, reviews) — never a bare opinion.
 5. If you're not sure about something, say so plainly rather than guessing.
 6. Keep responses concise and focused on helping the user decide.
+7. If search_products returns zero results (total: 0), do not repeat the same or a \
+similar search hoping for a different outcome — tell the user directly that Budget \
+Buddy's catalog currently has no matching products for their request.
 """
 
 MAX_TOOL_ROUNDS = 4
 NO_PROGRESS_REPLY = "I wasn't able to finish researching that in time — could you narrow your question a bit?"
+
+# A deterministic backstop for rule 7 above: models don't always follow
+# instructions perfectly, especially smaller/faster ones. If search_products
+# comes back empty this many times in a turn, stop looping and say so
+# honestly rather than burning the remaining rounds on repeat searches that
+# were never going to succeed, or falling through to the generic
+# NO_PROGRESS_REPLY (which doesn't tell the user *why* — the empty catalog
+# — hiding the real cause behind a vague retry prompt).
+MAX_EMPTY_CATALOG_SEARCHES = 2
+EMPTY_CATALOG_REPLY = (
+    "I couldn't find any matching products in Budget Buddy's catalog for that — "
+    "it may not have coverage here yet. Try a different category or budget, or "
+    "check back later."
+)
 
 
 @dataclass
@@ -52,6 +69,7 @@ async def run_agent_turn(
         ChatMessage(role=ChatRole.USER, content=user_message),
     ]
     tool_calls_made: list[dict] = []
+    empty_catalog_searches = 0
 
     for _ in range(MAX_TOOL_ROUNDS):
         completion = await provider.complete(messages, tools=ALL_TOOLS)
@@ -67,7 +85,10 @@ async def run_agent_turn(
 
         for call in completion.tool_calls:
             try:
-                result_text = json.dumps(dispatch_tool(db, call.name, call.arguments))
+                result = dispatch_tool(db, call.name, call.arguments)
+                result_text = json.dumps(result)
+                if call.name == "search_products" and isinstance(result, dict) and result.get("total") == 0:
+                    empty_catalog_searches += 1
             except Exception as exc:  # noqa: BLE001 - surfaced to the model, not a crash
                 result_text = json.dumps({"error": str(exc)})
 
@@ -75,5 +96,8 @@ async def run_agent_turn(
             messages.append(
                 ChatMessage(role=ChatRole.TOOL, content=result_text, tool_call_id=call.id, name=call.name)
             )
+
+        if empty_catalog_searches >= MAX_EMPTY_CATALOG_SEARCHES:
+            return AgentTurnResult(reply=EMPTY_CATALOG_REPLY, tool_calls_made=tool_calls_made)
 
     return AgentTurnResult(reply=NO_PROGRESS_REPLY, tool_calls_made=tool_calls_made)

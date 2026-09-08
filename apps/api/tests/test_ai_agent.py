@@ -4,9 +4,15 @@ from decimal import Decimal
 import pytest
 
 from app.models import Brand, Category, PriceRecord, Product, Retailer, RetailerListing, Variant
-from app.services.ai.agent import MAX_TOOL_ROUNDS, NO_PROGRESS_REPLY, run_agent_turn
+from app.services.ai.agent import (
+    EMPTY_CATALOG_REPLY,
+    MAX_EMPTY_CATALOG_SEARCHES,
+    MAX_TOOL_ROUNDS,
+    NO_PROGRESS_REPLY,
+    run_agent_turn,
+)
 from app.services.ai.base import AIProvider
-from app.services.ai.types import ChatCompletion, ChatMessage, ToolCall
+from app.services.ai.types import ChatCompletion, ChatMessage, ChatRole, ToolCall
 
 
 class FakeProvider(AIProvider):
@@ -124,3 +130,77 @@ async def test_agent_surfaces_tool_error_without_crashing(db_session):
     assert result.reply == "I couldn't find that product."
     tool_message = [m for m in provider.calls[1] if m.role == "tool"][0]
     assert "error" in tool_message.content
+
+
+async def test_agent_passes_full_prior_turn_context_to_provider(db_session):
+    """Regression test for a reported production conversation where turn 2
+    ("studies") appeared to lose the turn-1 context ("laptop under
+    ₹60,000"). Reproduces the exact shape the /ai/chat route builds from
+    ChatRequest.history and asserts the provider actually receives both
+    the prior user message and the prior assistant question — proving
+    history loss was not the cause."""
+    provider = FakeProvider(
+        [ChatCompletion(content="Here are some laptops for studying.", finish_reason="stop")]
+    )
+    history = [
+        ChatMessage(role=ChatRole.USER, content="Recommend a laptop under ₹60,000"),
+        ChatMessage(
+            role=ChatRole.ASSISTANT,
+            content="Could you tell me the primary use for the laptop?",
+        ),
+    ]
+
+    result = await run_agent_turn(db_session, provider, history, "studies")
+
+    assert result.reply == "Here are some laptops for studying."
+    sent_messages = provider.calls[0]
+    contents = [m.content for m in sent_messages]
+    assert any("₹60,000" in c for c in contents)
+    assert any("primary use" in c for c in contents)
+    assert contents[-1] == "studies"
+
+
+async def test_agent_preserves_original_history_across_tool_rounds(db_session, catalog):
+    """Tool calls append to the conversation — they must never replace or
+    drop the turns that came before them."""
+    provider = FakeProvider(
+        [
+            ChatCompletion(
+                content=None,
+                tool_calls=[ToolCall(id="call_1", name="search_products", arguments={"q": "macbook"})],
+                finish_reason="tool_calls",
+            ),
+            ChatCompletion(content="Found it.", finish_reason="stop"),
+        ]
+    )
+    history = [ChatMessage(role=ChatRole.USER, content="Recommend a laptop under ₹60,000")]
+
+    await run_agent_turn(db_session, provider, history, "studies")
+
+    # The second call to the provider (after the tool round) must still
+    # carry the original turn-1 message alongside the new tool exchange.
+    second_call_contents = [m.content for m in provider.calls[1]]
+    assert any("₹60,000" in c for c in second_call_contents)
+
+
+async def test_agent_stops_early_and_reports_empty_catalog_instead_of_looping(db_session):
+    """No catalog data seeded — every search_products call returns
+    total: 0. The agent must stop after MAX_EMPTY_CATALOG_SEARCHES and
+    say so honestly, rather than burning all MAX_TOOL_ROUNDS on repeat
+    searches and falling back to the generic, catalog-blind
+    NO_PROGRESS_REPLY."""
+    always_search = ChatCompletion(
+        content=None,
+        tool_calls=[ToolCall(id="call_x", name="search_products", arguments={"category": "laptops"})],
+        finish_reason="tool_calls",
+    )
+    provider = FakeProvider([always_search] * MAX_TOOL_ROUNDS)
+
+    result = await run_agent_turn(db_session, provider, [], "recommend a laptop under 60000 for studies")
+
+    assert result.reply == EMPTY_CATALOG_REPLY
+    assert result.reply != NO_PROGRESS_REPLY
+    # Stopped early — never fabricated a recommendation from empty results,
+    # and didn't burn every round on searches that were never going to work.
+    assert len(provider.calls) == MAX_EMPTY_CATALOG_SEARCHES
+    assert len(provider.calls) < MAX_TOOL_ROUNDS
