@@ -98,6 +98,35 @@ This is a comparison engine, not a persisted table — nothing in the schema
 auto-merges products. Persisting reviewable matches (e.g. for an admin
 approval workflow) is a Phase 31+ concern.
 
+## Recommendation engine (Phase 6)
+
+`app/services/recommendation/` implements the pipeline from section 17 of
+the product brief: hard constraints → candidate eligibility → soft
+preferences → evidence → scoring → ranking. An LLM never picks a winner —
+this is fully deterministic; a future AI layer (Phase 12) may narrate the
+result, never override it.
+
+- `types.py` — `HardConstraints` (non-negotiable filters: category, price
+  range, min RAM/storage, allowed brands, in-stock requirement),
+  `SoftPreferenceWeights` (price/performance/reviews/battery, normalized
+  to sum to 1.0), `CandidateEvidence` (everything traceable to stored
+  data), `ScoredCandidate` (sub-scores, total score, rank, labels,
+  explanation), `RecommendationResult`.
+- `evidence.py` — picks each variant's best (lowest, in-stock-if-required)
+  current offer and applies hard constraints; a variant with no valid
+  price is excluded, not scored with a guess.
+- `scoring.py` — min-max normalizes each dimension across the candidate
+  set, combines with preference weights, and generates rule-based
+  explanation bullets. Performance/battery are heuristic proxies from
+  structured specs (ram_gb/storage_gb, battery_wh/battery_mah) — when a
+  spec is absent, the sub-score is neutral (0.5) and the explanation says
+  so explicitly rather than implying evidence that doesn't exist.
+- `engine.py` — `recommend(db, hard, preferences, limit)` orchestrates the
+  pipeline and assigns "Best Overall" / "Best Budget Option" / "Best
+  Value" labels.
+- `app/repositories/recommendation_repository.py` — eager-loads candidate
+  products for a category/brand set in one query.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

@@ -5,10 +5,20 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 5 — Product identity engine** (complete). Next: Phase 6 —
-recommendation engine.
+**Phase 6 — Recommendation engine** (complete). Next: Phase 7 — web
+foundation (Next.js).
 
 ### Phase log
+
+- Phase 6 — Recommendation engine: done. Deterministic pipeline (hard
+  constraints → eligibility → soft preferences → evidence → scoring →
+  ranking) in `apps/api/app/services/recommendation/`. No LLM involved.
+  Performance/battery scores are heuristic proxies from structured specs;
+  missing specs yield a neutral score and an explicit "no evidence"
+  explanation rather than a fabricated claim. Labels: Best Overall / Best
+  Budget Option / Best Value. Pytest suite grows to 65 tests, covering
+  budget/RAM constraints, out-of-stock exclusion, preference reweighting,
+  and the no-evidence explanation guarantee.
 
 - Phase 5 — Product identity engine: done. Deterministic
   `MatchSignals`/`MatchResult`/`match()` in
