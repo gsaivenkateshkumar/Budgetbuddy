@@ -98,14 +98,29 @@ can run with `AI_PROVIDER=none` (no external calls, AI UI explains
 unavailability), or with OpenAI/Anthropic configured via `.env`. AI never
 picks recommendation winners — see `docs/product-decisions.md`.
 
-## Retailer adapter abstraction (Phase 3+)
+## Retailer adapter abstraction (Phase 3)
 
-Each retailer (Amazon India, Flipkart, Croma, Myntra, Meesho, Nykaa) is
-represented by an adapter implementing a common interface (`search`,
-`get_product`, `get_price`, `get_availability`, `get_offers`, `normalize`,
-`get_product_url`). Until real integrations exist, adapters are clearly
-labeled mock/dev implementations returning seed data — see
-`docs/data-sources.md`.
+`app/services/retailers/`:
+
+- `types.py` — `NormalizedOffer`, the one retailer-agnostic shape core app
+  code depends on (price, availability, rating, specs, provenance). No code
+  outside this package ever sees a retailer-specific field.
+- `base.py` — `RetailerAdapter` ABC: `search`, `get_product`, `get_price`,
+  `get_availability`, `get_offers`, `normalize`, `get_product_url`.
+- `mock_base.py` — `MockRetailerAdapter`, shared logic for dev/mock
+  adapters (in-memory fixtures, `is_mock=True`, `source="mock:<slug>_adapter"`).
+- `adapters/` — one file per retailer (`amazon_in.py`, `flipkart.py`,
+  `croma.py`, `myntra.py`, `meesho.py`, `nykaa.py`), each just a fixture
+  list. Replacing one with a real integration (official API / licensed
+  feed / approved partner source) touches only that file.
+- `registry.py` — `get_adapter(slug)` / `list_adapters()`. Adding a
+  retailer means one new adapter class + one registry entry.
+
+No scraping, no anti-bot/CAPTCHA bypass, no ToS violations — see
+`docs/data-sources.md`. Mock adapters are a separate, independent dataset
+from the Phase 2 seed script (`scripts/seed.py`): the seed script represents
+data already ingested into Budget Buddy's own catalog; adapters simulate
+what a live retailer source would hand back before ingestion.
 
 ## Status
 

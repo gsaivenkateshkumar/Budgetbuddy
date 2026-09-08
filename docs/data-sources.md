@@ -7,11 +7,14 @@ violations. Until a retailer provides an official API, licensed feed, or
 approved partner data source, that retailer is represented by a **mock/dev
 adapter** returning clearly-labeled seed data (Phase 3).
 
-Planned retailer adapters: Amazon India, Flipkart, Croma, Myntra, Meesho,
-Nykaa — each behind the same adapter interface
+All six launch retailers — Amazon India, Flipkart, Croma, Myntra, Meesho,
+Nykaa — have a mock/dev adapter (`apps/api/app/services/retailers/adapters/`)
+behind the same interface
 (`search/get_product/get_price/get_availability/get_offers/normalize/get_product_url`),
-so a real integration can replace a mock adapter independently of the rest
-of the app.
+so a real integration can replace one adapter independently of the rest of
+the app and of the other retailers. Every adapter is marked `is_mock=True`
+and every `NormalizedOffer` it returns carries `source="mock:<slug>_adapter"`
+— never presented as live data.
 
 ## Labeling
 

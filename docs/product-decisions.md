@@ -5,10 +5,19 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 2 — Core commerce schema** (complete). Next: Phase 3 — retailer
-adapter abstraction.
+**Phase 3 — Retailer adapter abstraction** (complete). Next: Phase 4 —
+product APIs.
 
 ### Phase log
+
+- Phase 3 — Retailer adapter abstraction: done. `RetailerAdapter` interface
+  and `NormalizedOffer` common type (`apps/api/app/services/retailers/`);
+  mock/dev adapters for all 6 launch retailers, each an independent file
+  with its own small fixture dataset; registry for lookup by slug. Pytest
+  suite extended to 31 tests (parametrized across all 6 adapters). Decision:
+  adapter mock fixtures are intentionally separate from the Phase 2 seed
+  script — they model different layers (external source vs. ingested
+  catalog).
 
 - Phase 0 — Repository and environment: done.
 - Phase 1 — Backend foundation: done. FastAPI app (`apps/api`), config via
