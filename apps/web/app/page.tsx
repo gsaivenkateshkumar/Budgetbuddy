@@ -4,6 +4,8 @@ import { HeroSearch } from "@/components/home/HeroSearch";
 import { ValueProps } from "@/components/home/ValueProps";
 import { ProductCard } from "@/components/product/ProductCard";
 import { DemoDataBadge } from "@/components/ui/DemoDataBadge";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { ErrorState } from "@/components/ui/ErrorState";
 import { listProducts } from "@/lib/api/products";
 import type { ProductSummary } from "@/lib/api/types";
 
@@ -57,13 +59,9 @@ export default async function HomePage() {
           </div>
 
           {"error" in featured ? (
-            <p className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-              {featured.error}
-            </p>
+            <ErrorState message={featured.error} />
           ) : featured.products.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-              No products in the catalog yet.
-            </p>
+            <EmptyState title="No products in the catalog yet" />
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {featured.products.map((product) => (

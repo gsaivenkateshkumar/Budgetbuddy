@@ -5,10 +5,23 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 7 — Web foundation** (complete). Next: Phase 8 — product search
-experience.
+**Phase 8 — Product search experience** (complete). Next: Phase 9 —
+product page.
 
 ### Phase log
+
+- Phase 8 — Product search experience: done. `/search` page with text
+  search, category/brand/price filters, sort, pagination — filters update
+  the URL (bookmarkable/shareable) via a client component, while data
+  fetching stays entirely server-side. Loading skeleton via
+  `loading.tsx`, shared `EmptyState`/`ErrorState` components (home page
+  refactored to use them too). Verified via production build, lint,
+  `tsc --noEmit`, and a direct HTTP fetch of the rendered route
+  confirming real seeded data reaches the response. Note: the in-session
+  browser-automation tool intermittently showed a stuck loading skeleton
+  when its pane was hidden (a rendering/timer-throttling quirk of the
+  automation harness, not the app — confirmed by curl showing the
+  correct final HTML).
 
 - Phase 7 — Web foundation: done. Next.js 16 app (App Router, TypeScript
   strict, Tailwind CSS v4) in `apps/web`: responsive header/footer shell

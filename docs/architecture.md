@@ -155,6 +155,24 @@ result, never override it.
   badge), slate (neutral). Light theme only for MVP — dark mode deferred,
   see `docs/product-decisions.md`.
 
+## Product search experience (Phase 8)
+
+`/search` (`app/search/page.tsx`) — Server Component reading the
+`searchParams` prop (text query, category, brand, price range, sort,
+page), fetching products/categories/brands in parallel via
+`Promise.allSettled` so one failing call doesn't take down the others.
+
+- `components/search/SearchFilters.tsx` — client component; updates the
+  URL via `router.push` on submit, so filters are bookmarkable/shareable
+  and the page re-renders server-side on every change (no client-side
+  data fetching).
+- `components/search/Pagination.tsx` — plain server-rendered `<Link>`s
+  that preserve the other query params.
+- `app/search/loading.tsx` — skeleton fallback shown automatically by
+  Next.js while the Server Component's data fetches are in flight.
+- `components/ui/EmptyState.tsx` / `ErrorState.tsx` — shared loading/
+  empty/error primitives, also used on the home page.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale
