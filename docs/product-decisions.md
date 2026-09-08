@@ -5,10 +5,20 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 3 — Retailer adapter abstraction** (complete). Next: Phase 4 —
-product APIs.
+**Phase 4 — Product APIs** (complete). Next: Phase 5 — product identity
+engine.
 
 ### Phase log
+
+- Phase 4 — Product APIs: done. `GET /products` (search/filter/sort/
+  paginate), `GET /products/{slug}` (detail with variants + cross-retailer
+  offers), `GET /products/{slug}/variants/{sku}/offers`, `GET /brands`,
+  `GET /categories`. Price filter/sort and "current price" both derive from
+  the latest PriceRecord per listing via a portable (SQLite + Postgres)
+  `row_number()` window-function subquery — no cached price column.
+  Every offer exposes `collected_at`/`freshness`/`source`/`confidence`/
+  `retailer_is_mock`. Pytest suite grows to 43 tests; smoke-tested live
+  against the real seeded SQLite DB.
 
 - Phase 3 — Retailer adapter abstraction: done. `RetailerAdapter` interface
   and `NormalizedOffer` common type (`apps/api/app/services/retailers/`);

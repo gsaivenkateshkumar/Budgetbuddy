@@ -13,8 +13,30 @@ request/response schemas as endpoints are added.
 
 ## Endpoints (current)
 
-| Method | Path      | Description                          |
-|--------|-----------|---------------------------------------|
-| GET    | `/health` | Liveness + DB connectivity check      |
+| Method | Path                                          | Description                                    |
+|--------|-----------------------------------------------|-------------------------------------------------|
+| GET    | `/health`                                     | Liveness + DB connectivity check                |
+| GET    | `/products`                                   | Search/list products (see query params below)   |
+| GET    | `/products/{slug}`                            | Product detail: variants, images, retailer offers |
+| GET    | `/products/{slug}/variants/{sku}/offers`      | Retailer offers for one variant (price comparison) |
+| GET    | `/brands`                                     | List all brands                                 |
+| GET    | `/categories`                                 | List all categories                             |
+
+### `GET /products` query params
+
+`q` (text search), `category` (slug), `brand` (slug), `min_price`,
+`max_price`, `sort` (`relevance` \| `price_asc` \| `price_desc`), `page`
+(default 1), `page_size` (default 20, max 100). Returns a `Page` envelope:
+`{items, total, page, page_size, total_pages}`.
+
+Price filtering/sorting always uses each listing's most recent PriceRecord
+(see `docs/architecture.md`) — never a cached price.
+
+### Offer freshness
+
+Every offer in a product detail response carries `collected_at`,
+`freshness` (human text, e.g. "Checked 8 minutes ago"), `source`, and
+`confidence`, plus `retailer_is_mock` — the frontend must surface this
+provenance rather than presenting mock data as live.
 
 This table grows phase-by-phase alongside `app/api/routes/`.
