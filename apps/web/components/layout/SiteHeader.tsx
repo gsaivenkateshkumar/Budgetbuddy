@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { Container } from "./Container";
 
 const NAV_LINKS = [
@@ -9,11 +10,16 @@ const NAV_LINKS = [
   { href: "/search", label: "Explore" },
   { href: "/compare", label: "Compare" },
   { href: "/ask", label: "Ask Budget Buddy" },
-  { href: "/account", label: "You" },
 ];
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const accountLink = {
+    href: user ? "/account" : "/login",
+    label: loading ? "You" : user ? (user.display_name || "You") : "Log in",
+  };
+  const links = [...NAV_LINKS, accountLink];
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -30,7 +36,7 @@ export function SiteHeader() {
 
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -71,7 +77,7 @@ export function SiteHeader() {
         <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-slate-200 md:hidden">
           <Container>
             <ul className="flex flex-col py-2">
-              {NAV_LINKS.map((link) => (
+              {links.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

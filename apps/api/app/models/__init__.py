@@ -8,6 +8,7 @@ from app.models.product import Product
 from app.models.retailer import Retailer
 from app.models.retailer_listing import RetailerListing
 from app.models.review_summary import ReviewSummary
+from app.models.user import User
 from app.models.variant import Variant
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "RetailerListing",
     "PriceRecord",
     "ReviewSummary",
+    "User",
 ]

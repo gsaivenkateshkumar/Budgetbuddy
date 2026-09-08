@@ -318,6 +318,40 @@ we've actually observed (see product brief trust principle #4).
 SVG sparkline (no charting library) and states this scope explicitly in
 its footer text.
 
+## Account foundation (Phase 14)
+
+Backend: `app/core/security.py` (bcrypt hashing, JWT issue/decode) +
+`app/services/auth_service.py` (register/login business logic) +
+`app/api/deps.py::get_current_user` (Bearer-token dependency for
+protected routes) + `POST /auth/register`, `POST /auth/login`,
+`GET /auth/me`. `app/main.py` refuses to start in production with the
+insecure default `JWT_SECRET`. See `docs/security.md` for the full
+threat-model notes (generic login errors, stateless-JWT logout tradeoff,
+OAuth extension point).
+
+Frontend: `components/auth/AuthProvider.tsx` — a context restoring the
+session from a stored JWT on mount (via `GET /auth/me`), exposing
+`user`/`loading`/`signIn`/`signOut` to the whole app (wrapped around
+`children` in the root layout, so `SiteHeader`'s "You" nav item reflects
+auth state). `lib/auth/session.ts` stores the token in `localStorage` —
+documented there as an explicit MVP tradeoff (simpler than httpOnly
+cookies for a separately-hosted frontend/backend, at the cost of
+XSS-readability). `/login`, `/register`, `/account` are plain client
+components with no server-side dependency on user state — nothing in the
+app *requires* an account; search/product/compare/Ask Budget Buddy all
+work as a guest.
+
+**A note on effect-based data fetching**: this phase's two components
+(`AuthProvider`, and Phase 13's `PriceHistoryPanel`) both hit the same
+`eslint-plugin-react-hooks` "no synchronous setState in an effect" rule
+(new in React 19's stricter hooks linting). The fix in both cases: do the
+state update inside a `.then()`/`.catch()`/async-IIFE callback with a
+`cancelled` guard, never as a direct top-level statement in the effect
+body — even for the "nothing to do" branch. `AuthProvider` additionally
+keeps `loading` initialized to `true` unconditionally (rather than a
+lazy `useState(() => hasToken())`) specifically to avoid an SSR/hydration
+mismatch, since `localStorage` doesn't exist during server rendering.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

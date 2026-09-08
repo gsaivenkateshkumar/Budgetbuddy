@@ -30,11 +30,36 @@ configurable per environment.
 
 ## Auth (Phase 14)
 
-Planned: email/password with hashed passwords (`passlib[bcrypt]`) and
-JWT-based sessions (`python-jose`), with the auth layer designed so OAuth
-providers can be added later without a rewrite. Guest browsing is supported
-for search/comparison; only persistent features (price tracking, history,
-personalization sync) require an account.
+Email/password registration and login (`POST /auth/register`,
+`POST /auth/login`), JWT bearer sessions (`python-jose`), and a protected
+`GET /auth/me`. Guest browsing works for every core feature (search,
+product pages, compare, Ask Budget Buddy) — nothing requires an account
+yet; only future persistent features (price tracking, history,
+personalization sync) will.
+
+- **Passwords**: hashed with `bcrypt` directly (`app/core/security.py`)
+  — not `passlib`, which is unmaintained (last release 2020) and broke
+  against current `bcrypt` releases (`passlib` expected a `bcrypt.__about__`
+  attribute removed in `bcrypt` 4.1+). Truncated to bcrypt's 72-byte input
+  limit before hashing; salted per-hash by `bcrypt.gensalt()`.
+- **Tokens**: JWT signed with `JWT_SECRET`/`JWT_ALGORITHM` from settings,
+  `sub` = user id, expiring after `JWT_ACCESS_TOKEN_EXPIRE_MINUTES`.
+  `app/main.py` refuses to start in production if `JWT_SECRET` is still
+  the insecure dev default.
+- **Login error messages are deliberately generic** ("incorrect email or
+  password") for both "no such user" and "wrong password," so responses
+  can't be used to enumerate registered emails.
+- **Logout** is client-side token discard — tokens are stateless JWTs, and
+  a server-side revocation list is out of scope for MVP (would need a
+  shared store, i.e. Redis, which is explicitly deferred until scale
+  requires it).
+- **OAuth-ready**: `User.hashed_password` and the register/login flow are
+  isolated behind `auth_service.py`; adding an OAuth provider later means
+  adding a new login path that also issues a JWT via
+  `create_access_token`, not restructuring existing users/sessions.
+- Extensively security-tested (`tests/test_auth_security.py`): tampered/
+  wrong-secret/expired/garbage JWTs are all rejected, hashes are salted
+  differently per call, and no response ever echoes a password or hash.
 
 ## Dependency hygiene
 

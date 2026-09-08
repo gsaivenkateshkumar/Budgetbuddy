@@ -5,10 +5,29 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 13 — Price intelligence** (complete). Next: Phase 14 — account
-foundation.
+**Phase 14 — Account foundation** (complete). Next: Phase 15 —
+production preparation.
 
 ### Phase log
+
+- Phase 14 — Account foundation: done. Email/password auth
+  (`POST /auth/register`, `POST /auth/login`, `GET /auth/me`) with
+  bcrypt password hashing and JWT bearer sessions. Swapped `passlib` for
+  direct `bcrypt` mid-phase — `passlib` (unmaintained since 2020) crashes
+  against `bcrypt` 4.1+, a real current-day incompatibility, not a
+  hypothetical one. Login failure messages are deliberately generic to
+  resist email enumeration; production startup refuses an insecure
+  default `JWT_SECRET`. Frontend: `/login`, `/register`, `/account` pages
+  and an `AuthProvider` context restoring sessions from a stored JWT;
+  `localStorage` token storage is a documented MVP tradeoff (see
+  `docs/security.md`). Nothing in the app requires an account — guest
+  browsing still covers every core feature. Backend suite grows to 119
+  tests, including a dedicated `test_auth_security.py` (tampered/wrong-
+  secret/expired/garbage JWTs, hash salting, no password ever echoed in
+  a response) per this phase's acceptance criterion. Frontend verified
+  via production build (`/login`/`/register`/`/account` all prerender
+  static) and a live end-to-end register → login → `/auth/me` check
+  against the real running backend.
 
 - Phase 13 — Price intelligence: done. `GET /products/{slug}/variants/
   {sku}/price-history` computes current/lowest/highest/average price,
