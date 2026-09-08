@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.routes.ai import router as ai_router
 from app.api.routes.brands import router as brands_router
 from app.api.routes.categories import router as categories_router
 from app.api.routes.compare import router as compare_router
@@ -39,3 +40,4 @@ app.include_router(products_router)
 app.include_router(brands_router)
 app.include_router(categories_router)
 app.include_router(compare_router)
+app.include_router(ai_router)

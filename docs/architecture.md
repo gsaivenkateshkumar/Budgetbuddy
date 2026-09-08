@@ -230,6 +230,40 @@ different weights — this is the "make price more important" /
 freeform text (natural-language priority adjustment is Ask Budget
 Buddy's job, Phase 12).
 
+## AI provider abstraction (Phase 11)
+
+`app/services/ai/`:
+
+- `types.py` — `ChatMessage`, `ToolSpec`, `ToolCall`, `ChatCompletion`,
+  and two distinct exceptions: `AIProviderNotConfiguredError` (no
+  provider set up — expected, handled gracefully) vs `AIProviderError`
+  (a configured provider failed — a real error).
+- `base.py` — `AIProvider` ABC: one method, `complete(messages, tools)`.
+- `providers/none_provider.py` — active whenever `AI_PROVIDER=none` (the
+  default) or a key is missing. Makes no network calls; raises
+  `AIProviderNotConfiguredError` rather than fabricating a response.
+- `providers/openai_provider.py` / `anthropic_provider.py` — real HTTP
+  clients (`httpx`) translating the common `ChatMessage`/`ToolSpec` shape
+  into each vendor's actual request format (OpenAI Chat Completions;
+  Anthropic Messages API, including its distinct system-prompt and
+  tool-result conventions) and back. Never imported/instantiated unless
+  the matching key is present.
+- `factory.py` — `get_ai_provider()` is the *only* place `AI_PROVIDER`/API
+  keys are read; everything else depends on the `AIProvider` interface.
+- `tools.py` — tool schemas wired to real services already built
+  (`search_products`, `get_product_details`, `compare_products`,
+  `get_prices`, backed by `product_service` and the recommendation
+  engine's `compare()`). `dispatch_tool()` executes one call and returns
+  JSON-serializable data — no stub tools kept just to satisfy the
+  interface (per product brief §18).
+
+`GET /ai/status` (`app/api/routes/ai.py`) reports `{configured, provider}`
+so the frontend can show AI features as unavailable instead of broken —
+core search/product/compare features are entirely unaffected by whether
+AI is configured. The actual conversational loop (using these tools) is
+Phase 12; this phase is the foundation only. AI keys are read only by the
+backend — the frontend never receives them.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

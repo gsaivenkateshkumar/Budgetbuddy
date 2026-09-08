@@ -5,9 +5,24 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 10 — Comparison** (complete). Next: Phase 11 — AI foundation.
+**Phase 11 — AI foundation** (complete). Next: Phase 12 — Ask Budget
+Buddy.
 
 ### Phase log
+
+- Phase 11 — AI foundation: done. Provider-agnostic `AIProvider`
+  interface (`apps/api/app/services/ai/`) with real OpenAI and Anthropic
+  HTTP implementations plus a `NoneProvider` that's active by default and
+  raises a clear "not configured" error instead of fabricating output.
+  `get_ai_provider()` is the sole place `AI_PROVIDER`/keys are read. Tool
+  schemas (`search_products`, `get_product_details`, `compare_products`,
+  `get_prices`) are wired to real service functions already built in
+  Phases 4/6/10 — no stub tools. `GET /ai/status` lets the frontend know
+  whether AI is usable. Backend suite grows to 86 tests (provider request/
+  response translation mocked with `respx`; factory fallback behavior;
+  tool dispatch against real seeded data). Core app is unaffected either
+  way — confirmed `/ai/status` returns `configured: false` with no
+  `AI_PROVIDER` set, no crash anywhere.
 
 - Phase 10 — Comparison: done. `GET /compare` reuses the Phase 6
   recommendation engine (refactored to share scoring/ranking/labeling

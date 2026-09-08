@@ -22,6 +22,7 @@ request/response schemas as endpoints are added.
 | GET    | `/brands`                                     | List all brands                                 |
 | GET    | `/categories`                                 | List all categories                             |
 | GET    | `/compare`                                    | Score/rank an explicit set of products (2+ `product` slugs, optional priority weights) |
+| GET    | `/ai/status`                                  | Whether an AI provider is configured (`{configured, provider}`) |
 
 ### `GET /products` query params
 
