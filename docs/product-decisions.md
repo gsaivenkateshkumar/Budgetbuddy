@@ -5,8 +5,8 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 1 — Backend foundation** (complete). Next: Phase 2 — core commerce
-schema.
+**Phase 2 — Core commerce schema** (complete). Next: Phase 3 — retailer
+adapter abstraction.
 
 ### Phase log
 
@@ -16,6 +16,14 @@ schema.
   `DATABASE_URL`, structured logging, request-id middleware, structured
   error schema, `/health` endpoint, pytest suite (3 tests passing), ruff
   clean.
+- Phase 2 — Core commerce schema: done. SQLAlchemy models (Brand, Category,
+  Product, Variant, Image, Retailer, RetailerListing, PriceRecord,
+  ReviewSummary) with provenance/freshness fields, initial Alembic
+  migration, dev seed script (4 products / 8 variants / 18 listings with
+  price history), pytest suite extended to 6 tests. Decision: `specs` is a
+  JSON column on Variant (not EAV) to avoid a migration per product
+  category; "current price" is always derived from the latest `PriceRecord`
+  rather than duplicated onto RetailerListing.
 
 ## Decisions log
 

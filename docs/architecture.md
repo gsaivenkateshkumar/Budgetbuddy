@@ -41,6 +41,41 @@ Request flow: `route → service → repository → SQLAlchemy model`. Routes st
 thin; business rules (recommendation scoring, matching, etc.) live in
 `services/` so they're independently testable.
 
+## Core commerce schema (Phase 2)
+
+Canonical hierarchy: `Brand → Product → Variant → RetailerListing → PriceRecord`.
+
+- **Brand**, **Category** (self-referential parent/child).
+- **Product** — a canonical model (e.g. "MacBook Air M2"). Grouping into
+  "product families" is deferred until a concrete need arises.
+- **Variant** — a purchasable configuration (storage/RAM/color/...). Carries
+  strong identity signals (`mpn`, `gtin`, `upc`, `ean`) for the Product
+  Identity Engine (Phase 5) and a flexible `specs` JSON column for
+  category-dependent structured specifications (avoids a rigid EAV schema).
+- **Image** — attached to a Variant.
+- **Retailer** — `is_mock` flags retailers currently backed by a mock/dev
+  adapter (all of them, today) rather than a real integration.
+- **RetailerListing** — one retailer's page/offer for a Variant.
+  `(retailer_id, variant_id)` is intentionally not unique — a marketplace
+  retailer can carry multiple sellers for the same variant (`seller_name`).
+- **PriceRecord** — append-only price/availability observation per listing;
+  this *is* the price-history table. "Current price" is the most recent
+  record per listing, derived by query rather than duplicated, so there is
+  a single source of truth. Carries provenance (`source`, `collected_at`,
+  `confidence`) — UI freshness text ("Checked 8 minutes ago") is computed
+  from `collected_at`, never stored as a claim.
+- **ReviewSummary** — aggregate rating/review data per listing, with the
+  same provenance fields. Aspect-level sentiment and cross-retailer
+  consensus are future extensions (Phase 20).
+
+Alembic migrations live in `apps/api/alembic/versions/`; `alembic/env.py`
+reads `DATABASE_URL` from `app.core.config` rather than a hardcoded URL, and
+imports `app.models` so autogenerate sees the full schema. Constraint/index
+names use an explicit naming convention (`app/core/database.py`) for stable
+diffs across SQLite and PostgreSQL.
+
+Dev seed data: `apps/api/scripts/seed.py` — see `docs/data-sources.md`.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

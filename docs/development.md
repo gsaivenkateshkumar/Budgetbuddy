@@ -8,7 +8,8 @@ python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements-dev.txt
 cp ../../.env.example .env      # edit as needed; local defaults work out of the box
-alembic upgrade head             # once migrations exist (Phase 2+)
+alembic upgrade head
+python scripts/seed.py           # populates a small dev/demo product catalog
 uvicorn app.main:app --reload
 ```
 
@@ -55,7 +56,11 @@ git-ignored.
 ## Database
 
 - Development: SQLite file `apps/api/budget_buddy.db` (git-ignored, created
-  automatically).
+  automatically by `alembic upgrade head`).
 - Production: PostgreSQL, same SQLAlchemy models, via `DATABASE_URL`.
 - Schema changes always go through Alembic migrations
   (`alembic revision --autogenerate -m "..."`, then `alembic upgrade head`).
+- `python scripts/seed.py` populates a small, clearly-fictional development
+  catalog (4 products / 8 variants / 18 retailer listings with price
+  history) — see `docs/data-sources.md`. It's idempotent: it skips seeding
+  if data already exists.
