@@ -244,6 +244,45 @@ async def test_groq_provider_raises_ai_provider_error_on_http_failure():
     assert "gsk-test" not in str(exc_info.value)
 
 
+@respx.mock
+async def test_groq_provider_surfaces_decommissioned_model_error_body():
+    """Regression test for the 2026-08-16 llama-3.3-70b-versatile
+    decommissioning (root cause of a production 404): the raised error
+    must include Groq's actual error body — code/message — so a future
+    model deprecation is diagnosable from application logs alone, without
+    ever including the request's Authorization header or API key."""
+    respx.post("https://api.groq.com/openai/v1/chat/completions").mock(
+        return_value=Response(
+            404,
+            json={
+                "error": {
+                    "message": "The model `llama-3.3-70b-versatile` has been decommissioned "
+                    "and is no longer supported.",
+                    "type": "invalid_request_error",
+                    "code": "model_decommissioned",
+                }
+            },
+        )
+    )
+
+    provider = GroqProvider(api_key="gsk-test", model="llama-3.3-70b-versatile")
+    with pytest.raises(AIProviderError) as exc_info:
+        await provider.complete([ChatMessage(role=ChatRole.USER, content="hi")])
+
+    message = str(exc_info.value)
+    assert "model_decommissioned" in message
+    assert "404" in message
+    assert "gsk-test" not in message
+
+
+def test_groq_default_model_is_not_a_known_deprecated_id():
+    """The default GROQ_MODEL must not be an ID Groq has already
+    decommissioned (llama-3.3-70b-versatile, shutdown 2026-08-16) — that
+    was the exact production bug this test guards against regressing to."""
+    provider = GroqProvider(api_key="gsk-test")
+    assert provider._model != "llama-3.3-70b-versatile"
+
+
 def test_groq_serializes_assistant_tool_calls_for_next_round():
     provider = GroqProvider(api_key="gsk-test")
     assistant_msg = ChatMessage(

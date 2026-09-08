@@ -23,7 +23,9 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     anthropic_api_key: str | None = None
     groq_api_key: str | None = None
-    groq_model: str = "llama-3.3-70b-versatile"
+    # See app/services/ai/providers/groq_provider.py for why this isn't
+    # llama-3.3-70b-versatile (deprecated by Groq, shutdown 2026-08-16).
+    groq_model: str = "openai/gpt-oss-120b"
 
     jwt_secret: str = "dev-insecure-secret-change-me"
     jwt_algorithm: str = "HS256"

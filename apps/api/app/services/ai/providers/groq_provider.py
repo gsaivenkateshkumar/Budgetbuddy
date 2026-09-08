@@ -19,14 +19,16 @@ from app.services.ai.types import AIProviderError, ChatCompletion, ChatMessage, 
 
 _API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
-# llama-3.3-70b-versatile: Groq's current general-purpose model with
-# mature, well-documented tool/function-calling support — the safer
-# choice for a first integration over the newer openai/gpt-oss-* models,
-# which ship with their own built-in agentic tooling (browser search, code
-# execution) that isn't needed here and could complicate plain
-# custom-tool function calling. Confirmed active (not deprecated) against
-# Groq's model list at implementation time.
-_DEFAULT_MODEL = "llama-3.3-70b-versatile"
+# openai/gpt-oss-120b: Groq's own documented replacement for
+# llama-3.3-70b-versatile, which Groq deprecated with a shutdown date of
+# 2026-08-16 (already passed) — requests using it now fail with HTTP 404
+# ("model_decommissioned"), which is what sent us back to check current
+# model status rather than assume the endpoint was wrong. Confirmed via
+# Groq's tool-use docs that gpt-oss-120b supports standard user-defined
+# tools/tool_calls (not just Groq's separate built-in browser/code tools),
+# and chosen over the smaller gpt-oss-20b for its stronger reasoning,
+# matching the comparison/recommendation workloads Ask Budget Buddy does.
+_DEFAULT_MODEL = "openai/gpt-oss-120b"
 
 
 class GroqProvider(AIProvider):
@@ -57,6 +59,14 @@ class GroqProvider(AIProvider):
                 )
                 response.raise_for_status()
                 data = response.json()
+        except httpx.HTTPStatusError as exc:
+            # Surface Groq's actual error body (e.g. model_decommissioned,
+            # model_not_found) for diagnosis — safe to include: it's the
+            # response Groq sent back, never the request's Authorization
+            # header or the API key itself. Truncated defensively.
+            raise AIProviderError(
+                f"Groq request failed: {exc.response.status_code} {exc.response.text[:500]}"
+            ) from exc
         except httpx.HTTPError as exc:
             raise AIProviderError(f"Groq request failed: {exc}") from exc
 
