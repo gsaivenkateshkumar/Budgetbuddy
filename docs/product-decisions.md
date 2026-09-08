@@ -5,7 +5,17 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 0 — Repository and environment** (in progress)
+**Phase 1 — Backend foundation** (complete). Next: Phase 2 — core commerce
+schema.
+
+### Phase log
+
+- Phase 0 — Repository and environment: done.
+- Phase 1 — Backend foundation: done. FastAPI app (`apps/api`), config via
+  `pydantic-settings`, SQLAlchemy engine (SQLite dev), Alembic wired to
+  `DATABASE_URL`, structured logging, request-id middleware, structured
+  error schema, `/health` endpoint, pytest suite (3 tests passing), ruff
+  clean.
 
 ## Decisions log
 
