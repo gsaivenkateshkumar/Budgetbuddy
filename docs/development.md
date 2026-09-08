@@ -40,12 +40,20 @@ mypy app
 ```bash
 cd apps/web
 npm install
+cp ../../.env.example .env.local   # keep only NEXT_PUBLIC_API_URL
 npm run dev
 ```
 
-- Web app: http://localhost:3000
+- Web app: http://localhost:3000 (talks to the API at `NEXT_PUBLIC_API_URL`, default `http://localhost:8000`)
 
-(Frontend scaffold lands in Phase 7.)
+### Lint / type-check / build
+
+```bash
+cd apps/web
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
 ## Environment variables
 

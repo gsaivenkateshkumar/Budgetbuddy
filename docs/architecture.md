@@ -127,6 +127,34 @@ result, never override it.
 - `app/repositories/recommendation_repository.py` — eager-loads candidate
   products for a category/brand set in one query.
 
+## Web frontend (Phase 7)
+
+`apps/web` — Next.js 16 (App Router, TypeScript strict, Tailwind CSS v4).
+
+- `lib/api/` — typed client mirroring the backend's Pydantic schemas
+  exactly (`types.ts`), a `fetch` wrapper mapping the backend's
+  `{error:{code,message,request_id}}` shape into `ApiError`
+  (`client.ts`), and typed query functions (`products.ts`). All reads use
+  `cache: "no-store"` — price/availability freshness outweighs caching.
+- `components/layout/` — `SiteHeader` (responsive nav, mobile menu),
+  `SiteFooter`, `Container`.
+- `components/product/ProductCard.tsx` — reusable catalog card. Renders a
+  stylized placeholder tile rather than an `<img>` for now, since seed/mock
+  data uses non-resolving placeholder image URLs (see `docs/data-sources.md`).
+- `components/ui/DemoDataBadge.tsx` — visible "Demo data" marker, used
+  wherever mock/dev retailer data is surfaced (trust principle #5/#12).
+- Data-fetching pattern follows the framework's own guidance (Next.js
+  ships version-specific docs in `node_modules/next/dist/docs/` — checked
+  before writing this phase, since this Next.js version postdates this
+  assistant's training): Server Components fetch directly and pages read
+  the `searchParams` prop for filters/pagination, rather than client-side
+  fetching — avoids an extra client/server round trip and keeps filtering
+  bookmarkable/shareable via the URL.
+- Palette: Tailwind's built-in indigo (brand/trust), emerald
+  (value/positive), amber (freshness/caution only, never a discount
+  badge), slate (neutral). Light theme only for MVP — dark mode deferred,
+  see `docs/product-decisions.md`.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

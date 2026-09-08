@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/*
+ * Budget Buddy design tokens.
+ * Palette: Tailwind's built-in indigo (brand/trust), emerald (value/positive),
+ * amber (freshness/caution — used sparingly, never as a discount badge),
+ * slate (neutral text/surfaces). Light theme only for MVP — see
+ * docs/product-decisions.md.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}

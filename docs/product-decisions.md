@@ -5,10 +5,21 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 6 — Recommendation engine** (complete). Next: Phase 7 — web
-foundation (Next.js).
+**Phase 7 — Web foundation** (complete). Next: Phase 8 — product search
+experience.
 
 ### Phase log
+
+- Phase 7 — Web foundation: done. Next.js 16 app (App Router, TypeScript
+  strict, Tailwind CSS v4) in `apps/web`: responsive header/footer shell
+  with mobile nav, home page (hero search + AI entry point + example
+  prompts + value props + live "Explore the catalog" section fetched from
+  the backend), typed API client, reusable `ProductCard`. Verified with a
+  production build, lint, `tsc --noEmit`, and a live dev-server check
+  against the running backend (desktop + mobile viewport) — no console
+  errors, correct data. Decision: light theme only for MVP, dark mode
+  deferred; product images are placeholder tiles for now since seed data
+  uses non-resolving mock URLs.
 
 - Phase 6 — Recommendation engine: done. Deterministic pipeline (hard
   constraints → eligibility → soft preferences → evidence → scoring →
