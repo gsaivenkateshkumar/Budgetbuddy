@@ -173,6 +173,35 @@ page), fetching products/categories/brands in parallel via
 - `components/ui/EmptyState.tsx` / `ErrorState.tsx` — shared loading/
   empty/error primitives, also used on the home page.
 
+## Product page (Phase 9)
+
+`/products/[slug]` (`app/products/[slug]/page.tsx`) fetches
+`ProductDetail` server-side and hands it to
+`components/product/ProductDetailView.tsx` (client component: variant
+switcher with local state — no refetch, since every variant's offers are
+already in the initial payload). `components/product/OffersTable.tsx`
+renders the cross-retailer comparison: price, list-price discount %,
+stock, rating, freshness, and a "Lowest price" badge, each clearly marked
+`Demo` when `retailer_is_mock`.
+
+**Centralized outbound links** (product brief §4): every retailer link
+goes through `lib/retailerLink.ts` → `app/go/route.ts`, a Route Handler
+that redirects to the target URL. No affiliate tagging or click tracking
+is applied yet — this is purely the seam for adding it later (and later,
+the `RetailerSelected` analytics event) without touching every call site.
+
+**404 handling**: `notFound()` + `app/products/[slug]/not-found.tsx`
+gives a real `HTTP 404` (verified against a production build, not just
+`next dev`) — deliberately has **no** `loading.tsx` for this route,
+because a `loading.tsx` here would wrap the page in an implicit
+`<Suspense>` boundary that starts streaming a `200` before `notFound()`
+can run, permanently locking in the wrong status (this is documented
+Next.js behavior, not a bug — see
+`node_modules/next/dist/docs/.../not-found.md`, "Calling notFound() after
+streaming has started"). Correctness of the status code was judged more
+important than a loading skeleton for what's normally a fast single-item
+fetch.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

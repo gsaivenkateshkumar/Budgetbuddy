@@ -5,10 +5,23 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 8 — Product search experience** (complete). Next: Phase 9 —
-product page.
+**Phase 9 — Product page** (complete). Next: Phase 10 — comparison.
 
 ### Phase log
+
+- Phase 9 — Product page: done. `/products/[slug]` with variant switching
+  (client-side, no refetch — all variants' offers arrive in one payload),
+  a cross-retailer offers table (price, list-price discount %, stock,
+  rating, freshness, demo-data labeling), and real `HTTP 404` handling
+  for unknown slugs. Added a centralized outbound-link redirector
+  (`app/go/route.ts` + `lib/retailerLink.ts`) per the product brief's
+  monetization architecture requirement — no tracking applied yet, just
+  the seam for it. Verified via production build + `next start`,
+  confirming both the 200/404 status codes and real seeded data with
+  curl. Learned mid-phase: a route's `loading.tsx` forces streaming to
+  start as 200 before an in-page `notFound()` can run, permanently
+  locking in the wrong status — removed `loading.tsx` from this route
+  for that reason (see architecture.md for the full explanation).
 
 - Phase 8 — Product search experience: done. `/search` page with text
   search, category/brand/price filters, sort, pagination — filters update
