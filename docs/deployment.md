@@ -26,22 +26,63 @@ October 2024, now pay-as-you-go from the first VM).
 
 ## Deployment steps
 
-### 1. Push to GitHub
+### 1. GitHub
 
-Create a GitHub repository (any visibility), then from the repo root:
+Repository: [github.com/gsaivenkateshkumar/Budgetbuddy](https://github.com/gsaivenkateshkumar/Budgetbuddy)
+(default branch `main`).
 
 ```bash
-git remote add origin <your-repo-url>
-git push -u origin master
+git remote add origin https://github.com/gsaivenkateshkumar/Budgetbuddy.git
+git push -u origin main
 ```
 
 ### 2. Database — Neon
 
-1. Sign up at [neon.tech](https://neon.tech) (GitHub sign-in works, no card needed).
-2. Create a project (pick a region near India, e.g. Singapore/Mumbai if offered).
-3. Copy the connection string it gives you (starts `postgresql://...`) —
-   this is your `DATABASE_URL`. Budget Buddy accepts it as-is (auto-normalized
-   to the psycopg3 dialect).
+Project: `budgetbuddy`, ID `sweet-dew-86964608`, region `aws-ap-southeast-1`
+(Singapore — matches `render.yaml`'s backend region, minimizing DB
+round-trip latency), PostgreSQL 18, branch `production`
+(`br-falling-breeze-b3vjtmhc`, default).
+
+The [Neon CLI](https://neon.com/docs/reference/neon-cli) (`npm i -g neon`)
+linked this checkout to that project — `.neon` at the repo root records
+only `{orgId, projectId, branch}`, no credentials, and is committed
+intentionally so anyone (or any agent) working on this repo targets the
+same project without re-linking. `neon link` was run with `--no-env-pull`
+specifically so it would never fetch/write a connection string locally.
+
+**Neon agent tooling installed** (`neon skills -y`, `neon mcp -y --oauth
+--project`): `.claude/skills/` (documentation only, no secrets — only the
+`neon` and `neon-postgres` skills are actually relevant to this app; the
+rest — `neon-ai-gateway`, `neon-functions`, `neon-object-storage`,
+`neon-postgres-egress-optimizer` — came bundled with the default skill
+set and describe Neon features this app doesn't use) and `.mcp.json`
+(an MCP server URL only — `--oauth` means no API key was minted; Claude
+Code prompts for Neon sign-in the first time an MCP tool is actually
+used). `skills-lock.json` holds content hashes for the installed skills.
+
+**`neon.ts` / `neon config init` / `neon deploy` were deliberately
+skipped.** `neon config status` confirmed the branch has no declarative
+config (`Config {}`) to manage. Neon's config-as-code layer
+(`neon.ts` + `neon config apply`/`neon deploy`) exists for managing Neon
+project *settings* (Auth, Data API, Functions, IP allow-lists, etc.) —
+this app only needs a plain PostgreSQL connection string consumed by
+SQLAlchemy, so there's nothing for that layer to do here. Introducing it
+would add Node-based Neon config packages as a dependency for no
+functional benefit. Revisit only if a real requirement for one of those
+Neon services shows up.
+
+**To get the connection string for Render** (do this only after
+rotating — see Security below):
+
+1. In the [Neon console](https://console.neon.tech), open the
+   `budgetbuddy` project (`sweet-dew-86964608`) → `production` branch →
+   **Connect**.
+2. Under the role (`neondb_owner` by default), **reset the password** —
+   any previously-issued connection string must be treated as
+   compromised and never reused.
+3. Copy the resulting connection string (starts `postgresql://...`, ends
+   `?sslmode=require`). Paste it directly into Render's `DATABASE_URL`
+   env var — never into a file in this repo, never into chat.
 
 ### 3. Backend — Render
 
@@ -66,7 +107,12 @@ git push -u origin master
 2. **Add New** → **Project**, import your repo.
 3. Set **Root Directory** to `apps/web` (this is a monorepo).
 4. Add environment variable `NEXT_PUBLIC_API_URL` = the Render backend URL from step 3.
+   Optionally also set `NEXT_PUBLIC_SITE_URL` to the Vercel URL itself once known (step 6) —
+   used only for metadata/sitemap generation, safe to leave unset initially.
 5. Deploy. Vercel auto-detects Next.js — no build command changes needed.
+   (`apps/web` uses no server-only secrets; `NEXT_PUBLIC_*` is the only
+   prefix in use, confirmed by inspection — nothing sensitive is exposed
+   to the browser.)
 6. Note the deployed URL (`https://<project>.vercel.app`).
 
 ### 5. Close the loop
@@ -79,9 +125,27 @@ URL), then redeploy the backend so CORS allows the real frontend origin.
 
 - Backend: `curl https://<render-url>/health` → `{"status":"ok","database":"connected"}`
 - Frontend: open the Vercel URL, confirm the home page loads and "Explore the catalog" shows real data (the deployed database starts empty — see below).
-- Run the seed script once against the deployed database (`DATABASE_URL=<neon-url> python scripts/seed.py` from `apps/api`, with the venv active) to populate demo data, or leave it empty and register an account to test auth end-to-end.
+- Run the seed script once against the deployed database (with `DATABASE_URL` set to the Neon connection string in your shell's environment, not typed inline — `python scripts/seed.py` from `apps/api`, venv active) to populate demo data, or leave it empty and register an account to test auth end-to-end.
 
-## Production readiness (Phase 15)
+### Security — credential rotation
+
+A Neon connection string for this project was exposed earlier in an AI
+chat session and must be treated as compromised permanently — rotating
+the password invalidates it going forward. Rotation flow:
+
+1. **Neon console** → `budgetbuddy` project → **Settings** → **Roles**
+   (or the branch's **Connect** panel) → reset the password for the role
+   in use. This immediately invalidates the old connection string.
+2. **Render dashboard** → `budget-buddy-api` service → **Environment** →
+   set `DATABASE_URL` to the new connection string. Nothing else needs
+   to change — the app reads it fresh on next deploy/restart.
+3. Never paste the connection string into an AI chat, a commit, or any
+   file in this repo — only into Render's environment-variable UI.
+
+No secret values (old or new) appear anywhere in this document, in
+git history, or in any file in this repository — verified by scanning
+tracked files and full git history for connection-string/API-key/token
+patterns before every push in this phase.
 
 ## Production readiness (Phase 15)
 
