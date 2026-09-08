@@ -6,7 +6,7 @@ from app.services.ai.factory import get_ai_provider
 from app.services.ai.providers.anthropic_provider import AnthropicProvider
 from app.services.ai.providers.none_provider import NoneProvider
 from app.services.ai.providers.openai_provider import OpenAIProvider
-from app.services.ai.types import AIProviderNotConfiguredError, ChatMessage, ChatRole, ToolSpec
+from app.services.ai.types import AIProviderNotConfiguredError, ChatMessage, ChatRole, ToolCall, ToolSpec
 
 
 def test_no_provider_configured_returns_none_provider():
@@ -126,3 +126,37 @@ async def test_anthropic_provider_parses_tool_use_blocks():
 
     assert result.tool_calls[0].name == "get_prices"
     assert result.tool_calls[0].arguments == {"slug": "x"}
+
+
+def test_openai_serializes_assistant_tool_calls_for_next_round():
+    provider = OpenAIProvider(api_key="test-key")
+    assistant_msg = ChatMessage(
+        role=ChatRole.ASSISTANT,
+        content="",
+        tool_calls=[ToolCall(id="call_1", name="search_products", arguments={"q": "macbook"})],
+    )
+    tool_result = ChatMessage(role=ChatRole.TOOL, content='{"total": 1}', tool_call_id="call_1")
+
+    payload = provider._to_messages([assistant_msg, tool_result])
+
+    assert payload[0]["tool_calls"][0]["function"]["name"] == "search_products"
+    assert payload[0]["tool_calls"][0]["function"]["arguments"] == '{"q": "macbook"}'
+    assert payload[1]["tool_call_id"] == "call_1"
+
+
+def test_anthropic_serializes_assistant_tool_calls_for_next_round():
+    provider = AnthropicProvider(api_key="test-key")
+    assistant_msg = ChatMessage(
+        role=ChatRole.ASSISTANT,
+        content="Let me check.",
+        tool_calls=[ToolCall(id="toolu_1", name="get_prices", arguments={"slug": "x"})],
+    )
+    tool_result = ChatMessage(role=ChatRole.TOOL, content='{"price": "94900"}', tool_call_id="toolu_1")
+
+    payload = provider._to_messages([assistant_msg, tool_result])
+
+    blocks = payload[0]["content"]
+    assert {"type": "text", "text": "Let me check."} in blocks
+    assert any(b["type"] == "tool_use" and b["name"] == "get_prices" for b in blocks)
+    assert payload[1]["content"][0]["type"] == "tool_result"
+    assert payload[1]["content"][0]["tool_use_id"] == "toolu_1"

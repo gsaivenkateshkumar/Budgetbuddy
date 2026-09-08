@@ -13,13 +13,6 @@ class ChatRole(StrEnum):
     TOOL = "tool"
 
 
-class ChatMessage(BaseModel):
-    role: ChatRole
-    content: str
-    tool_call_id: str | None = None
-    name: str | None = None
-
-
 class ToolSpec(BaseModel):
     """A tool the AI may call, described as a JSON-schema object — the
     common ground between OpenAI's `parameters` and Anthropic's
@@ -34,6 +27,18 @@ class ToolCall(BaseModel):
     id: str
     name: str
     arguments: dict[str, Any] = Field(default_factory=dict)
+
+
+class ChatMessage(BaseModel):
+    role: ChatRole
+    content: str
+    tool_call_id: str | None = None
+    name: str | None = None
+    # Set only on an ASSISTANT message that requested tool calls, so a
+    # multi-round agent loop (app/services/ai/agent.py) can round-trip
+    # "the assistant asked for these tools" back through each provider's
+    # own wire format on the next request.
+    tool_calls: list[ToolCall] | None = None
 
 
 class ChatCompletion(BaseModel):

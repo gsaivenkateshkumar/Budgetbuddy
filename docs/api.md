@@ -23,6 +23,7 @@ request/response schemas as endpoints are added.
 | GET    | `/categories`                                 | List all categories                             |
 | GET    | `/compare`                                    | Score/rank an explicit set of products (2+ `product` slugs, optional priority weights) |
 | GET    | `/ai/status`                                  | Whether an AI provider is configured (`{configured, provider}`) |
+| POST   | `/ai/chat`                                    | Ask Budget Buddy: one conversational turn (returns `503 ai_not_configured` if no provider is set up) |
 
 ### `GET /products` query params
 

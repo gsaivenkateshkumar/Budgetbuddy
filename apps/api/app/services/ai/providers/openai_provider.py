@@ -21,11 +21,20 @@ class OpenAIProvider(AIProvider):
     def _to_messages(self, messages: list[ChatMessage]) -> list[dict[str, Any]]:
         result: list[dict[str, Any]] = []
         for m in messages:
-            entry: dict[str, Any] = {"role": m.role.value, "content": m.content}
+            entry: dict[str, Any] = {"role": m.role.value, "content": m.content or None}
             if m.tool_call_id:
                 entry["tool_call_id"] = m.tool_call_id
             if m.name:
                 entry["name"] = m.name
+            if m.tool_calls:
+                entry["tool_calls"] = [
+                    {
+                        "id": tc.id,
+                        "type": "function",
+                        "function": {"name": tc.name, "arguments": json.dumps(tc.arguments)},
+                    }
+                    for tc in m.tool_calls
+                ]
             result.append(entry)
         return result
 

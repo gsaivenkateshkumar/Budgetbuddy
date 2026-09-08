@@ -41,6 +41,15 @@ class AnthropicProvider(AIProvider):
                         ],
                     }
                 )
+            elif m.role == ChatRole.ASSISTANT and m.tool_calls:
+                content: list[dict[str, Any]] = []
+                if m.content:
+                    content.append({"type": "text", "text": m.content})
+                content.extend(
+                    {"type": "tool_use", "id": tc.id, "name": tc.name, "input": tc.arguments}
+                    for tc in m.tool_calls
+                )
+                result.append({"role": "assistant", "content": content})
             else:
                 role = "assistant" if m.role == ChatRole.ASSISTANT else "user"
                 result.append({"role": role, "content": m.content})

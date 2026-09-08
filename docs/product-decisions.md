@@ -5,10 +5,28 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 11 — AI foundation** (complete). Next: Phase 12 — Ask Budget
-Buddy.
+**Phase 12 — Ask Budget Buddy** (complete). Next: Phase 13 — price
+intelligence.
 
 ### Phase log
+
+- Phase 12 — Ask Budget Buddy: done. Bounded tool-calling agent loop
+  (`apps/api/app/services/ai/agent.py`, max 4 rounds) executes the Phase
+  11 tools against real data and returns a plain-text reply; a tool
+  failure becomes a model-visible error message rather than a crash, and
+  hitting the round limit returns an honest "couldn't finish" message.
+  `ChatMessage` extended with `tool_calls` so an assistant's tool request
+  round-trips through either provider's own wire format on the next
+  turn — kept the loop itself provider-agnostic. System prompt encodes
+  the brief's uncertainty/evidence rules directly. `POST /ai/chat`
+  returns 503 when unconfigured; `/ask` frontend checks status first and
+  shows an explanatory notice instead of a broken chat box in that case,
+  with tool-use transparency badges when it does answer. Backend suite
+  grows to 94 tests (agent loop tested with a scripted fake provider —
+  no real network — covering plain replies, tool execution, the round
+  limit, and tool-error recovery). Frontend verified via production
+  build and a live check of the unconfigured state (no crash, correct
+  notice).
 
 - Phase 11 — AI foundation: done. Provider-agnostic `AIProvider`
   interface (`apps/api/app/services/ai/`) with real OpenAI and Anthropic

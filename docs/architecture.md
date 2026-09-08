@@ -264,6 +264,41 @@ AI is configured. The actual conversational loop (using these tools) is
 Phase 12; this phase is the foundation only. AI keys are read only by the
 backend — the frontend never receives them.
 
+## Ask Budget Buddy (Phase 12)
+
+`app/services/ai/agent.py` — `run_agent_turn(db, provider, history,
+user_message)`: a bounded (`MAX_TOOL_ROUNDS = 4`) tool-calling loop, fully
+server-side per request. On each round it calls
+`provider.complete(messages, tools=ALL_TOOLS)`; if the model asks for
+tool calls, each is executed via `dispatch_tool()` against real data and
+the result is appended as a `TOOL` message, then the loop continues. If
+the model instead returns plain text, that's the final reply. A tool
+failure becomes a `{"error": ...}` message the model sees (so it can
+explain the limitation to the user), never a crash. Hitting the round
+limit returns an honest "couldn't finish in time" message rather than
+looping forever or fabricating an answer.
+
+`ChatMessage.tool_calls` (added this phase) lets an assistant's tool-call
+request round-trip back through *either* provider's own wire format on
+the next request — OpenAI's `tool_calls` array vs. Anthropic's
+`tool_use` content blocks — so the agent loop itself stays
+provider-agnostic.
+
+The system prompt (`agent.py::SYSTEM_PROMPT`) encodes the product brief's
+AI rules directly: only state facts that came from a tool result in this
+conversation, use tools rather than guess, ask one focused clarifying
+question when something critical is missing, explain rankings with
+tool-sourced evidence, and say "not sure" rather than invent.
+
+`POST /ai/chat` (`app/api/routes/ai.py`) returns `503
+{error: {code: "ai_not_configured"}}` when no provider is configured —
+the frontend (`/ask`, `app/ask/page.tsx`) checks `GET /ai/status` first
+and shows an explanatory notice instead of a chat box in that case. Core
+search/product/compare pages are entirely unaffected either way.
+`components/ask/AskChat.tsx` shows which tools were used per reply (a
+small transparency badge, e.g. "Searched the catalog") — visible evidence
+the answer came from real data, not a guess.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale
