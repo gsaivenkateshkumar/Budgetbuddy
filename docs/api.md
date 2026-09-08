@@ -21,6 +21,7 @@ request/response schemas as endpoints are added.
 | GET    | `/products/{slug}/variants/{sku}/offers`      | Retailer offers for one variant (price comparison) |
 | GET    | `/brands`                                     | List all brands                                 |
 | GET    | `/categories`                                 | List all categories                             |
+| GET    | `/compare`                                    | Score/rank an explicit set of products (2+ `product` slugs, optional priority weights) |
 
 ### `GET /products` query params
 

@@ -86,6 +86,39 @@ export interface Page<T> {
   total_pages: number;
 }
 
+export interface CandidateEvidence {
+  product_id: number;
+  product_slug: string;
+  product_name: string;
+  brand_name: string;
+  variant_id: number;
+  variant_sku: string;
+  specs: Record<string, unknown>;
+  price: string;
+  currency: string;
+  in_stock: boolean;
+  best_retailer_slug: string;
+  offer_count: number;
+  rating: number | null;
+  review_count: number | null;
+}
+
+export interface ScoredCandidate {
+  evidence: CandidateEvidence;
+  sub_scores: Record<string, number>;
+  total_score: number;
+  rank: number;
+  labels: string[];
+  explanation: string[];
+}
+
+export interface RecommendationResult {
+  hard_constraints: Record<string, unknown>;
+  preferences: Record<string, number>;
+  candidates: ScoredCandidate[];
+  excluded_count: number;
+}
+
 export interface ApiErrorBody {
   error: {
     code: string;

@@ -5,9 +5,21 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 9 — Product page** (complete). Next: Phase 10 — comparison.
+**Phase 10 — Comparison** (complete). Next: Phase 11 — AI foundation.
 
 ### Phase log
+
+- Phase 10 — Comparison: done. `GET /compare` reuses the Phase 6
+  recommendation engine (refactored to share scoring/ranking/labeling
+  between `recommend()` and the new `compare()`) to score an explicit set
+  of product slugs. `/compare` frontend page: a picker when fewer than 2
+  products are selected, otherwise a comparison table that highlights
+  differing specs first and collapses identical ones, plus priority
+  sliders (price/performance/reviews/battery) that recompute the ranking
+  via URL query params. Backend suite grows to 69 tests; frontend
+  verified via production build and direct HTTP checks against the
+  running dev server showing real seeded data, correct labels, and
+  correct "key differences" output.
 
 - Phase 9 — Product page: done. `/products/[slug]` with variant switching
   (client-side, no refetch — all variants' offers arrive in one payload),

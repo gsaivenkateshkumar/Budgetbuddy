@@ -202,6 +202,34 @@ streaming has started"). Correctness of the status code was judged more
 important than a loading skeleton for what's normally a fast single-item
 fetch.
 
+## Comparison (Phase 10)
+
+Backend: `GET /compare?product=slug&product=slug&price=W&performance=W&reviews=W&battery=W`
+(`apps/api/app/api/routes/compare.py`) reuses the Phase 6 recommendation
+engine rather than duplicating scoring logic — `engine.py` was refactored
+to extract `_score_rank_and_label()`, shared by `recommend()` (searches a
+category under hard constraints) and the new `compare()` (scores an
+explicit, user-picked set of product slugs; each product contributes its
+single cheapest eligible variant, so comparison operates at product
+granularity — "compare iPhone and Galaxy," not specific SKUs). An unknown
+slug is silently excluded (`excluded_count`), not an error, since the UI
+lets users freely add/remove products.
+
+Frontend: `/compare` (`app/compare/page.tsx`) has two modes — fewer than 2
+`product` query params shows `ProductPicker` (checkbox list from the
+catalog); 2+ calls `/compare` and renders `ComparisonTable`. The table
+computes which spec keys actually *differ* across the selected products
+client-side (well, server-side, since it's a Server Component) and
+surfaces those under "Key differences" first, with identical specs
+collapsed under "Also shared" — deliberately not a giant uniform spec
+dump, per the product brief. `PriorityControls` (client component, range
+sliders + presets) pushes new `price`/`performance`/`reviews`/`battery`
+query params, causing the Server Component to refetch `/compare` with
+different weights — this is the "make price more important" /
+"prioritize battery" interaction, via explicit controls rather than
+freeform text (natural-language priority adjustment is Ask Budget
+Buddy's job, Phase 12).
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale
