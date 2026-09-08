@@ -3,7 +3,6 @@ import { Container } from "@/components/layout/Container";
 import { ComparisonTable } from "@/components/compare/ComparisonTable";
 import { PriorityControls } from "@/components/compare/PriorityControls";
 import { ProductPicker } from "@/components/compare/ProductPicker";
-import { DemoDataBadge } from "@/components/ui/DemoDataBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { compareProducts } from "@/lib/api/compare";
@@ -42,11 +41,20 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
 
     return (
       <Container className="py-10">
-        <h1 className="mb-6 text-2xl font-semibold text-slate-900">Compare products</h1>
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-slate-900">Compare products</h1>
+          <p className="mt-1 max-w-2xl text-sm text-slate-600">
+            Pick two or more products to see them side by side on price, specifications, and reviews,
+            weighted by what matters most to you.
+          </p>
+        </div>
         {loadError ? (
           <ErrorState message="Couldn't load the catalog right now — the API may not be running." />
         ) : products.length === 0 ? (
-          <EmptyState title="No products available to compare yet" />
+          <EmptyState
+            title="Live retailer integrations are being added"
+            body="Budget Buddy will surface supported merchant offers as they become available, so you can compare them here."
+          />
         ) : (
           <ProductPicker products={products} initialSelected={productSlugs} />
         )}
@@ -76,7 +84,6 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
     <Container className="py-10">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-semibold text-slate-900">Compare products</h1>
-        <DemoDataBadge />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">

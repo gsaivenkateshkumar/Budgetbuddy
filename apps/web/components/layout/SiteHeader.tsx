@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/search", label: "Explore" },
   { href: "/compare", label: "Compare" },
   { href: "/ask", label: "Ask Budget Buddy" },
+  { href: "/guides", label: "Guides" },
 ];
 
 export function SiteHeader() {

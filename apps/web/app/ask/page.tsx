@@ -37,7 +37,9 @@ export default async function AskPage({ searchParams }: AskPageProps) {
         <h1 className="text-2xl font-semibold text-slate-900">Ask Budget Buddy</h1>
         <p className="mt-1 text-sm text-slate-600">
           Tell me what you&apos;re trying to buy or accomplish, and I&apos;ll help you compare options
-          using Budget Buddy&apos;s catalog.
+          using Budget Buddy&apos;s catalog. I only answer with products, prices, and specs I can
+          actually find — if the catalog doesn&apos;t have a match yet, I&apos;ll tell you honestly
+          instead of guessing.
         </p>
       </div>
 

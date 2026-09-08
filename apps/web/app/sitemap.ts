@@ -1,12 +1,31 @@
 import type { MetadataRoute } from "next";
+import { GUIDES } from "@/lib/guides";
 import { listProducts } from "@/lib/api/products";
 import { SITE_URL } from "@/lib/siteConfig";
 
-const STATIC_ROUTES = ["", "/search", "/compare", "/ask", "/login", "/register"];
+const STATIC_ROUTES = [
+  "",
+  "/search",
+  "/compare",
+  "/ask",
+  "/guides",
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/affiliate-disclosure",
+  "/login",
+  "/register",
+];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((path) => ({
     url: `${SITE_URL}${path}`,
+    lastModified: new Date(),
+  }));
+
+  const guideEntries: MetadataRoute.Sitemap = GUIDES.map((guide) => ({
+    url: `${SITE_URL}/guides/${guide.slug}`,
     lastModified: new Date(),
   }));
 
@@ -16,10 +35,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/products/${product.slug}`,
       lastModified: new Date(),
     }));
-    return [...staticEntries, ...productEntries];
+    return [...staticEntries, ...guideEntries, ...productEntries];
   } catch {
     // API unreachable at build/request time — ship the static routes only
     // rather than failing the whole sitemap.
-    return staticEntries;
+    return [...staticEntries, ...guideEntries];
   }
 }

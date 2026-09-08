@@ -3,7 +3,6 @@ import { Container } from "@/components/layout/Container";
 import { Pagination } from "@/components/search/Pagination";
 import { SearchFilters } from "@/components/search/SearchFilters";
 import { ProductCard } from "@/components/product/ProductCard";
-import { DemoDataBadge } from "@/components/ui/DemoDataBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { listBrands, listCategories, listProducts, type ProductSearchParams } from "@/lib/api/products";
@@ -65,7 +64,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <Container className="py-10">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-semibold text-slate-900">Explore products</h1>
-        <DemoDataBadge />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
@@ -79,8 +77,16 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <ErrorState message="Couldn't load products right now — the API may not be running." />
           ) : productsResult.value.items.length === 0 ? (
             <EmptyState
-              title="No products match your filters"
-              body="Try widening your price range or clearing a filter."
+              title={
+                q || category || brand || minPrice || maxPrice
+                  ? "No products match your filters"
+                  : "Live retailer integrations are being added"
+              }
+              body={
+                q || category || brand || minPrice || maxPrice
+                  ? "Try widening your price range or clearing a filter."
+                  : "Budget Buddy will surface supported merchant offers as they become available. Try Ask Budget Buddy in the meantime."
+              }
             />
           ) : (
             <>

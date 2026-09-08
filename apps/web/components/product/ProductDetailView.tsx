@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { ProductDetail, VariantRead } from "@/lib/api/types";
-import { DemoDataBadge } from "@/components/ui/DemoDataBadge";
 import { OffersTable } from "./OffersTable";
 import { PriceHistoryPanel } from "./PriceHistoryPanel";
 
@@ -108,7 +107,6 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-slate-900">Retailer offers</h2>
-              <DemoDataBadge />
             </div>
             {variant.offers.length === 0 ? (
               <p className="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
@@ -117,6 +115,14 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
             ) : (
               <>
                 <OffersTable offers={variant.offers} bestOfferRetailerSlug={bestOfferRetailerSlug} />
+                <p className="text-xs text-slate-400">
+                  Budget Buddy may earn a commission from eligible purchases made through retailer
+                  links, at no extra cost to you. See our{" "}
+                  <a href="/affiliate-disclosure" className="underline hover:text-slate-600">
+                    Affiliate Disclosure
+                  </a>
+                  .
+                </p>
                 <PriceHistoryPanel key={variant.sku} productSlug={product.slug} variantSku={variant.sku} />
               </>
             )}
