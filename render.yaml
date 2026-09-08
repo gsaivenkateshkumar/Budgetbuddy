@@ -29,8 +29,12 @@ services:
       - key: FRONTEND_URL
         sync: false # the deployed Vercel URL, e.g. https://budget-buddy.vercel.app
       - key: AI_PROVIDER
-        value: none # set to "openai" or "anthropic" and add the matching key below to enable AI
+        value: none # set to "openai", "anthropic", or "groq" and add the matching key below to enable AI
       - key: OPENAI_API_KEY
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile

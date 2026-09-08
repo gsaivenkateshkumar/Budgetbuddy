@@ -242,12 +242,18 @@ Buddy's job, Phase 12).
 - `providers/none_provider.py` — active whenever `AI_PROVIDER=none` (the
   default) or a key is missing. Makes no network calls; raises
   `AIProviderNotConfiguredError` rather than fabricating a response.
-- `providers/openai_provider.py` / `anthropic_provider.py` — real HTTP
-  clients (`httpx`) translating the common `ChatMessage`/`ToolSpec` shape
-  into each vendor's actual request format (OpenAI Chat Completions;
-  Anthropic Messages API, including its distinct system-prompt and
-  tool-result conventions) and back. Never imported/instantiated unless
-  the matching key is present.
+- `providers/openai_provider.py` / `anthropic_provider.py` / `groq_provider.py`
+  — real HTTP clients (`httpx`) translating the common
+  `ChatMessage`/`ToolSpec` shape into each vendor's actual request format
+  (OpenAI Chat Completions; Anthropic Messages API, including its
+  distinct system-prompt and tool-result conventions; Groq via its
+  OpenAI-compatible endpoint) and back. Never imported/instantiated
+  unless the matching key is present. OpenAI and Groq share request/
+  response translation via `providers/_openai_compatible.py` (a private
+  helper module, not a provider) since Groq's wire format is
+  byte-identical to OpenAI's — each still owns its own endpoint, API key,
+  default model, and error message, so this stays genuine provider
+  separation rather than a branch inside `OpenAIProvider`.
 - `factory.py` — `get_ai_provider()` is the *only* place `AI_PROVIDER`/API
   keys are read; everything else depends on the `AIProvider` interface.
 - `tools.py` — tool schemas wired to real services already built

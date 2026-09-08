@@ -1,12 +1,22 @@
+import json
+
 import pytest
 import respx
 from httpx import Response
 
 from app.services.ai.factory import get_ai_provider
 from app.services.ai.providers.anthropic_provider import AnthropicProvider
+from app.services.ai.providers.groq_provider import GroqProvider
 from app.services.ai.providers.none_provider import NoneProvider
 from app.services.ai.providers.openai_provider import OpenAIProvider
-from app.services.ai.types import AIProviderNotConfiguredError, ChatMessage, ChatRole, ToolCall, ToolSpec
+from app.services.ai.types import (
+    AIProviderError,
+    AIProviderNotConfiguredError,
+    ChatMessage,
+    ChatRole,
+    ToolCall,
+    ToolSpec,
+)
 
 
 def test_no_provider_configured_returns_none_provider():
@@ -160,3 +170,90 @@ def test_anthropic_serializes_assistant_tool_calls_for_next_round():
     assert any(b["type"] == "tool_use" and b["name"] == "get_prices" for b in blocks)
     assert payload[1]["content"][0]["type"] == "tool_result"
     assert payload[1]["content"][0]["tool_use_id"] == "toolu_1"
+
+
+@respx.mock
+async def test_groq_provider_sends_request_to_groq_endpoint_with_configured_model():
+    route = respx.post("https://api.groq.com/openai/v1/chat/completions").mock(
+        return_value=Response(
+            200,
+            json={
+                "choices": [
+                    {"message": {"role": "assistant", "content": "Hello!"}, "finish_reason": "stop"}
+                ]
+            },
+        )
+    )
+
+    provider = GroqProvider(api_key="gsk-test", model="llama-3.1-8b-instant")
+    result = await provider.complete([ChatMessage(role=ChatRole.USER, content="hi")])
+
+    assert result.content == "Hello!"
+    assert route.called
+    sent_payload = route.calls[0].request.content
+    assert json.loads(sent_payload)["model"] == "llama-3.1-8b-instant"
+    assert route.calls[0].request.headers["Authorization"] == "Bearer gsk-test"
+
+
+@respx.mock
+async def test_groq_provider_parses_tool_calls():
+    respx.post("https://api.groq.com/openai/v1/chat/completions").mock(
+        return_value=Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "message": {
+                            "role": "assistant",
+                            "content": None,
+                            "tool_calls": [
+                                {
+                                    "id": "call_1",
+                                    "function": {
+                                        "name": "search_products",
+                                        "arguments": '{"q": "macbook"}',
+                                    },
+                                }
+                            ],
+                        },
+                        "finish_reason": "tool_calls",
+                    }
+                ]
+            },
+        )
+    )
+
+    tool = ToolSpec(name="search_products", description="search", parameters={"type": "object"})
+    provider = GroqProvider(api_key="gsk-test")
+    result = await provider.complete([ChatMessage(role=ChatRole.USER, content="find a macbook")], [tool])
+
+    assert result.tool_calls[0].name == "search_products"
+    assert result.tool_calls[0].arguments == {"q": "macbook"}
+    assert result.finish_reason == "tool_calls"
+
+
+@respx.mock
+async def test_groq_provider_raises_ai_provider_error_on_http_failure():
+    respx.post("https://api.groq.com/openai/v1/chat/completions").mock(return_value=Response(500))
+
+    provider = GroqProvider(api_key="gsk-test")
+    with pytest.raises(AIProviderError) as exc_info:
+        await provider.complete([ChatMessage(role=ChatRole.USER, content="hi")])
+
+    # The error message must never contain the API key.
+    assert "gsk-test" not in str(exc_info.value)
+
+
+def test_groq_serializes_assistant_tool_calls_for_next_round():
+    provider = GroqProvider(api_key="gsk-test")
+    assistant_msg = ChatMessage(
+        role=ChatRole.ASSISTANT,
+        content="",
+        tool_calls=[ToolCall(id="call_1", name="search_products", arguments={"q": "macbook"})],
+    )
+    tool_result = ChatMessage(role=ChatRole.TOOL, content='{"total": 1}', tool_call_id="call_1")
+
+    payload = provider._to_messages([assistant_msg, tool_result])
+
+    assert payload[0]["tool_calls"][0]["function"]["name"] == "search_products"
+    assert payload[1]["tool_call_id"] == "call_1"

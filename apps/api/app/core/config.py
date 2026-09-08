@@ -19,9 +19,11 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./budget_buddy.db"
 
     # AI provider abstraction: "none" disables AI features gracefully.
-    ai_provider: Literal["none", "openai", "anthropic"] = "none"
+    ai_provider: Literal["none", "openai", "anthropic", "groq"] = "none"
     openai_api_key: str | None = None
     anthropic_api_key: str | None = None
+    groq_api_key: str | None = None
+    groq_model: str = "llama-3.3-70b-versatile"
 
     jwt_secret: str = "dev-insecure-secret-change-me"
     jwt_algorithm: str = "HS256"

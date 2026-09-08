@@ -1,12 +1,12 @@
 """OpenAI Chat Completions provider. Never imported/instantiated unless
 AI_PROVIDER=openai and OPENAI_API_KEY is set — see factory.py."""
-import json
 from typing import Any
 
 import httpx
 
 from app.services.ai.base import AIProvider
-from app.services.ai.types import AIProviderError, ChatCompletion, ChatMessage, ToolCall, ToolSpec
+from app.services.ai.providers import _openai_compatible as wire
+from app.services.ai.types import AIProviderError, ChatCompletion, ChatMessage, ToolSpec
 
 _API_URL = "https://api.openai.com/v1/chat/completions"
 
@@ -19,35 +19,10 @@ class OpenAIProvider(AIProvider):
         self._model = model
 
     def _to_messages(self, messages: list[ChatMessage]) -> list[dict[str, Any]]:
-        result: list[dict[str, Any]] = []
-        for m in messages:
-            entry: dict[str, Any] = {"role": m.role.value, "content": m.content or None}
-            if m.tool_call_id:
-                entry["tool_call_id"] = m.tool_call_id
-            if m.name:
-                entry["name"] = m.name
-            if m.tool_calls:
-                entry["tool_calls"] = [
-                    {
-                        "id": tc.id,
-                        "type": "function",
-                        "function": {"name": tc.name, "arguments": json.dumps(tc.arguments)},
-                    }
-                    for tc in m.tool_calls
-                ]
-            result.append(entry)
-        return result
+        return wire.to_messages(messages)
 
     def _to_tools(self, tools: list[ToolSpec] | None) -> list[dict[str, Any]] | None:
-        if not tools:
-            return None
-        return [
-            {
-                "type": "function",
-                "function": {"name": t.name, "description": t.description, "parameters": t.parameters},
-            }
-            for t in tools
-        ]
+        return wire.to_tools(tools)
 
     async def complete(
         self, messages: list[ChatMessage], tools: list[ToolSpec] | None = None
@@ -67,14 +42,4 @@ class OpenAIProvider(AIProvider):
         except httpx.HTTPError as exc:
             raise AIProviderError(f"OpenAI request failed: {exc}") from exc
 
-        choice = data["choices"][0]
-        message = choice["message"]
-        tool_calls = [
-            ToolCall(
-                id=tc["id"], name=tc["function"]["name"], arguments=json.loads(tc["function"]["arguments"])
-            )
-            for tc in (message.get("tool_calls") or [])
-        ]
-        return ChatCompletion(
-            content=message.get("content"), tool_calls=tool_calls, finish_reason=choice["finish_reason"]
-        )
+        return wire.parse_completion(data)
