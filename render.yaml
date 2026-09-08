@@ -1,0 +1,36 @@
+# Render Blueprint — deploys the FastAPI backend from apps/api.
+# https://render.com/docs/blueprint-spec
+#
+# Usage: in the Render dashboard, "New" -> "Blueprint", connect this repo.
+# Render reads this file automatically. Secrets marked `sync: false` must
+# be filled in manually in the Render dashboard after the first deploy —
+# never commit real values here.
+services:
+  - type: web
+    name: budget-buddy-api
+    runtime: python
+    plan: free
+    region: singapore
+    rootDir: apps/api
+    buildCommand: "pip install -r requirements.txt && alembic upgrade head"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # paste the Neon connection string here
+      - key: JWT_SECRET
+        generateValue: true # Render generates a strong random value
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: FRONTEND_URL
+        sync: false # the deployed Vercel URL, e.g. https://budget-buddy.vercel.app
+      - key: AI_PROVIDER
+        value: none # set to "openai" or "anthropic" and add the matching key below to enable AI
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false

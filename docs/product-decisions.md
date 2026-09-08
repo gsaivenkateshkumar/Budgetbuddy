@@ -5,10 +5,26 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 15 — Production preparation** (complete). Next: Phase 16 —
-deployment.
+**Phase 16 — Deployment** (prep complete; blocked on user actions — see
+below). Next: Phase 17 — publish-ready verification, once deployed.
 
 ### Phase log
+
+- Phase 16 — Deployment: researched current (2026) hosting pricing/
+  capabilities via web search rather than relying on possibly-stale
+  training data (see `docs/deployment.md`). Chose, with user
+  confirmation: **Vercel** (frontend — free Hobby tier, native Next.js
+  support), **Render** (backend — free web-service tier, native Python,
+  no Dockerfile), **Neon** (Postgres — permanent free tier, unlike
+  Render's own free Postgres which expires after 30 days). Rejected
+  Railway (usage-based, no flat free tier) and Fly.io (free tier
+  discontinued Oct 2024). Added `render.yaml` (Blueprint spec, validated)
+  and a full step-by-step deployment guide. **Blocked on external
+  actions the user must perform themselves**: creating the GitHub repo
+  and giving me the URL to push to; signing up for Neon/Render/Vercel
+  (account creation is explicitly not something to automate) and running
+  through each dashboard's connect-repo flow. Everything not depending on
+  those accounts is done.
 
 - Phase 15 — Production preparation: done. `DATABASE_URL` now accepts a
   bare `postgres://`/`postgresql://` (auto-normalized to
