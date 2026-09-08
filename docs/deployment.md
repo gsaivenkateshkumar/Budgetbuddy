@@ -167,10 +167,15 @@ infrastructure:
   concurrently.
 - **Backend start command**: `uvicorn app.main:app --host 0.0.0.0 --port
   $PORT` (no `--reload` in production).
-- **Frontend build**: `next build` with `output: "standalone"`
-  (`apps/web/next.config.ts`) — a self-contained server bundle
-  (`.next/standalone/server.js`) for containerless Node hosting; started
-  with `node .next/standalone/server.js`.
+- **Frontend build**: plain `next build` (`apps/web/next.config.ts` has no
+  `output` override). The frontend deploys to Vercel only, which does its
+  own trace-file-based serverless packaging from `.next/*.nft.json` —
+  `output: "standalone"` was tried during Phase 15 prep (for a
+  hypothetical self-hosted deployment) but removed once actual Vercel
+  deploys started failing in its `onBuildComplete` step with `ENOENT
+  .next/next-server.js.nft.json`: standalone mode's extra copy of the
+  same traced files collides with Vercel's own packaging of them. Revisit
+  only if this frontend is ever self-hosted outside Vercel.
 - **CORS**: `FRONTEND_URL` accepts a comma-separated list, so a
   production domain and a preview/staging URL can both be allowed.
 - **Secrets**: `app/main.py` refuses to start in production if
