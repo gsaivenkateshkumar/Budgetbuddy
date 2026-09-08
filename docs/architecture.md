@@ -299,6 +299,25 @@ search/product/compare pages are entirely unaffected either way.
 small transparency badge, e.g. "Searched the catalog") — visible evidence
 the answer came from real data, not a guess.
 
+## Price intelligence (Phase 13)
+
+`GET /products/{slug}/variants/{sku}/price-history?retailer=<slug>`
+(`app/services/price_service.py`) computes `PriceStats` — current/lowest/
+highest/average price, point count, `tracking_since`, `is_lowest_recorded`,
+and list-price discount % — purely from that listing's stored
+`PriceRecord` rows (`price_repository.get_price_history_for_listing`).
+Omitting `retailer` defaults to the variant's current cheapest in-stock
+listing. Every number is traceable to a stored row; nothing is
+extrapolated or inferred.
+
+**"Lowest ever" guardrail**: the response and UI copy both say "lowest
+*recorded*"/"lowest we've tracked," scoped to `tracking_since` — never an
+unscoped "lowest ever" claim, since our stored history only covers what
+we've actually observed (see product brief trust principle #4).
+`components/product/PriceHistoryPanel.tsx` renders a lightweight inline
+SVG sparkline (no charting library) and states this scope explicitly in
+its footer text.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

@@ -1,5 +1,13 @@
 import { apiFetch } from "./client";
-import type { BrandRead, CategoryRead, OfferRead, Page, ProductDetail, ProductSummary } from "./types";
+import type {
+  BrandRead,
+  CategoryRead,
+  OfferRead,
+  Page,
+  PriceHistoryResponse,
+  ProductDetail,
+  ProductSummary,
+} from "./types";
 
 export interface ProductSearchParams {
   q?: string;
@@ -34,6 +42,17 @@ export function getProduct(slug: string): Promise<ProductDetail> {
 export function getVariantOffers(slug: string, sku: string): Promise<OfferRead[]> {
   return apiFetch<OfferRead[]>(
     `/products/${encodeURIComponent(slug)}/variants/${encodeURIComponent(sku)}/offers`
+  );
+}
+
+export function getVariantPriceHistory(
+  slug: string,
+  sku: string,
+  retailer?: string
+): Promise<PriceHistoryResponse> {
+  const query = retailer ? `?retailer=${encodeURIComponent(retailer)}` : "";
+  return apiFetch<PriceHistoryResponse>(
+    `/products/${encodeURIComponent(slug)}/variants/${encodeURIComponent(sku)}/price-history${query}`
   );
 }
 

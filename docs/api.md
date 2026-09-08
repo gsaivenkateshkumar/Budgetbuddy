@@ -19,6 +19,7 @@ request/response schemas as endpoints are added.
 | GET    | `/products`                                   | Search/list products (see query params below)   |
 | GET    | `/products/{slug}`                            | Product detail: variants, images, retailer offers |
 | GET    | `/products/{slug}/variants/{sku}/offers`      | Retailer offers for one variant (price comparison) |
+| GET    | `/products/{slug}/variants/{sku}/price-history` | Price history + stats for one listing (`?retailer=` optional, defaults to cheapest in-stock) |
 | GET    | `/brands`                                     | List all brands                                 |
 | GET    | `/categories`                                 | List all categories                             |
 | GET    | `/compare`                                    | Score/rank an explicit set of products (2+ `product` slugs, optional priority weights) |

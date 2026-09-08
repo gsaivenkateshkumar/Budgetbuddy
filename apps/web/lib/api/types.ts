@@ -119,6 +119,32 @@ export interface RecommendationResult {
   excluded_count: number;
 }
 
+export interface PriceHistoryPoint {
+  price: string;
+  list_price: string | null;
+  in_stock: boolean;
+  collected_at: string;
+}
+
+export interface PriceStats {
+  current_price: string;
+  lowest_recorded_price: string;
+  highest_recorded_price: string;
+  average_price: string;
+  price_point_count: number;
+  tracking_since: string;
+  is_lowest_recorded: boolean;
+  discount_from_list_pct: number | null;
+}
+
+export interface PriceHistoryResponse {
+  retailer_slug: string;
+  retailer_name: string;
+  currency: string;
+  points: PriceHistoryPoint[];
+  stats: PriceStats;
+}
+
 export interface ApiErrorBody {
   error: {
     code: string;

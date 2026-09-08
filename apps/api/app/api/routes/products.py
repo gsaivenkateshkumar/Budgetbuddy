@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.schemas.common import Page
 from app.schemas.offer import OfferRead
+from app.schemas.price_history import PriceHistoryResponse
 from app.schemas.product import ProductDetail, ProductSummary
-from app.services import product_service
+from app.services import price_service, product_service
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -45,3 +46,13 @@ def get_product(slug: str, db: Session = Depends(get_db)) -> ProductDetail:
 @router.get("/{slug}/variants/{sku}/offers", response_model=list[OfferRead])
 def get_variant_offers(slug: str, sku: str, db: Session = Depends(get_db)) -> list[OfferRead]:
     return product_service.get_variant_offers(db, slug, sku)
+
+
+@router.get("/{slug}/variants/{sku}/price-history", response_model=PriceHistoryResponse)
+def get_variant_price_history(
+    slug: str,
+    sku: str,
+    retailer: str | None = Query(None, description="Retailer slug; defaults to the current best offer"),
+    db: Session = Depends(get_db),
+) -> PriceHistoryResponse:
+    return price_service.get_variant_price_history(db, slug, sku, retailer)

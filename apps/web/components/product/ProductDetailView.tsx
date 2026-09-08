@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { ProductDetail, VariantRead } from "@/lib/api/types";
 import { DemoDataBadge } from "@/components/ui/DemoDataBadge";
 import { OffersTable } from "./OffersTable";
+import { PriceHistoryPanel } from "./PriceHistoryPanel";
 
 function variantLabel(variant: VariantRead): string {
   const parts: string[] = [];
@@ -114,7 +115,10 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
                 No retailer offers found for this variant yet.
               </p>
             ) : (
-              <OffersTable offers={variant.offers} bestOfferRetailerSlug={bestOfferRetailerSlug} />
+              <>
+                <OffersTable offers={variant.offers} bestOfferRetailerSlug={bestOfferRetailerSlug} />
+                <PriceHistoryPanel key={variant.sku} productSlug={product.slug} variantSku={variant.sku} />
+              </>
             )}
           </div>
         </div>

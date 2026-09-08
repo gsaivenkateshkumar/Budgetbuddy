@@ -5,10 +5,24 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 12 — Ask Budget Buddy** (complete). Next: Phase 13 — price
-intelligence.
+**Phase 13 — Price intelligence** (complete). Next: Phase 14 — account
+foundation.
 
 ### Phase log
+
+- Phase 13 — Price intelligence: done. `GET /products/{slug}/variants/
+  {sku}/price-history` computes current/lowest/highest/average price,
+  point count, tracking-since date, and list-price discount % purely
+  from stored `PriceRecord` rows for one listing — nothing extrapolated.
+  Explicitly worded "lowest *recorded*"/"since &lt;date&gt;," never an
+  unscoped "lowest ever" claim, in both the API and the frontend's inline
+  SVG sparkline panel. Backend suite grows to 99 tests. Frontend hit two
+  React 19 purity-rule lint catches (setState-in-effect, `Date.now()`
+  during render) — fixed by keying the panel by variant SKU (remount
+  gives a clean loading state) and computing the "tracked for N days"
+  figure inside the fetch callback instead of at render time. Verified
+  via production build and a live check of the endpoint against real
+  seeded multi-point price history.
 
 - Phase 12 — Ask Budget Buddy: done. Bounded tool-calling agent loop
   (`apps/api/app/services/ai/agent.py`, max 4 rounds) executes the Phase
