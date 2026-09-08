@@ -76,6 +76,28 @@ diffs across SQLite and PostgreSQL.
 
 Dev seed data: `apps/api/scripts/seed.py` — see `docs/data-sources.md`.
 
+## Product identity engine (Phase 5)
+
+`app/services/identity/`:
+
+- `types.py` — `MatchSignals` (structured comparison input: strong
+  identifiers `mpn/gtin/upc/ean`, plus `brand_slug`/`category_slug`/
+  `product_name`/`specs`) and `MatchResult` (`match_type`, `confidence`,
+  `reasons`). `MatchSignals.from_variant()` builds signals from an ORM
+  `Variant`.
+- `matcher.py` — `match(a, b) -> MatchResult`, fully deterministic (no
+  ML/LLM). A shared strong identifier is decisive
+  (`MatchType.EXACT_MATCH`, confidence 1.0). Otherwise: different/missing
+  category → `NO_MATCH`; same brand+model+identical specs → `EXACT_MATCH`
+  (confidence < 1.0, since it's inference rather than an identifier);
+  same brand+model, differing specs → `VARIANT`; same brand, different
+  model → `SIMILAR`; same category, different brand → `ALTERNATIVE`.
+  Confidence scales with structured-spec overlap within each band.
+
+This is a comparison engine, not a persisted table — nothing in the schema
+auto-merges products. Persisting reviewable matches (e.g. for an admin
+approval workflow) is a Phase 31+ concern.
+
 ## Configuration philosophy
 
 Everything environment-specific (database URL, AI provider, currency/locale

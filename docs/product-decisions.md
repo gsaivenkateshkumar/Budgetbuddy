@@ -5,10 +5,18 @@ so future work stays consistent with earlier reasoning.
 
 ## Current phase
 
-**Phase 4 — Product APIs** (complete). Next: Phase 5 — product identity
-engine.
+**Phase 5 — Product identity engine** (complete). Next: Phase 6 —
+recommendation engine.
 
 ### Phase log
+
+- Phase 5 — Product identity engine: done. Deterministic
+  `MatchSignals`/`MatchResult`/`match()` in
+  `apps/api/app/services/identity/` distinguishing EXACT_MATCH, VARIANT,
+  SIMILAR, ALTERNATIVE, NO_MATCH from structured attributes only (strong
+  identifiers first, then brand/category/name/spec-overlap) — no ML/LLM
+  involved in identity decisions. Pytest suite grows to 55 tests covering
+  each relationship type plus confidence bounds.
 
 - Phase 4 — Product APIs: done. `GET /products` (search/filter/sort/
   paginate), `GET /products/{slug}` (detail with variants + cross-retailer
