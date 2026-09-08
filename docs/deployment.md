@@ -201,4 +201,37 @@ production needs: `APP_ENV=production`, `DATABASE_URL` (managed
 Postgres), `JWT_SECRET` (freshly generated), `FRONTEND_URL` (the deployed
 frontend's origin), and `NEXT_PUBLIC_API_URL` (the deployed backend's
 origin, set on the frontend host) — plus `AI_PROVIDER`/API key only if AI
-features are being enabled for that deployment.
+features are being enabled for that deployment. `AMAZON_CREATORS_CREDENTIAL_ID`
+/ `AMAZON_CREATORS_CREDENTIAL_SECRET` / `AMAZON_PARTNER_TAG` are optional
+and only needed once real Amazon ingestion is enabled — see
+[docs/data-sources.md](./data-sources.md#amazon-india-creators-api).
+
+## Real commerce data ingestion (Amazon India)
+
+Production is no longer seeded with demo/mock data — see
+[docs/data-sources.md](./data-sources.md#amazon-india-creators-api) for the
+full Amazon Creators API integration (adapter, ingestion service, tests)
+and what Amazon account approval is still required before it can run
+against live data.
+
+**Local ingestion workflow** (from `apps/api`, venv active, migrations
+applied, `AMAZON_CREATORS_*` env vars set in `.env`):
+
+```bash
+python scripts/ingest_amazon.py --query "laptop" --limit 20 --category laptops
+```
+
+This calls the real Amazon Creators API — it makes no changes without valid
+credentials (fails fast with a clear message instead), and never runs
+automatically as part of app startup, tests, or deploy.
+
+**Production ingestion workflow**: run the same command from a shell with
+`DATABASE_URL` pointed at the production database and the `AMAZON_CREATORS_*`
+vars set (e.g. Render's Shell tab, the same way `scripts/seed.py` was
+previously run manually — see step 6 above). Do not run it against
+production without valid, approved Amazon credentials — without them it
+exits cleanly with no writes. Because Amazon's documented rate limit starts
+at 1 request/second per credential, prefer occasional manual or scheduled
+runs over a tight loop; each run's ingested offers get a fresh
+`collected_at` timestamp so the UI's freshness indicators stay accurate
+without needing continuous polling.
