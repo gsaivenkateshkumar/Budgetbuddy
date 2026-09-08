@@ -6,9 +6,28 @@ so future work stays consistent with earlier reasoning.
 ## Current phase
 
 **Phase 16 — Deployment** (prep complete; blocked on user actions — see
-below). Next: Phase 17 — publish-ready verification, once deployed.
+below). **Phase 17 — Publish-ready verification** (the non-deployment-
+dependent parts done now; live checks — mobile on a real deployed URL,
+etc. — wait for Phase 16 to actually complete).
 
 ### Phase log
+
+- Phase 17 (partial, non-deployment-dependent items) — done: root
+  `app/error.tsx` (client error boundary) and `app/not-found.tsx`
+  (branded 404, confirmed real HTTP 404 via curl — no `loading.tsx` on
+  this segment, same reasoning as Phase 9's product-page fix).
+  `app/robots.ts` and `app/sitemap.ts` (the sitemap pulls real product
+  slugs from the API, falling back to static routes only if the API is
+  unreachable). Root layout metadata gained `metadataBase`, a title
+  template (`%s — Budget Buddy`), Open Graph/Twitter basics, and explicit
+  `robots: {index: true, follow: true}`; per-page titles simplified to
+  avoid double-appending the site name now that the template does it.
+  `NEXT_PUBLIC_SITE_URL` (via `lib/siteConfig.ts`) drives all of this —
+  to be set to the real Vercel URL once deployed. Verified via production
+  build and live curl checks of `/robots.txt`, `/sitemap.xml`, and the
+  404 page. Remaining Phase 17 items (mobile check on the real deployed
+  URL, final accessibility pass, favicon/branding polish) wait for Phase
+  16's external actions to complete.
 
 - Phase 16 — Deployment: researched current (2026) hosting pricing/
   capabilities via web search rather than relying on possibly-stale

@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   try {
     const product = await getProduct(slug);
     return {
-      title: `${product.name} — Budget Buddy`,
+      title: product.name,
       description:
         product.description ?? `Compare prices and retailer offers for ${product.name} on Budget Buddy.`,
     };
   } catch {
-    return { title: "Product — Budget Buddy" };
+    return { title: "Product" };
   }
 }
 

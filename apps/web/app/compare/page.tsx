@@ -11,7 +11,7 @@ import { listProducts } from "@/lib/api/products";
 import type { ProductSummary } from "@/lib/api/types";
 
 export const metadata: Metadata = {
-  title: "Compare products — Budget Buddy",
+  title: "Compare products",
 };
 
 function toArray(value: string | string[] | undefined): string[] {

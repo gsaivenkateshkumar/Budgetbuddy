@@ -9,7 +9,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { listBrands, listCategories, listProducts, type ProductSearchParams } from "@/lib/api/products";
 
 export const metadata: Metadata = {
-  title: "Explore products — Budget Buddy",
+  title: "Explore products",
 };
 
 function firstValue(value: string | string[] | undefined): string | undefined {

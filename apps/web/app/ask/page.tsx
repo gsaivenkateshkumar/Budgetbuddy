@@ -5,7 +5,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { getAIStatus } from "@/lib/api/ai";
 
 export const metadata: Metadata = {
-  title: "Ask Budget Buddy",
+  title: { absolute: "Ask Budget Buddy" },
 };
 
 function firstValue(value: string | string[] | undefined): string | undefined {
