@@ -43,7 +43,7 @@ export function SiteFooter() {
 
       <Container className="border-t border-slate-200 py-4">
         <p className="text-xs text-slate-600">
-          &copy; {new Date().getFullYear()} {COMPANY_NAME}. {SITE_NAME} is operated by {COMPANY_NAME}.
+          &copy; {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.
         </p>
       </Container>
     </footer>
