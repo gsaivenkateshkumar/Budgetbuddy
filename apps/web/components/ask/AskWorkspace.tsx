@@ -43,7 +43,7 @@ export function AskWorkspace({ activity }: { activity: WorkspaceActivity[] }) {
         ) : (
           <ul className="mt-3 flex flex-col gap-2">
             {activity.map((item) => (
-              <li key={item.name} className="flex items-center justify-between gap-2 text-sm">
+              <li key={item.name} className="message-in flex items-center justify-between gap-2 text-sm">
                 <span className="flex items-center gap-2 text-slate-700">
                   <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" aria-hidden="true" />
                   {TOOL_LABELS[item.name] ?? item.name}

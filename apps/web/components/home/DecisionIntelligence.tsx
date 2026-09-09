@@ -1,19 +1,27 @@
-const STEPS = [
+import { Card } from "@/components/ui/Card";
+import { Reveal } from "@/components/motion/Reveal";
+import { TiltCard } from "@/components/motion/TiltCard";
+
+const STAGES = [
   {
-    title: "Criteria",
+    label: "Understand",
     body: "Budget Buddy identifies what matters for your situation — budget, use case, and must-have specs.",
   },
   {
-    title: "Trade-offs",
-    body: "Every option has a catch. We surface what you'd be giving up, not just what you'd be getting.",
+    label: "Search",
+    body: "It looks across the catalog for products that actually fit those criteria, not just a keyword match.",
   },
   {
-    title: "Reasoning",
-    body: "A recommendation comes with the \"why\" behind it — evidence, not just a ranked list.",
+    label: "Compare",
+    body: "Matching options are weighed on price, specs, and reviews — including the trade-offs, not just the upside.",
+  },
+  {
+    label: "Decide",
+    body: "A recommendation comes with the reasoning behind it — evidence, not just a ranked list.",
   },
 ];
 
-/** Explains the decision-logic concept generically — no fabricated
+/** Explains the decision-logic pipeline generically — no fabricated
  * pros/trade-offs/verdicts here. Real per-product reasoning renders via
  * DecisionLogicCard once backend recommendation data exists. */
 export function DecisionIntelligence() {
@@ -24,12 +32,25 @@ export function DecisionIntelligence() {
         Budget Buddy doesn&apos;t just rank products by price. When a recommendation is shown, it comes
         with the reasoning behind it.
       </p>
-      <div className="mt-6 grid gap-6 sm:grid-cols-3">
-        {STEPS.map((step) => (
-          <div key={step.title} className="flex flex-col gap-2">
-            <h3 className="text-sm font-semibold text-indigo-700">{step.title}</h3>
-            <p className="text-sm text-slate-600">{step.body}</p>
-          </div>
+
+      <div className="relative mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Connecting line — desktop only, purely decorative. */}
+        <div
+          className="pointer-events-none absolute top-8 right-8 left-8 hidden h-px bg-gradient-to-r from-indigo-200 via-indigo-300 to-indigo-200 lg:block"
+          aria-hidden="true"
+        />
+        {STAGES.map((stage, i) => (
+          <Reveal key={stage.label} delayMs={i * 60}>
+            <TiltCard className="h-full rounded-xl">
+              <Card hover className="relative h-full p-5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">
+                  {i + 1}
+                </span>
+                <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
+                <p className="mt-1.5 text-sm text-slate-600">{stage.body}</p>
+              </Card>
+            </TiltCard>
+          </Reveal>
         ))}
       </div>
     </div>

@@ -98,7 +98,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
                       key={prompt}
                       type="button"
                       onClick={() => send(prompt)}
-                      className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700"
+                      className="press-scale rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700"
                     >
                       {prompt}
                     </button>
@@ -107,7 +107,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
               </div>
             )}
             {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={i} className={`message-in flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
                     m.role === "user"

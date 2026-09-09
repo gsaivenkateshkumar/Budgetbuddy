@@ -29,7 +29,7 @@ export default function AccountPage() {
   }
 
   return (
-    <Container className="flex flex-1 max-w-md flex-col justify-center gap-6 py-16">
+    <Container className="message-in flex flex-1 max-w-md flex-col justify-center gap-6 py-16">
       <h1 className="text-2xl font-semibold text-slate-900">Your account</h1>
       <div className="rounded-xl border border-slate-300 bg-white p-5 text-sm shadow-sm">
         <p className="text-slate-500">Signed in as</p>

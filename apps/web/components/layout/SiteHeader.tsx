@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Container } from "./Container";
 
@@ -19,8 +19,25 @@ function isActive(pathname: string, href: string) {
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { user, loading } = useAuth();
   const pathname = usePathname();
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    function onScroll() {
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 8);
+        rafRef.current = null;
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
   const accountLink = {
     href: user ? "/account" : "/login",
     label: loading ? "You" : user ? (user.display_name || "You") : "Log in",
@@ -28,7 +45,11 @@ export function SiteHeader() {
   const links = [...NAV_LINKS, accountLink];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header
+      className={`sticky top-0 z-40 border-b backdrop-blur transition-shadow ${
+        scrolled ? "border-slate-200 bg-white/95 shadow-sm" : "border-slate-200 bg-white/90"
+      }`}
+    >
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-slate-900">
           <span

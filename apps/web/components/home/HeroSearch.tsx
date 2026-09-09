@@ -27,7 +27,7 @@ export function HeroSearch() {
           <li key={prompt}>
             <a
               href={`/ask?q=${encodeURIComponent(prompt)}`}
-              className="inline-block rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700"
+              className="press-scale inline-block rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700"
             >
               {prompt}
             </a>

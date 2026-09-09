@@ -7,6 +7,7 @@ import { LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { UnbiasedNotice } from "@/components/ai/UnbiasedNotice";
+import { Reveal } from "@/components/motion/Reveal";
 import { compareProducts } from "@/lib/api/compare";
 import { listProducts } from "@/lib/api/products";
 import type { ProductSummary } from "@/lib/api/types";
@@ -113,10 +114,10 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
               }
             />
           ) : (
-            <div className="flex flex-col gap-4">
+            <Reveal key={`${productSlugs.join(",")}-${JSON.stringify(priorities)}`} className="flex flex-col gap-4">
               <ComparisonTable candidates={result.candidates} />
               <UnbiasedNotice />
-            </div>
+            </Reveal>
           )}
         </div>
       </div>

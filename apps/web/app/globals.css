@@ -13,6 +13,26 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
+
+  /* Shared motion tokens — every animated component in components/motion
+   * and any hand-written transition should reference these rather than
+   * picking its own duration/easing, so the whole product shares one
+   * rhythm. Spring-ish cubic-beziers (slight overshoot on "out", pure
+   * deceleration on "in") stand in for real spring physics without a
+   * physics-animation dependency. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+
+  /* TiltCard pointer-tracking state — set via rAF-throttled JS, read by
+   * the .tilt-surface transform below. Defaults are the resting state. */
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0;
 }
 
 @theme inline {
@@ -25,4 +45,96 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* ---- Motion primitives -------------------------------------------- */
+
+/* TiltCard: restrained pointer-responsive depth. transform/opacity only
+ * (see components/motion/TiltCard.tsx) — never layout properties, so this
+ * never triggers reflow. */
+.tilt-surface {
+  transform: perspective(900px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x)) translateZ(0);
+  transition: transform var(--duration-base) var(--ease-out);
+  will-change: transform;
+}
+
+.tilt-spotlight {
+  background: radial-gradient(
+    260px circle at var(--spot-x) var(--spot-y),
+    rgba(79, 70, 229, 0.08),
+    transparent 70%
+  );
+  opacity: var(--spot-opacity);
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+/* Reveal: fade + translate on scroll-into-view (components/motion/Reveal.tsx). */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Press feedback for pill/chip-style buttons — scale only, never a
+ * layout-shifting transform. */
+.press-scale {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.press-scale:active {
+  transform: scale(0.96);
+}
+
+/* Chat bubble / activity-item entrance — mounts on real state changes
+ * (a new message, a new tool-activity entry), never a decorative loop. */
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-in {
+  animation: message-in var(--duration-base) var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-surface {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .tilt-spotlight {
+    display: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .press-scale:active {
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

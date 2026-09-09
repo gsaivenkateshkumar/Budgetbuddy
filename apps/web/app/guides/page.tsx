@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/ui/Card";
+import { Reveal } from "@/components/motion/Reveal";
 import { GUIDES, readingTimeMinutes } from "@/lib/guides";
 
 export const metadata: Metadata = {
@@ -22,14 +23,16 @@ export default function GuidesPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {GUIDES.map((guide) => (
-          <Card key={guide.slug} hover className="p-5">
-            <Link href={`/guides/${guide.slug}`} className="flex flex-col gap-2">
-              <h2 className="text-sm font-semibold text-slate-900">{guide.title}</h2>
-              <p className="text-sm text-slate-600">{guide.description}</p>
-              <p className="text-xs text-slate-500">{readingTimeMinutes(guide)} min read</p>
-            </Link>
-          </Card>
+        {GUIDES.map((guide, i) => (
+          <Reveal key={guide.slug} delayMs={Math.min(i, 4) * 40}>
+            <Card hover className="p-5">
+              <Link href={`/guides/${guide.slug}`} className="flex flex-col gap-2">
+                <h2 className="text-sm font-semibold text-slate-900">{guide.title}</h2>
+                <p className="text-sm text-slate-600">{guide.description}</p>
+                <p className="text-xs text-slate-500">{readingTimeMinutes(guide)} min read</p>
+              </Link>
+            </Card>
+          </Reveal>
         ))}
       </div>
     </Container>
