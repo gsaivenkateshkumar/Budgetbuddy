@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ProductSummary } from "@/lib/api/types";
 import { formatPrice } from "@/lib/format";
+import { Button } from "@/components/ui/Button";
 
 export function ProductPicker({
   products,
@@ -61,14 +62,9 @@ export function ProductPicker({
           </label>
         ))}
       </div>
-      <button
-        type="button"
-        disabled={selected.size < 2}
-        onClick={submit}
-        className="self-start rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-      >
+      <Button type="button" disabled={selected.size < 2} onClick={submit} className="self-start">
         Compare selected ({selected.size})
-      </button>
+      </Button>
     </div>
   );
 }

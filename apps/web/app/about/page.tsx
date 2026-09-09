@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+import { Card } from "@/components/ui/Card";
 import { COMPANY_NAME, SITE_NAME } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 text-sm leading-relaxed text-slate-700">
+        <Card className="flex flex-col gap-4 p-6 text-sm leading-relaxed text-slate-700 sm:p-8">
           <p>
             {SITE_NAME} is an AI-powered product discovery and shopping comparison platform, developed
             and operated by {COMPANY_NAME}. Our goal is to help consumers make better purchasing
@@ -66,7 +67,7 @@ export default function AboutPage() {
             </a>
             .
           </p>
-        </div>
+        </Card>
       </div>
     </Container>
   );

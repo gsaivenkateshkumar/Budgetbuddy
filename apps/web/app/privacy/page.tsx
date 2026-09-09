@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+import { Card } from "@/components/ui/Card";
 import { COMPANY_NAME, CONTACT_EMAIL, SITE_NAME } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function PrivacyPage() {
           <p className="mt-2 text-sm text-slate-500">Last updated: {new Date().getFullYear()}</p>
         </div>
 
-        <div className="flex flex-col gap-4 text-sm leading-relaxed text-slate-700">
+        <Card className="flex flex-col gap-4 p-6 text-sm leading-relaxed text-slate-700 sm:p-8">
           <p>
             This Privacy Policy explains how {COMPANY_NAME}, the operator of {SITE_NAME} (&ldquo;we,&rdquo;
             &ldquo;us&rdquo;), handles information in connection with your use of {SITE_NAME}.
@@ -133,7 +134,7 @@ export default function PrivacyPage() {
             We may update this Privacy Policy from time to time. Material changes will be reflected by
             updating the &ldquo;Last updated&rdquo; date above.
           </p>
-        </div>
+        </Card>
       </div>
     </Container>
   );

@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import type { BrandRead, CategoryRead } from "@/lib/api/types";
+import { Button } from "@/components/ui/Button";
 
 export function SearchFilters({
   categories,
@@ -144,19 +145,12 @@ export function SearchFilters({
       </div>
 
       <div className="flex flex-col gap-2">
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-        >
+        <Button type="submit" variant="primary">
           Apply filters
-        </button>
-        <button
-          type="button"
-          onClick={clearFilters}
-          className="rounded-md px-4 py-2 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-        >
+        </Button>
+        <Button type="button" variant="ghost" onClick={clearFilters}>
           Clear all
-        </button>
+        </Button>
       </div>
     </form>
   );

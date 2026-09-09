@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
 import { Container } from "@/components/layout/Container";
+import { Button, LinkButton } from "@/components/ui/Button";
 
 export default function GlobalErrorBoundary({
   error,
@@ -22,19 +22,12 @@ export default function GlobalErrorBoundary({
         An unexpected error occurred. You can try again, or head back to the home page.
       </p>
       <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={reset}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-        >
+        <Button variant="primary" onClick={reset}>
           Try again
-        </button>
-        <Link
-          href="/"
-          className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700"
-        >
+        </Button>
+        <LinkButton href="/" variant="outline">
           Go home
-        </Link>
+        </LinkButton>
       </div>
     </Container>
   );

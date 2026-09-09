@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { LinkButton } from "@/components/ui/Button";
 
 export default function ProductNotFound() {
   return (
@@ -9,12 +9,9 @@ export default function ProductNotFound() {
         We couldn&apos;t find a product with that identifier. It may have been removed, or the link is
         incorrect.
       </p>
-      <Link
-        href="/search"
-        className="mt-6 inline-block rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-      >
+      <LinkButton href="/search" variant="primary" className="mt-6">
         Browse the catalog
-      </Link>
+      </LinkButton>
     </Container>
   );
 }

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+import { FilterDrawer } from "@/components/search/FilterDrawer";
 import { Pagination } from "@/components/search/Pagination";
 import { SearchFilters } from "@/components/search/SearchFilters";
 import { ProductCard } from "@/components/product/ProductCard";
+import { LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { listBrands, listCategories, listProducts, type ProductSearchParams } from "@/lib/api/products";
@@ -67,10 +69,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-        <SearchFilters
-          categories={categoriesResult.status === "fulfilled" ? categoriesResult.value : []}
-          brands={brandsResult.status === "fulfilled" ? brandsResult.value : []}
-        />
+        <FilterDrawer>
+          <SearchFilters
+            categories={categoriesResult.status === "fulfilled" ? categoriesResult.value : []}
+            brands={brandsResult.status === "fulfilled" ? brandsResult.value : []}
+          />
+        </FilterDrawer>
 
         <div>
           {productsResult.status === "rejected" ? (
@@ -85,7 +89,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               body={
                 q || category || brand || minPrice || maxPrice
                   ? "Try widening your price range or clearing a filter."
-                  : "Budget Buddy will surface supported merchant offers as they become available. Try Ask Budget Buddy in the meantime."
+                  : "Budget Buddy will surface supported merchant offers as they become available."
+              }
+              actions={
+                <>
+                  <LinkButton href="/ask" variant="primary" size="sm">
+                    Ask Budget Buddy
+                  </LinkButton>
+                  <LinkButton href="/guides" variant="outline" size="sm">
+                    Read buying guides
+                  </LinkButton>
+                </>
               }
             />
           ) : (

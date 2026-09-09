@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ScoredCandidate } from "@/lib/api/types";
 import { formatPrice } from "@/lib/format";
+import { Badge } from "@/components/ui/Badge";
 
 function collectSpecKeys(candidates: ScoredCandidate[]): { differing: string[]; common: string[] } {
   const allKeys = new Set<string>();
@@ -29,19 +30,16 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
       <table className="w-full min-w-[640px] border-collapse text-sm">
         <thead>
           <tr className="border-b border-slate-200">
-            <th className="w-40 p-4 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+            <th className="sticky left-0 z-10 w-40 bg-white p-4 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
               <span className="sr-only">Attribute</span>
             </th>
             {candidates.map((c) => (
               <th key={c.evidence.product_slug} className="p-4 text-left align-top">
                 <div className="mb-1 flex flex-wrap gap-1">
                   {c.labels.map((label) => (
-                    <span
-                      key={label}
-                      className="rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-medium text-indigo-700"
-                    >
+                    <Badge key={label} tone="info">
                       {label}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-500">

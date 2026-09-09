@@ -2,8 +2,11 @@
 
 import { useMemo, useState } from "react";
 import type { ProductDetail, VariantRead } from "@/lib/api/types";
+import { Card } from "@/components/ui/Card";
+import { LinkButton } from "@/components/ui/Button";
 import { OffersTable } from "./OffersTable";
 import { PriceHistoryPanel } from "./PriceHistoryPanel";
+import { ProductGallery } from "./ProductGallery";
 
 function variantLabel(variant: VariantRead): string {
   const parts: string[] = [];
@@ -66,7 +69,9 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
       {variant && (
         <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
           <div className="flex flex-col gap-6">
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <ProductGallery images={variant.images} label={product.name} />
+
+            <Card className="p-5">
               <h2 className="mb-3 text-sm font-semibold text-slate-900">Specifications</h2>
               {Object.keys(variant.specs).length === 0 ? (
                 <p className="text-sm text-slate-400">No structured specifications available.</p>
@@ -86,32 +91,27 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
                   {variant.gtin && <>GTIN: {variant.gtin} </>}
                 </p>
               )}
-            </div>
+            </Card>
 
             <div className="flex flex-col gap-2">
-              <a
-                href={`/compare?product=${product.slug}`}
-                className="rounded-md border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-700 hover:border-indigo-300 hover:text-indigo-700"
-              >
+              <LinkButton href={`/compare?product=${product.slug}`} variant="outline">
                 Compare with alternatives
-              </a>
-              <a
+              </LinkButton>
+              <LinkButton
                 href={`/ask?q=${encodeURIComponent(`Is the ${product.name} a good choice for me?`)}`}
-                className="rounded-md bg-indigo-50 px-4 py-2 text-center text-sm font-medium text-indigo-700 hover:bg-indigo-100"
+                variant="secondary"
               >
                 Ask Budget Buddy about this product
-              </a>
+              </LinkButton>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-slate-900">Retailer offers</h2>
-            </div>
+            <h2 className="text-sm font-semibold text-slate-900">Available from</h2>
             {variant.offers.length === 0 ? (
-              <p className="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
+              <Card className="border-dashed p-6 text-center text-sm text-slate-500">
                 No retailer offers found for this variant yet.
-              </p>
+              </Card>
             ) : (
               <>
                 <OffersTable offers={variant.offers} bestOfferRetailerSlug={bestOfferRetailerSlug} />

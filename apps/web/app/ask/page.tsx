@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { AskChat } from "@/components/ask/AskChat";
+import { LinkButton } from "@/components/ui/Button";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { getAIStatus } from "@/lib/api/ai";
 
@@ -32,35 +33,34 @@ export default async function AskPage({ searchParams }: AskPageProps) {
   }
 
   return (
-    <Container className="flex flex-col gap-6 py-10">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Ask Budget Buddy</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Tell me what you&apos;re trying to buy or accomplish, and I&apos;ll help you compare options
-          using Budget Buddy&apos;s catalog. I only answer with products, prices, and specs I can
-          actually find — if the catalog doesn&apos;t have a match yet, I&apos;ll tell you honestly
-          instead of guessing.
-        </p>
-      </div>
-
-      {status.configured ? (
-        <AskChat initialQuery={initialQuery} />
-      ) : (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
-          <p className="font-medium">AI features aren&apos;t configured on this server yet.</p>
-          <p className="mt-1">
-            Search and comparison still work — try{" "}
-            <a href="/search" className="underline">
-              Explore
-            </a>{" "}
-            or{" "}
-            <a href="/compare" className="underline">
-              Compare
-            </a>{" "}
-            instead.
+    <Container className="py-10">
+      <div className="mx-auto flex max-w-2xl flex-col gap-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Ask Budget Buddy</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Tell us what you&apos;re trying to buy or accomplish. Budget Buddy only answers with
+            products, prices, and specs it can actually find — if the catalog doesn&apos;t have a
+            match yet, it&apos;ll say so honestly instead of guessing.
           </p>
         </div>
-      )}
+
+        {status.configured ? (
+          <AskChat initialQuery={initialQuery} />
+        ) : (
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
+            <p className="font-medium">AI features aren&apos;t configured on this server yet.</p>
+            <p className="mt-1">Search and comparison still work in the meantime.</p>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
+              <LinkButton href="/search" variant="primary" size="sm">
+                Explore
+              </LinkButton>
+              <LinkButton href="/compare" variant="outline" size="sm">
+                Compare
+              </LinkButton>
+            </div>
+          </div>
+        )}
+      </div>
     </Container>
   );
 }

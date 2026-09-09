@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { GoalBasedShopping } from "@/components/home/GoalBasedShopping";
+import { GuidesPreview } from "@/components/home/GuidesPreview";
 import { HeroSearch } from "@/components/home/HeroSearch";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { ValueProps } from "@/components/home/ValueProps";
+import { TrustSection } from "@/components/home/TrustSection";
 import { WhyBudgetBuddy } from "@/components/home/WhyBudgetBuddy";
+import { LinkButton } from "@/components/ui/Button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
@@ -31,17 +34,27 @@ export default async function HomePage() {
         <Container className="flex flex-col items-center gap-8 text-center">
           <div className="flex flex-col gap-3">
             <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-              {SITE_VALUE_PROP}
+              {SITE_NAME} — Your AI Shopping Buddy
             </p>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              What are you trying to buy or accomplish?
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+              {SITE_VALUE_PROP}
             </h1>
             <p className="mx-auto max-w-xl text-base text-slate-600">
-              Compare products, prices, specifications, and retailer options in one place. Get
-              AI-powered recommendations based on your budget and requirements — not just the lowest
-              price.
+              Compare products, prices, specifications, and retailer options in one place, and get
+              AI-powered recommendations based on your budget and requirements — so you don&apos;t just
+              find a product, you make a better decision.
             </p>
           </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <LinkButton href="/search" variant="primary" size="lg">
+              Explore products
+            </LinkButton>
+            <LinkButton href="/ask" variant="outline" size="lg">
+              Ask Budget Buddy
+            </LinkButton>
+          </div>
+
           <HeroSearch />
           <p className="text-xs text-slate-400">
             {SITE_NAME} is an AI-powered shopping comparison platform operated by {COMPANY_NAME}.
@@ -51,13 +64,19 @@ export default async function HomePage() {
 
       <section className="py-16">
         <Container>
-          <ValueProps />
+          <HowItWorks />
         </Container>
       </section>
 
-      <section className="border-t border-slate-200 py-16">
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
         <Container>
-          <HowItWorks />
+          <WhyBudgetBuddy />
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <GoalBasedShopping />
         </Container>
       </section>
 
@@ -75,7 +94,17 @@ export default async function HomePage() {
           ) : featured.products.length === 0 ? (
             <EmptyState
               title="Live retailer integrations are being added"
-              body={`${SITE_NAME} will surface supported merchant offers as they become available. In the meantime, try Ask Budget Buddy or browse our shopping guides.`}
+              body={`${SITE_NAME} will surface supported merchant offers as they become available.`}
+              actions={
+                <>
+                  <LinkButton href="/ask" variant="primary" size="sm">
+                    Ask Budget Buddy
+                  </LinkButton>
+                  <LinkButton href="/guides" variant="outline" size="sm">
+                    Browse guides
+                  </LinkButton>
+                </>
+              }
             />
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
@@ -87,9 +116,15 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="border-t border-slate-200 py-16">
+      <section className="py-16">
         <Container>
-          <WhyBudgetBuddy />
+          <TrustSection />
+        </Container>
+      </section>
+
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
+        <Container>
+          <GuidesPreview />
         </Container>
       </section>
     </>

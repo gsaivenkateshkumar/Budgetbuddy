@@ -2,6 +2,8 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 interface Weights {
   price: number;
@@ -51,7 +53,7 @@ export function PriorityControls() {
   ];
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5">
+    <Card className="flex flex-col gap-4 p-5">
       <h2 className="text-sm font-semibold text-slate-900">Priorities</h2>
 
       <div className="flex flex-wrap gap-2">
@@ -85,13 +87,9 @@ export function PriorityControls() {
         </div>
       ))}
 
-      <button
-        type="button"
-        onClick={() => apply()}
-        className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-      >
+      <Button type="button" variant="primary" onClick={() => apply()}>
         Recompute recommendation
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 }

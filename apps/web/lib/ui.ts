@@ -1,0 +1,40 @@
+/** Shared className builders for the Button/Badge primitives — hand-rolled
+ * instead of a variant-authoring library, since two small maps cover the
+ * whole surface this app needs. */
+
+const BASE_BUTTON =
+  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2";
+
+const BUTTON_VARIANTS = {
+  primary: "bg-indigo-600 text-white hover:bg-indigo-700 disabled:hover:bg-indigo-600",
+  secondary: "bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
+  outline: "border border-slate-300 text-slate-700 hover:border-indigo-300 hover:text-indigo-700",
+  ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+} as const;
+
+const BUTTON_SIZES = {
+  sm: "px-3 py-1.5 text-xs",
+  md: "px-4 py-2 text-sm",
+  lg: "px-5 py-3 text-sm",
+} as const;
+
+export type ButtonVariant = keyof typeof BUTTON_VARIANTS;
+export type ButtonSize = keyof typeof BUTTON_SIZES;
+
+export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "md", className = "") {
+  return `${BASE_BUTTON} ${BUTTON_VARIANTS[variant]} ${BUTTON_SIZES[size]} ${className}`.trim();
+}
+
+const BADGE_TONES = {
+  neutral: "bg-slate-100 text-slate-600",
+  info: "bg-indigo-50 text-indigo-700",
+  success: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200",
+  warning: "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200",
+  danger: "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200",
+} as const;
+
+export type BadgeTone = keyof typeof BADGE_TONES;
+
+export function badgeClass(tone: BadgeTone = "neutral", className = "") {
+  return `inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${BADGE_TONES[tone]} ${className}`.trim();
+}

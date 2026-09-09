@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+import { Card } from "@/components/ui/Card";
 import { COMPANY_NAME, CONTACT_EMAIL, SITE_NAME } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ export default function ContactPage() {
           <p className="mt-1 text-sm text-slate-500">Operated by {COMPANY_NAME}</p>
         </div>
 
-        <div>
+        <Card className="p-6">
           <h2 className="text-base font-semibold text-slate-900">Get in touch</h2>
           {CONTACT_EMAIL ? (
             <p className="mt-2 text-sm text-slate-700">
@@ -51,16 +52,16 @@ export default function ContactPage() {
               soon or reach out through any channel {SITE_NAME} has shared with you directly.
             </p>
           )}
-        </div>
+        </Card>
 
         <div>
           <h2 className="text-base font-semibold text-slate-900">What can we help with?</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {SUPPORT_CATEGORIES.map((category) => (
-              <div key={category.title} className="rounded-xl border border-slate-200 bg-white p-4">
+              <Card key={category.title} className="p-4">
                 <h3 className="text-sm font-semibold text-slate-900">{category.title}</h3>
                 <p className="mt-1 text-sm text-slate-600">{category.body}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </div>

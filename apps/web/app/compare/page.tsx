@@ -3,6 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { ComparisonTable } from "@/components/compare/ComparisonTable";
 import { PriorityControls } from "@/components/compare/PriorityControls";
 import { ProductPicker } from "@/components/compare/ProductPicker";
+import { LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { compareProducts } from "@/lib/api/compare";
@@ -54,6 +55,16 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
           <EmptyState
             title="Live retailer integrations are being added"
             body="Budget Buddy will surface supported merchant offers as they become available, so you can compare them here."
+            actions={
+              <>
+                <LinkButton href="/ask" variant="primary" size="sm">
+                  Ask Budget Buddy
+                </LinkButton>
+                <LinkButton href="/guides" variant="outline" size="sm">
+                  Read buying guides
+                </LinkButton>
+              </>
+            }
           />
         ) : (
           <ProductPicker products={products} initialSelected={productSlugs} />
@@ -94,6 +105,11 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
             <EmptyState
               title="None of the selected products could be compared"
               body="They may be missing price data."
+              actions={
+                <LinkButton href="/search" variant="primary" size="sm">
+                  Explore products
+                </LinkButton>
+              }
             />
           ) : (
             <ComparisonTable candidates={result.candidates} />

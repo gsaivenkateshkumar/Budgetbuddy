@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { LinkButton } from "@/components/ui/Button";
 
 export default function RootNotFound() {
   return (
@@ -9,18 +9,12 @@ export default function RootNotFound() {
         The page you&apos;re looking for doesn&apos;t exist or may have moved.
       </p>
       <div className="flex gap-3">
-        <Link
-          href="/"
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-        >
+        <LinkButton href="/" variant="primary">
           Go home
-        </Link>
-        <Link
-          href="/search"
-          className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700"
-        >
+        </LinkButton>
+        <LinkButton href="/search" variant="outline">
           Browse the catalog
-        </Link>
+        </LinkButton>
       </div>
     </Container>
   );

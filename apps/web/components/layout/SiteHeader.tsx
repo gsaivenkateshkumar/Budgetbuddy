@@ -1,21 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Container } from "./Container";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/search", label: "Explore" },
   { href: "/compare", label: "Compare" },
-  { href: "/ask", label: "Ask Budget Buddy" },
+  { href: "/ask", label: "Ask AI" },
   { href: "/guides", label: "Guides" },
 ];
+
+function isActive(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, loading } = useAuth();
+  const pathname = usePathname();
   const accountLink = {
     href: user ? "/account" : "/login",
     label: loading ? "You" : user ? (user.display_name || "You") : "Log in",
@@ -37,16 +42,22 @@ export function SiteHeader() {
 
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-1">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {links.map((link) => {
+              const active = isActive(pathname, link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+                      active ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -78,17 +89,23 @@ export function SiteHeader() {
         <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-slate-200 md:hidden">
           <Container>
             <ul className="flex flex-col py-2">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="block rounded-md px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-100"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {links.map((link) => {
+                const active = isActive(pathname, link.href);
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      aria-current={active ? "page" : undefined}
+                      className={`block rounded-md px-3 py-3 text-base font-medium ${
+                        active ? "bg-indigo-50 text-indigo-700" : "text-slate-700 hover:bg-slate-100"
+                      }`}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </Container>
         </nav>
