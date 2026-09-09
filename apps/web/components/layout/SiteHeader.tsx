@@ -23,21 +23,35 @@ export function SiteHeader() {
   const { user, loading } = useAuth();
   const pathname = usePathname();
   const rafRef = useRef<number | null>(null);
+  const isHomepage = pathname === "/";
+
+  // Only the homepage has a dark hero (#home-hero in Hero.tsx) — everywhere
+  // else the header stays in its normal light state regardless of scroll.
+  // Defaulting to `isHomepage` means SSR/first paint already renders the
+  // correct state (dark at scrollY 0 on "/"), no post-hydration flash.
+  const [overDarkHero, setOverDarkHero] = useState(isHomepage);
 
   useEffect(() => {
     function onScroll() {
       if (rafRef.current) return;
       rafRef.current = requestAnimationFrame(() => {
         setScrolled(window.scrollY > 8);
+        if (isHomepage) {
+          const hero = document.getElementById("home-hero");
+          setOverDarkHero(hero ? hero.getBoundingClientRect().bottom > 80 : false);
+        }
         rafRef.current = null;
       });
     }
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [isHomepage]);
+
+  const dark = isHomepage && overDarkHero;
   const accountLink = {
     href: user ? "/account" : "/login",
     label: loading ? "You" : user ? (user.display_name || "You") : "Log in",
@@ -46,12 +60,19 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b backdrop-blur transition-shadow ${
-        scrolled ? "border-slate-200 bg-white/95 shadow-sm" : "border-slate-200 bg-white/90"
+      className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
+        dark
+          ? "border-white/10 bg-black/70 backdrop-blur-xl"
+          : scrolled
+            ? "border-slate-200 bg-white/95 shadow-sm"
+            : "border-slate-200 bg-white/90"
       }`}
     >
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+        <Link
+          href="/"
+          className={`flex items-center gap-2 text-lg font-semibold transition-colors ${dark ? "text-white" : "text-slate-900"}`}
+        >
           <span
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white"
             aria-hidden="true"
@@ -71,7 +92,13 @@ export function SiteHeader() {
                     href={link.href}
                     aria-current={active ? "page" : undefined}
                     className={`rounded-md px-3 py-2 text-sm font-medium transition ${
-                      active ? "bg-violet-50 text-violet-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      dark
+                        ? active
+                          ? "bg-white/10 text-violet-200"
+                          : "text-slate-300 hover:bg-white/10 hover:text-white"
+                        : active
+                          ? "bg-violet-50 text-violet-700"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`}
                   >
                     {link.label}
@@ -84,7 +111,9 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100 md:hidden"
+          className={`flex h-10 w-10 items-center justify-center rounded-md transition-colors md:hidden ${
+            dark ? "text-slate-300 hover:bg-white/10" : "text-slate-600 hover:bg-slate-100"
+          }`}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -107,7 +136,11 @@ export function SiteHeader() {
       </Container>
 
       {menuOpen && (
-        <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-slate-200 md:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Primary mobile"
+          className={`border-t md:hidden ${dark ? "border-white/10" : "border-slate-200"}`}
+        >
           <Container>
             <ul className="flex flex-col py-2">
               {links.map((link) => {
@@ -118,7 +151,13 @@ export function SiteHeader() {
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={`block rounded-md px-3 py-3 text-base font-medium ${
-                        active ? "bg-violet-50 text-violet-700" : "text-slate-700 hover:bg-slate-100"
+                        dark
+                          ? active
+                            ? "bg-white/10 text-violet-200"
+                            : "text-slate-300 hover:bg-white/10"
+                          : active
+                            ? "bg-violet-50 text-violet-700"
+                            : "text-slate-700 hover:bg-slate-100"
                       }`}
                       onClick={() => setMenuOpen(false)}
                     >
