@@ -57,7 +57,7 @@ export function SearchFilters({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Product or brand name"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
       </div>
 
@@ -69,7 +69,7 @@ export function SearchFilters({
           id="filter-category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         >
           <option value="">All categories</option>
           {categories.map((c) => (
@@ -88,7 +88,7 @@ export function SearchFilters({
           id="filter-brand"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         >
           <option value="">All brands</option>
           {brands.map((b) => (
@@ -110,7 +110,7 @@ export function SearchFilters({
             min={0}
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -123,7 +123,7 @@ export function SearchFilters({
             min={0}
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ export function SearchFilters({
           id="filter-sort"
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         >
           <option value="relevance">Relevance</option>
           <option value="price_asc">Price: Low to High</option>

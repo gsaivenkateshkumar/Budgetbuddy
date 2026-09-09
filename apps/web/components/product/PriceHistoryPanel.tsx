@@ -23,7 +23,7 @@ function PriceSparkline({ points }: { points: PriceHistoryResponse["points"] }) 
   });
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full text-indigo-600" role="img" aria-label="Price history over time">
+    <svg viewBox={`0 0 ${width} ${height}`} className="w-full text-violet-600" role="img" aria-label="Price history over time">
       <polyline
         points={coords.map((c) => `${c.x},${c.y}`).join(" ")}
         fill="none"
@@ -31,7 +31,7 @@ function PriceSparkline({ points }: { points: PriceHistoryResponse["points"] }) 
         strokeWidth={2}
       />
       {coords.map((c, i) => (
-        <circle key={i} cx={c.x} cy={c.y} r={3} className="fill-indigo-600" />
+        <circle key={i} cx={c.x} cy={c.y} r={3} className="fill-violet-600" />
       ))}
     </svg>
   );
@@ -93,7 +93,7 @@ export function PriceHistoryPanel({ productSlug, variantSku }: { productSlug: st
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-900">Price history — {data.retailer_name}</h2>
         {stats.is_lowest_recorded && (
-          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
+          <span className="rounded-full bg-teal-100 px-2 py-0.5 text-[10px] font-medium text-teal-800">
             Lowest we&apos;ve recorded
           </span>
         )}

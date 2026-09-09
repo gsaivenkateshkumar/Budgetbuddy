@@ -12,7 +12,7 @@ import { TiltCard } from "@/components/motion/TiltCard";
 function ProductImagePlaceholder({ label }: { label: string }) {
   return (
     <div
-      className="flex aspect-square w-full items-center justify-center rounded-t-xl bg-gradient-to-br from-indigo-50 to-slate-100 text-3xl font-semibold text-indigo-300"
+      className="flex aspect-square w-full items-center justify-center rounded-t-xl bg-gradient-to-br from-violet-50 to-slate-100 text-3xl font-semibold text-violet-300"
       aria-hidden="true"
     >
       {label.charAt(0).toUpperCase()}
@@ -33,7 +33,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
               </span>
               <span className="text-xs text-slate-500">{product.category.name}</span>
             </div>
-            <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 group-hover:text-indigo-700">
+            <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 group-hover:text-violet-700">
               {product.name}
             </h3>
             <div className="mt-auto flex items-end justify-between pt-2">
@@ -45,7 +45,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
               ) : (
                 <p className="text-sm text-slate-500">No offers yet</p>
               )}
-              <span className="text-xs font-medium text-indigo-600 opacity-0 transition group-hover:opacity-100">
+              <span className="text-xs font-medium text-violet-600 opacity-0 transition group-hover:opacity-100">
                 View details &rarr;
               </span>
             </div>

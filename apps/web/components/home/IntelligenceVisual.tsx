@@ -20,12 +20,12 @@ export function IntelligenceVisual() {
     <TiltCard className="mx-auto w-full max-w-sm rounded-2xl">
       <Card className="relative overflow-hidden p-6 shadow-sm">
         <div
-          className="pointer-events-none absolute -top-12 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-indigo-200/40 blur-3xl"
+          className="pointer-events-none absolute -top-12 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-violet-200/40 blur-3xl"
           aria-hidden="true"
         />
 
         <div className="relative flex flex-col items-center gap-1 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 text-sm font-bold text-white shadow-lg shadow-indigo-600/30">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600 text-sm font-bold text-white shadow-lg shadow-violet-600/30">
             AI
           </div>
           <p className="mt-2 text-sm font-semibold text-slate-900">Budget Buddy</p>
@@ -33,7 +33,7 @@ export function IntelligenceVisual() {
         </div>
 
         <svg
-          className="relative mx-auto mt-3 h-10 w-full max-w-[220px] text-indigo-200"
+          className="relative mx-auto mt-3 h-10 w-full max-w-[220px] text-violet-200"
           viewBox="0 0 220 40"
           fill="none"
           aria-hidden="true"
@@ -45,12 +45,23 @@ export function IntelligenceVisual() {
         </svg>
 
         <div className="relative grid grid-cols-3 gap-2">
-          {STEPS.map((step) => (
-            <Card key={step.label} hover className="flex flex-col items-center gap-0.5 p-3 text-center">
-              <span className="text-xs font-semibold text-slate-900">{step.label}</span>
-              <span className="text-[11px] text-slate-500">{step.detail}</span>
-            </Card>
-          ))}
+          {STEPS.map((step) => {
+            const isDecide = step.label === "Decide";
+            return (
+              <Card
+                key={step.label}
+                hover
+                className={`flex flex-col items-center gap-0.5 p-3 text-center ${
+                  isDecide ? "ring-1 ring-inset ring-teal-200" : ""
+                }`}
+              >
+                <span className={`text-xs font-semibold ${isDecide ? "text-teal-800" : "text-slate-900"}`}>
+                  {step.label}
+                </span>
+                <span className="text-[11px] text-slate-500">{step.detail}</span>
+              </Card>
+            );
+          })}
         </div>
 
         <p className="relative mt-4 text-center text-[11px] text-slate-500">

@@ -3,13 +3,40 @@
 /*
  * Budget Buddy design tokens — see components/ui (Button/Badge variants in
  * lib/ui.ts) for the canonical hierarchy.
- * Palette: Tailwind's built-in indigo (AI/navigation/primary action),
- * emerald (value, savings, best-value outcomes), orange (commercial
- * outbound retailer actions only), amber (freshness/caution — used
- * sparingly, never as a discount badge), red (destructive actions only),
- * slate (structure, neutral text/surfaces). Light theme only for MVP —
- * see docs/product-decisions.md.
+ * Palette: violet (AI/navigation/primary action — brand core), teal
+ * (value, savings, best-value outcomes), amber (commercial outbound
+ * retailer actions only), red (destructive actions only), slate
+ * (structure, neutral text/surfaces). Light theme only for MVP — see
+ * docs/product-decisions.md.
+ *
+ * violet-600/700/50 and teal-600/700/50 are exact brand hexes (below);
+ * amber is used unmodified from Tailwind's default palette since
+ * amber-500/600 already equal the brand's commercial hexes exactly.
  */
+@theme {
+  --color-violet-50: #f1efff;
+  --color-violet-100: #e4e0fe;
+  --color-violet-200: #ccc5fd;
+  --color-violet-300: #ada1fc;
+  --color-violet-400: #8d7dfc;
+  --color-violet-500: #7a69fc;
+  --color-violet-600: #6d5dfb;
+  --color-violet-700: #5b4ae8;
+  --color-violet-800: #4a3bc4;
+  --color-violet-900: #392e93;
+
+  --color-teal-50: #eafbf7;
+  --color-teal-100: #cff5ee;
+  --color-teal-200: #9febdd;
+  --color-teal-300: #66d9c7;
+  --color-teal-400: #34bfae;
+  --color-teal-500: #17ac9c;
+  --color-teal-600: #0f9f8f;
+  --color-teal-700: #0b887a;
+  --color-teal-800: #0a6d62;
+  --color-teal-900: #0a574f;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
@@ -61,7 +88,7 @@ body {
 .tilt-spotlight {
   background: radial-gradient(
     260px circle at var(--spot-x) var(--spot-y),
-    rgba(79, 70, 229, 0.08),
+    rgba(109, 93, 251, 0.08),
     transparent 70%
   );
   opacity: var(--spot-opacity);

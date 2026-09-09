@@ -45,7 +45,7 @@ export function AskWorkspace({ activity }: { activity: WorkspaceActivity[] }) {
             {activity.map((item) => (
               <li key={item.name} className="message-in flex items-center justify-between gap-2 text-sm">
                 <span className="flex items-center gap-2 text-slate-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" aria-hidden="true" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-500" aria-hidden="true" />
                   {TOOL_LABELS[item.name] ?? item.name}
                 </span>
                 {item.count > 1 && <span className="tabular-nums text-xs text-slate-500">×{item.count}</span>}
@@ -74,7 +74,7 @@ export function AskWorkspace({ activity }: { activity: WorkspaceActivity[] }) {
       <p className="px-1 text-xs text-slate-500">
         Budget Buddy may earn a commission from qualifying purchases through outbound retailer
         links.{" "}
-        <Link href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+        <Link href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
           Learn more
         </Link>
         .

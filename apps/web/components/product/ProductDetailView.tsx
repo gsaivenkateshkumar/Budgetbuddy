@@ -55,8 +55,8 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
                 onClick={() => setSelectedIndex(i)}
                 className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
                   i === selectedIndex
-                    ? "border-indigo-600 bg-indigo-600 text-white"
-                    : "border-slate-300 text-slate-700 hover:border-indigo-300"
+                    ? "border-violet-600 bg-violet-600 text-white"
+                    : "border-slate-300 text-slate-700 hover:border-violet-300"
                 }`}
               >
                 {variantLabel(v)}

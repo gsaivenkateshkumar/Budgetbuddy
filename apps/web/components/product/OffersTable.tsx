@@ -30,7 +30,7 @@ export function OffersTable({
 
         return (
           <li key={`${offer.retailer_slug}-${offer.seller_name ?? "default"}`}>
-            <Card className={`p-4 ${isBest ? "border-emerald-300 bg-emerald-50/40" : ""}`}>
+            <Card className={`p-4 ${isBest ? "border-teal-300 bg-teal-50/40" : ""}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -50,7 +50,7 @@ export function OffersTable({
                       <span className="tabular-nums line-through">
                         {formatPrice(offer.list_price, offer.currency)}
                       </span>{" "}
-                      <span className="tabular-nums text-emerald-600">{discount}% off list price</span>
+                      <span className="tabular-nums text-teal-800">{discount}% off list price</span>
                     </p>
                   )}
                   {!offer.in_stock && (
@@ -68,7 +68,7 @@ export function OffersTable({
                 href={buildRetailerLink(offer.product_url)}
                 target="_blank"
                 rel="nofollow noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1 rounded-lg bg-orange-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                className="mt-3 inline-flex items-center gap-1 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-900 transition hover:bg-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
               >
                 Buy at {offer.retailer_name} &rarr;
               </a>

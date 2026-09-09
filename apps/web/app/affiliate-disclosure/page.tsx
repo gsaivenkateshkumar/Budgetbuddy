@@ -56,7 +56,7 @@ export default function AffiliateDisclosurePage() {
             that retailer&apos;s own website. {SITE_NAME} does not sell, ship, or fulfil third-party
             retailer products. The retailer&apos;s own terms, pricing, returns, warranty, and delivery
             policies apply to that purchase — see our{" "}
-            <a href="/terms" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/terms" className="font-medium text-violet-600 hover:text-violet-700">
               Terms of Use
             </a>{" "}
             for more detail.
@@ -73,7 +73,7 @@ export default function AffiliateDisclosurePage() {
           <h2 className="mt-2 text-base font-semibold text-slate-900">Questions</h2>
           <p>
             If you have questions about this disclosure, visit our{" "}
-            <a href="/contact" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/contact" className="font-medium text-violet-600 hover:text-violet-700">
               Contact page
             </a>
             .

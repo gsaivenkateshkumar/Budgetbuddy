@@ -6,7 +6,7 @@ import type { ImageRead } from "@/lib/api/types";
 function InitialTile({ label }: { label: string }) {
   return (
     <div
-      className="flex aspect-square w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-50 to-slate-100 text-5xl font-semibold text-indigo-300"
+      className="flex aspect-square w-full items-center justify-center rounded-xl bg-gradient-to-br from-violet-50 to-slate-100 text-5xl font-semibold text-violet-300"
       aria-hidden="true"
     >
       {label.charAt(0).toUpperCase()}
@@ -48,7 +48,7 @@ export function ProductGallery({ images, label }: { images: ImageRead[]; label: 
               onClick={() => setActiveIndex(displayIndex)}
               aria-label={`Show image ${displayIndex + 1}`}
               className={`h-14 w-14 overflow-hidden rounded-lg border ${
-                i === active.i ? "border-indigo-500" : "border-slate-200"
+                i === active.i ? "border-violet-500" : "border-slate-200"
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- thumbnail of the same external image */}

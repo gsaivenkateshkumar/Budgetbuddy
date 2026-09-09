@@ -41,7 +41,7 @@ export default function ContactPage() {
           {CONTACT_EMAIL ? (
             <p className="mt-2 text-sm text-slate-700">
               Reach us at{" "}
-              <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-indigo-600 hover:text-indigo-700">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-violet-600 hover:text-violet-700">
                 {CONTACT_EMAIL}
               </a>
               .

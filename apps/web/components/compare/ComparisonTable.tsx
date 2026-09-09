@@ -48,7 +48,7 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
                 </p>
                 <Link
                   href={`/products/${c.evidence.product_slug}`}
-                  className="text-base font-semibold text-slate-900 hover:text-indigo-700"
+                  className="text-base font-semibold text-slate-900 hover:text-violet-700"
                 >
                   {c.evidence.product_name}
                 </Link>
@@ -69,7 +69,7 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
                     value={c.evidence.price}
                     currency={c.evidence.currency}
                     size="lg"
-                    className={isLowest ? "text-emerald-700" : undefined}
+                    className={isLowest ? "text-teal-800" : undefined}
                   />
                   {isLowest && (
                     <span className="ml-2 align-middle">
@@ -110,7 +110,7 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
             <tr>
               <th
                 colSpan={candidates.length + 1}
-                className="bg-indigo-50/50 p-3 text-left text-xs font-semibold uppercase tracking-wide text-indigo-700"
+                className="bg-violet-50/50 p-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-700"
               >
                 Key differences
               </th>

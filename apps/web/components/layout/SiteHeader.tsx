@@ -53,7 +53,7 @@ export function SiteHeader() {
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-slate-900">
           <span
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white"
             aria-hidden="true"
           >
             BB
@@ -71,7 +71,7 @@ export function SiteHeader() {
                     href={link.href}
                     aria-current={active ? "page" : undefined}
                     className={`rounded-md px-3 py-2 text-sm font-medium transition ${
-                      active ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      active ? "bg-violet-50 text-violet-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`}
                   >
                     {link.label}
@@ -118,7 +118,7 @@ export function SiteHeader() {
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={`block rounded-md px-3 py-3 text-base font-medium ${
-                        active ? "bg-indigo-50 text-indigo-700" : "text-slate-700 hover:bg-slate-100"
+                        active ? "bg-violet-50 text-violet-700" : "text-slate-700 hover:bg-slate-100"
                       }`}
                       onClick={() => setMenuOpen(false)}
                     >

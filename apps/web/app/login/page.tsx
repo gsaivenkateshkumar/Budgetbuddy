@@ -53,7 +53,7 @@ export default function LoginPage() {
         <h1 className="text-2xl font-semibold text-slate-900">Log in</h1>
         <p className="mt-1 text-sm text-slate-600">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-700">
+          <Link href="/register" className="font-medium text-violet-600 hover:text-violet-700">
             Register
           </Link>
         </p>
@@ -71,7 +71,7 @@ export default function LoginPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -85,7 +85,7 @@ export default function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
 
@@ -126,7 +126,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:bg-slate-300"
+          className="rounded-md bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:bg-slate-300"
         >
           {pending ? "Logging in…" : "Log in"}
         </button>

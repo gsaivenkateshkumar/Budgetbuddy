@@ -40,7 +40,7 @@ export function ProductPicker({
             key={p.slug}
             className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg border p-3 text-sm transition ${
               selected.has(p.slug)
-                ? "border-indigo-400 bg-indigo-50"
+                ? "border-violet-400 bg-violet-50"
                 : "border-slate-200 bg-white hover:border-slate-300"
             }`}
           >
@@ -49,7 +49,7 @@ export function ProductPicker({
                 type="checkbox"
                 checked={selected.has(p.slug)}
                 onChange={() => toggle(p.slug)}
-                className="h-4 w-4 accent-indigo-600"
+                className="h-4 w-4 accent-violet-600"
               />
               <span>
                 <span className="block font-medium text-slate-900">{p.name}</span>

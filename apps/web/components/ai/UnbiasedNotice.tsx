@@ -6,7 +6,7 @@ export function UnbiasedNotice({ className = "" }: { className?: string }) {
   return (
     <p className={`text-xs text-slate-500 ${className}`}>
       Our picks are ranked independently of retailer commissions.{" "}
-      <Link href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+      <Link href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
         How we stay unbiased
       </Link>
     </p>

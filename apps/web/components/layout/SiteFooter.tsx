@@ -18,7 +18,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-1">
           <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <span
-              className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-[11px] font-bold text-white"
+              className="flex h-6 w-6 items-center justify-center rounded-md bg-violet-600 text-[11px] font-bold text-white"
               aria-hidden="true"
             >
               BB

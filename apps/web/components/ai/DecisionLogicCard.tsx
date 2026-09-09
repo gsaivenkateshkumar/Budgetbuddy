@@ -37,11 +37,11 @@ export function DecisionLogicCard({ logic, productName }: { logic: DecisionLogic
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {logic.pros.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-emerald-700">Pros</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-teal-800">Pros</h4>
             <ul className="mt-2 flex flex-col gap-1.5">
               {logic.pros.map((pro) => (
                 <li key={pro} className="flex gap-2 text-sm text-slate-700">
-                  <span className="mt-0.5 text-emerald-600" aria-hidden="true">
+                  <span className="mt-0.5 text-teal-600" aria-hidden="true">
                     +
                   </span>
                   {pro}
@@ -52,11 +52,11 @@ export function DecisionLogicCard({ logic, productName }: { logic: DecisionLogic
         )}
         {logic.tradeOffs.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-orange-700">Trade-offs</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-amber-700">Trade-offs</h4>
             <ul className="mt-2 flex flex-col gap-1.5">
               {logic.tradeOffs.map((tradeOff) => (
                 <li key={tradeOff} className="flex gap-2 text-sm text-slate-700">
-                  <span className="mt-0.5 text-orange-600" aria-hidden="true">
+                  <span className="mt-0.5 text-amber-600" aria-hidden="true">
                     &minus;
                   </span>
                   {tradeOff}

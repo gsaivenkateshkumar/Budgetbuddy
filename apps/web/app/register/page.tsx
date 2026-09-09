@@ -63,7 +63,7 @@ export default function RegisterPage() {
         <h1 className="text-2xl font-semibold text-slate-900">Create an account</h1>
         <p className="mt-1 text-sm text-slate-600">
           Already have one?{" "}
-          <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-700">
+          <Link href="/login" className="font-medium text-violet-600 hover:text-violet-700">
             Log in
           </Link>
         </p>
@@ -80,7 +80,7 @@ export default function RegisterPage() {
             autoComplete="name"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -94,7 +94,7 @@ export default function RegisterPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -109,7 +109,7 @@ export default function RegisterPage() {
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
           <p className="text-xs text-slate-500">At least 8 characters.</p>
         </div>
@@ -127,7 +127,7 @@ export default function RegisterPage() {
             onBlur={() => setConfirmTouched(true)}
             aria-invalid={confirmTouched && passwordsMismatch}
             aria-describedby={confirmTouched && passwordsMismatch ? "confirmPassword-error" : undefined}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
           {confirmTouched && passwordsMismatch && (
             <p id="confirmPassword-error" className="text-xs text-red-600" role="alert">
@@ -173,7 +173,7 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:bg-slate-300"
+          className="rounded-md bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:bg-slate-300"
         >
           {pending ? "Creating account…" : "Create account"}
         </button>

@@ -23,7 +23,7 @@ export function HowItWorks() {
       <div className="mt-6 grid gap-6 sm:grid-cols-3">
         {STEPS.map((item) => (
           <div key={item.step} className="flex flex-col gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
               {item.step}
             </span>
             <h3 className="text-sm font-semibold text-slate-900">{item.title}</h3>

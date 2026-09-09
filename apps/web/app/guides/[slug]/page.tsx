@@ -29,7 +29,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <Container className="py-10">
-      <Link href="/guides" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <Link href="/guides" className="text-sm font-medium text-violet-600 hover:text-violet-700">
         &larr; All guides
       </Link>
 

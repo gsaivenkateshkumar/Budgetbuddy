@@ -36,22 +36,29 @@ export function DecisionIntelligence() {
       <div className="relative mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Connecting line — desktop only, purely decorative. */}
         <div
-          className="pointer-events-none absolute top-8 right-8 left-8 hidden h-px bg-gradient-to-r from-indigo-200 via-indigo-300 to-indigo-200 lg:block"
+          className="pointer-events-none absolute top-8 right-8 left-8 hidden h-px bg-gradient-to-r from-violet-200 via-violet-300 to-violet-200 lg:block"
           aria-hidden="true"
         />
-        {STAGES.map((stage, i) => (
-          <Reveal key={stage.label} delayMs={i * 60}>
-            <TiltCard className="h-full rounded-xl">
-              <Card hover className="relative h-full p-5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">
-                  {i + 1}
-                </span>
-                <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
-                <p className="mt-1.5 text-sm text-slate-600">{stage.body}</p>
-              </Card>
-            </TiltCard>
-          </Reveal>
-        ))}
+        {STAGES.map((stage, i) => {
+          const isFinalStage = i === STAGES.length - 1;
+          return (
+            <Reveal key={stage.label} delayMs={i * 60}>
+              <TiltCard className="h-full rounded-xl">
+                <Card hover className="relative h-full p-5">
+                  <span
+                    className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white ${
+                      isFinalStage ? "bg-teal-800" : "bg-violet-600"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
+                  <p className="mt-1.5 text-sm text-slate-600">{stage.body}</p>
+                </Card>
+              </TiltCard>
+            </Reveal>
+          );
+        })}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export function TrustSection() {
       <ul className="mt-5 grid gap-3 sm:grid-cols-2">
         {POINTS.map((point) => (
           <li key={point} className="flex gap-2 text-sm text-slate-600">
-            <span className="mt-0.5 text-emerald-600" aria-hidden="true">
+            <span className="mt-0.5 text-teal-600" aria-hidden="true">
               ✓
             </span>
             {point}
@@ -23,11 +23,11 @@ export function TrustSection() {
       </ul>
       <p className="mt-5 text-xs text-slate-500">
         Read more in our{" "}
-        <Link href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+        <Link href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
           Affiliate Disclosure
         </Link>{" "}
         and{" "}
-        <Link href="/terms" className="font-medium text-indigo-600 hover:text-indigo-700">
+        <Link href="/terms" className="font-medium text-violet-600 hover:text-violet-700">
           Terms of Use
         </Link>
         .

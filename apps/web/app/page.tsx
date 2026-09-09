@@ -33,11 +33,11 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="border-b border-slate-200 bg-gradient-to-b from-indigo-50/60 to-white py-16 sm:py-24">
+      <section className="border-b border-slate-200 bg-gradient-to-b from-violet-50/60 to-white py-16 sm:py-24">
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           <div className="flex flex-col items-center gap-8 text-center lg:items-start lg:text-left">
             <div className="flex flex-col gap-3">
-              <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
+              <p className="text-sm font-semibold uppercase tracking-wide text-violet-600">
                 {SITE_NAME} — Your AI Shopping Buddy
               </p>
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">
@@ -106,7 +106,7 @@ export default async function HomePage() {
         <Container>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-slate-900">Explore the catalog</h2>
-            <Link href="/search" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link href="/search" className="text-sm font-medium text-violet-600 hover:text-violet-700">
               View all &rarr;
             </Link>
           </div>

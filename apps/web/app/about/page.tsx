@@ -36,7 +36,7 @@ export default function AboutPage() {
             retailer or affiliate program a link happens to belong to. Where {SITE_NAME} may earn a
             commission from a purchase, that relationship is disclosed and never used to influence
             ranking. See our{" "}
-            <a href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
               Affiliate Disclosure
             </a>{" "}
             for details.
@@ -62,7 +62,7 @@ export default function AboutPage() {
           <h2 className="mt-2 text-base font-semibold text-slate-900">Questions</h2>
           <p>
             If you have a question about {SITE_NAME}, a product listing, or how we operate, visit our{" "}
-            <a href="/contact" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/contact" className="font-medium text-violet-600 hover:text-violet-700">
               Contact page
             </a>
             .

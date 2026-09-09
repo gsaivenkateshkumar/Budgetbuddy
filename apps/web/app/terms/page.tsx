@@ -71,7 +71,7 @@ export default function TermsPage() {
           <p>
             {SITE_NAME} may participate in affiliate marketing programs and may earn a commission from
             eligible purchases made through certain links, as described in our{" "}
-            <a href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
               Affiliate Disclosure
             </a>
             . This does not affect the price you pay and does not influence organic recommendation
@@ -111,7 +111,7 @@ export default function TermsPage() {
           <h2 className="mt-2 text-base font-semibold text-slate-900">10. Contact</h2>
           <p>
             Questions about these Terms can be sent through our{" "}
-            <a href="/contact" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/contact" className="font-medium text-violet-600 hover:text-violet-700">
               Contact page
             </a>
             .

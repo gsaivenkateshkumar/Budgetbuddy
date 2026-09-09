@@ -113,7 +113,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       <Link
                         key={guide.slug}
                         href={`/guides/${guide.slug}`}
-                        className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700"
+                        className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-violet-300 hover:text-violet-700"
                       >
                         {guide.title}
                       </Link>

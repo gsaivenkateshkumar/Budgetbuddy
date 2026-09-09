@@ -21,7 +21,7 @@ export function GoalBasedShopping() {
           <Link
             key={goal}
             href={`/ask?q=${encodeURIComponent(`What do I need for: ${goal}?`)}`}
-            className="press-scale rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700"
+            className="press-scale rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-violet-300 hover:text-violet-700"
           >
             {goal}
           </Link>

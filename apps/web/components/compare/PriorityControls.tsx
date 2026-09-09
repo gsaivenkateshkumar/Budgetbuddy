@@ -62,7 +62,7 @@ export function PriorityControls() {
             key={preset.label}
             type="button"
             onClick={() => apply(preset.weights)}
-            className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-600 transition hover:border-indigo-300 hover:text-indigo-700"
+            className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-600 transition hover:border-violet-300 hover:text-violet-700"
           >
             {preset.label}
           </button>
@@ -82,7 +82,7 @@ export function PriorityControls() {
             max={100}
             value={slider.value}
             onChange={(e) => slider.setValue(Number(e.target.value))}
-            className="accent-indigo-600"
+            className="accent-violet-600"
           />
         </div>
       ))}

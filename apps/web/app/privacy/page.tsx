@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           <p>
             {SITE_NAME} may participate in affiliate marketing programs, including networks such as
             Cuelinks (see our{" "}
-            <a href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
               Affiliate Disclosure
             </a>
             ). When you click certain merchant links, the destination retailer or affiliate network may
@@ -114,13 +114,13 @@ export default function PrivacyPage() {
           <p>
             You may request access to, correction of, or deletion of your personal data by contacting
             us — see our{" "}
-            <a href="/contact" className="font-medium text-indigo-600 hover:text-indigo-700">
+            <a href="/contact" className="font-medium text-violet-600 hover:text-violet-700">
               Contact page
             </a>
             {CONTACT_EMAIL ? (
               <>
                 {" "}or emailing{" "}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-indigo-600 hover:text-indigo-700">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-violet-600 hover:text-violet-700">
                   {CONTACT_EMAIL}
                 </a>
               </>
