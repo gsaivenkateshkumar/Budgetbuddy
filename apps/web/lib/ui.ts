@@ -5,11 +5,15 @@
 const BASE_BUTTON =
   "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2";
 
+/* Every variant carries a 1px border (transparent where there's no visible
+ * border) so buttons of different variants placed side by side render at
+ * the same height — a border-only variant like "outline" would otherwise
+ * be 2px taller than a borderless one like "primary" at the same padding. */
 const BUTTON_VARIANTS = {
-  primary: "bg-indigo-600 text-white hover:bg-indigo-700 disabled:hover:bg-indigo-600",
-  secondary: "bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
+  primary: "border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:hover:bg-indigo-600",
+  secondary: "border border-transparent bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
   outline: "border border-slate-300 text-slate-700 hover:border-indigo-300 hover:text-indigo-700",
-  ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+  ghost: "border border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900",
 } as const;
 
 const BUTTON_SIZES = {

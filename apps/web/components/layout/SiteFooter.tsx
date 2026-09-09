@@ -14,7 +14,7 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-slate-50">
-      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:items-start sm:justify-between">
+      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:flex-wrap sm:items-start sm:gap-16">
         <div className="flex flex-col gap-1">
           <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <span

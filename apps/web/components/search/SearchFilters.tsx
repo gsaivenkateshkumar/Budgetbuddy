@@ -145,10 +145,10 @@ export function SearchFilters({
       </div>
 
       <div className="flex flex-col gap-2">
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" className="w-full">
           Apply filters
         </Button>
-        <Button type="button" variant="ghost" onClick={clearFilters}>
+        <Button type="button" variant="outline" className="w-full" onClick={clearFilters}>
           Clear all
         </Button>
       </div>

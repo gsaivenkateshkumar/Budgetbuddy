@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { FilterDrawer } from "@/components/search/FilterDrawer";
 import { Pagination } from "@/components/search/Pagination";
@@ -8,6 +9,7 @@ import { LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { listBrands, listCategories, listProducts, type ProductSearchParams } from "@/lib/api/products";
+import { GUIDES } from "@/lib/guides";
 
 export const metadata: Metadata = {
   title: "Explore products",
@@ -36,6 +38,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const sortValue = firstValue(resolvedParams.sort);
   const sort = isSortOption(sortValue) ? sortValue : "relevance";
   const page = Math.max(1, Number(firstValue(resolvedParams.page)) || 1);
+  const isFiltered = Boolean(q || category || brand || minPrice || maxPrice);
 
   const query: ProductSearchParams = {
     q,
@@ -80,28 +83,45 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {productsResult.status === "rejected" ? (
             <ErrorState message="Couldn't load products right now — the API may not be running." />
           ) : productsResult.value.items.length === 0 ? (
-            <EmptyState
-              title={
-                q || category || brand || minPrice || maxPrice
-                  ? "No products match your filters"
-                  : "Live retailer integrations are being added"
-              }
-              body={
-                q || category || brand || minPrice || maxPrice
-                  ? "Try widening your price range or clearing a filter."
-                  : "Budget Buddy will surface supported merchant offers as they become available."
-              }
-              actions={
-                <>
-                  <LinkButton href="/ask" variant="primary" size="sm">
-                    Ask Budget Buddy
-                  </LinkButton>
-                  <LinkButton href="/guides" variant="outline" size="sm">
-                    Read buying guides
-                  </LinkButton>
-                </>
-              }
-            />
+            <div className="flex flex-col items-center gap-6 py-4">
+              <EmptyState
+                title={isFiltered ? "No products match your filters" : "Product catalog is being expanded"}
+                body={
+                  isFiltered
+                    ? "Try widening your price range or clearing a filter."
+                    : "We're connecting verified retailer sources so Budget Buddy can compare real products, prices, and offers without inventing catalog data."
+                }
+                actions={
+                  <>
+                    <LinkButton href="/ask" variant="primary" size="sm">
+                      Ask Budget Buddy
+                    </LinkButton>
+                    <LinkButton href="/guides" variant="outline" size="sm">
+                      Read buying guides
+                    </LinkButton>
+                  </>
+                }
+              />
+
+              {!isFiltered && (
+                <div className="w-full max-w-md border-t border-slate-100 pt-6">
+                  <p className="mb-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    While you wait
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {GUIDES.slice(0, 2).map((guide) => (
+                      <Link
+                        key={guide.slug}
+                        href={`/guides/${guide.slug}`}
+                        className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700"
+                      >
+                        {guide.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <p className="mb-4 text-sm text-slate-500">
