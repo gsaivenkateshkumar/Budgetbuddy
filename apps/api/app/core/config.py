@@ -48,6 +48,15 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_access_token_expire_minutes: int = 60
 
+    # Cloudflare Turnstile (CAPTCHA) — protects /auth/register and
+    # /auth/login from automated abuse. Optional at the settings level so
+    # the app still starts without it configured, but
+    # app/services/turnstile_service.py fails closed (verification always
+    # returns False) whenever it's unset, rather than skipping the check.
+    # See .env.example for Cloudflare's published test secret keys, used
+    # for local development only.
+    turnstile_secret_key: str | None = None
+
     frontend_url: str = "http://localhost:3000"
 
     # Market/locale defaults — deliberately configuration, not hardcoded

@@ -17,6 +17,16 @@ from sqlalchemy.pool import StaticPool
 from app.core.database import Base, get_db
 from app.main import app
 
+
+# Auth tests exercise register/login business logic, not Cloudflare
+# itself — default every test to a "verified" Turnstile token so existing
+# and new auth-flow tests don't need live/mocked network calls. Tests that
+# specifically cover CAPTCHA rejection (see test_turnstile_service.py and
+# test_auth_api.py) override this per-test with monkeypatch.
+@pytest.fixture(autouse=True)
+def _turnstile_verified_by_default(monkeypatch):
+    monkeypatch.setattr("app.api.routes.auth.verify_turnstile", lambda token, remote_ip=None: bool(token))
+
 _engine = create_engine(
     "sqlite:///:memory:",
     connect_args={"check_same_thread": False},

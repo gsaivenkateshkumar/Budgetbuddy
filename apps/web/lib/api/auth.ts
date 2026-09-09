@@ -14,18 +14,24 @@ export interface UserRead {
 export function registerAccount(
   email: string,
   password: string,
+  turnstileToken: string,
   displayName?: string
 ): Promise<TokenResponse> {
   return apiFetch<TokenResponse>("/auth/register", {
     method: "POST",
-    body: JSON.stringify({ email, password, display_name: displayName || undefined }),
+    body: JSON.stringify({
+      email,
+      password,
+      display_name: displayName || undefined,
+      turnstile_token: turnstileToken,
+    }),
   });
 }
 
-export function login(email: string, password: string): Promise<TokenResponse> {
+export function login(email: string, password: string, turnstileToken: string): Promise<TokenResponse> {
   return apiFetch<TokenResponse>("/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, turnstile_token: turnstileToken }),
   });
 }
 

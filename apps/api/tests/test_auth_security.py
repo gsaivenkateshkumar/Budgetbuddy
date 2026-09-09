@@ -69,7 +69,10 @@ def test_decode_access_token_rejects_garbage_string():
 
 
 def test_me_rejects_malformed_authorization_header(client):
-    register = client.post("/auth/register", json={"email": "frank@example.com", "password": "correct-horse"})
+    register = client.post(
+        "/auth/register",
+        json={"email": "frank@example.com", "password": "correct-horse", "turnstile_token": "test-token"},
+    )
     token = register.json()["access_token"]
 
     no_bearer_prefix = client.get("/auth/me", headers={"Authorization": token})
@@ -90,9 +93,13 @@ def test_me_rejects_token_for_nonexistent_user(client):
 
 def test_register_and_login_responses_never_include_password_fields(client):
     register = client.post(
-        "/auth/register", json={"email": "grace@example.com", "password": "correct-horse"}
+        "/auth/register",
+        json={"email": "grace@example.com", "password": "correct-horse", "turnstile_token": "test-token"},
     )
-    login = client.post("/auth/login", json={"email": "grace@example.com", "password": "correct-horse"})
+    login = client.post(
+        "/auth/login",
+        json={"email": "grace@example.com", "password": "correct-horse", "turnstile_token": "test-token"},
+    )
 
     for response in (register, login):
         body = response.json()

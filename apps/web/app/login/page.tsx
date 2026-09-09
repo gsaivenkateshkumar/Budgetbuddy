@@ -2,30 +2,46 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Container } from "@/components/layout/Container";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { TurnstileWidget, type TurnstileWidgetHandle } from "@/components/auth/TurnstileWidget";
 import { ApiError } from "@/lib/api/client";
 import { login } from "@/lib/api/auth";
+import { TURNSTILE_SITE_KEY } from "@/lib/siteConfig";
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const turnstileRef = useRef<TurnstileWidgetHandle>(null);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (!captchaToken) {
+      setCaptchaError("Please complete the security check.");
+      return;
+    }
+
     setPending(true);
     try {
-      const { access_token } = await login(email, password);
+      const { access_token } = await login(email, password, captchaToken);
       await signIn(access_token);
       router.push("/account");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      // A Turnstile token is single-use — whatever the failure reason
+      // (wrong credentials, rejected CAPTCHA, or anything else), the
+      // consumed/stale token must never be resubmitted.
+      setCaptchaToken("");
+      turnstileRef.current?.reset();
     } finally {
       setPending(false);
     }
@@ -71,6 +87,34 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
           />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          {TURNSTILE_SITE_KEY ? (
+            <TurnstileWidget
+              ref={turnstileRef}
+              siteKey={TURNSTILE_SITE_KEY}
+              onToken={(token) => {
+                setCaptchaToken(token);
+                setCaptchaError(null);
+              }}
+              onExpire={() => {
+                setCaptchaToken("");
+                setCaptchaError("Please complete the security check.");
+              }}
+              onError={() => {
+                setCaptchaToken("");
+                setCaptchaError("Security verification failed. Please try again.");
+              }}
+            />
+          ) : (
+            <p className="text-xs text-slate-500">Security verification isn&apos;t configured on this server yet.</p>
+          )}
+          {captchaError && (
+            <p className="text-xs text-red-600" role="alert">
+              {captchaError}
+            </p>
+          )}
         </div>
 
         {error && (

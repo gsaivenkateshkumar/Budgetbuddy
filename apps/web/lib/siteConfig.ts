@@ -20,3 +20,11 @@ export const COMPANY_NAME = "Promote";
 // hardcoded/invented address. Until it's set, those pages show an honest
 // "being finalized" message instead of a fabricated email.
 export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? null;
+
+// Cloudflare Turnstile site key for the /login and /register CAPTCHA
+// widgets — see .env.example for Cloudflare's published test keys (safe
+// to share publicly; not secrets) for local development. No hardcoded
+// fallback here: if unset, the login/register pages show an honest
+// "security check unavailable" state rather than silently skipping
+// CAPTCHA — the real check is enforced server-side regardless.
+export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? null;
