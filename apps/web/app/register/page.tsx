@@ -14,12 +14,22 @@ export default function RegisterPage() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmTouched, setConfirmTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+
+  const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword;
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (password !== confirmPassword) {
+      setConfirmTouched(true);
+      return;
+    }
+
     setPending(true);
     try {
       const { access_token } = await registerAccount(email, password, displayName || undefined);
@@ -87,6 +97,28 @@ export default function RegisterPage() {
             className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
           />
           <p className="text-xs text-slate-500">At least 8 characters.</p>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="confirmPassword" className="text-xs font-medium text-slate-600">
+            Confirm password
+          </label>
+          <input
+            id="confirmPassword"
+            type="password"
+            required
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onBlur={() => setConfirmTouched(true)}
+            aria-invalid={confirmTouched && passwordsMismatch}
+            aria-describedby={confirmTouched && passwordsMismatch ? "confirmPassword-error" : undefined}
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          />
+          {confirmTouched && passwordsMismatch && (
+            <p id="confirmPassword-error" className="text-xs text-red-600" role="alert">
+              Passwords do not match.
+            </p>
+          )}
         </div>
 
         {error && (
