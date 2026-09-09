@@ -104,19 +104,21 @@ export function PriceHistoryPanel({ productSlug, variantSku }: { productSlug: st
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-slate-500 sm:grid-cols-4">
         <div>
           <dt>Lowest recorded</dt>
-          <dd className="font-medium text-slate-900">
+          <dd className="tabular-nums font-medium text-slate-900">
             {formatPrice(stats.lowest_recorded_price, data.currency)}
           </dd>
         </div>
         <div>
           <dt>Highest recorded</dt>
-          <dd className="font-medium text-slate-900">
+          <dd className="tabular-nums font-medium text-slate-900">
             {formatPrice(stats.highest_recorded_price, data.currency)}
           </dd>
         </div>
         <div>
           <dt>Average</dt>
-          <dd className="font-medium text-slate-900">{formatPrice(stats.average_price, data.currency)}</dd>
+          <dd className="tabular-nums font-medium text-slate-900">
+            {formatPrice(stats.average_price, data.currency)}
+          </dd>
         </div>
         <div>
           <dt>Tracked for</dt>
@@ -126,7 +128,7 @@ export function PriceHistoryPanel({ productSlug, variantSku }: { productSlug: st
         </div>
       </dl>
 
-      <p className="mt-3 text-[11px] text-slate-400">
+      <p className="mt-3 text-[11px] text-slate-600">
         Based on {stats.price_point_count} recorded price check{stats.price_point_count === 1 ? "" : "s"}{" "}
         since {trackedSince}. Not a claim of the lowest price ever — only what we&apos;ve tracked.
       </p>

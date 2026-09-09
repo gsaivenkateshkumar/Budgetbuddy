@@ -93,3 +93,10 @@ export const GUIDES: Guide[] = [
 export function getGuide(slug: string): Guide | undefined {
   return GUIDES.find((guide) => guide.slug === slug);
 }
+
+/** Real metadata derived from the guide's own content — never an invented
+ * number. Assumes ~200 words/minute average adult reading speed. */
+export function readingTimeMinutes(guide: Guide): number {
+  const wordCount = guide.body.join(" ").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(wordCount / 200));
+}

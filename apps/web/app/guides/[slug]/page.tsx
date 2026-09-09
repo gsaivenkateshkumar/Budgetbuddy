@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/ui/Card";
-import { getGuide, GUIDES } from "@/lib/guides";
+import { getGuide, GUIDES, readingTimeMinutes } from "@/lib/guides";
 
 type GuidePageProps = {
   params: Promise<{ slug: string }>;
@@ -36,6 +36,9 @@ export default async function GuidePage({ params }: GuidePageProps) {
       <article className="mx-auto mt-6 max-w-2xl">
         <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{guide.title}</h1>
         <p className="mt-3 text-base text-slate-500">{guide.description}</p>
+        <p className="mt-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+          {readingTimeMinutes(guide)} min read
+        </p>
 
         <div className="mt-8 flex flex-col gap-5">
           {guide.body.map((paragraph, i) => (

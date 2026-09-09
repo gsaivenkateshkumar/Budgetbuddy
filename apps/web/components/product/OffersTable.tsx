@@ -3,6 +3,7 @@ import { formatPrice } from "@/lib/format";
 import { buildRetailerLink } from "@/lib/retailerLink";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { Price } from "@/components/ui/Price";
 
 function discountPercent(offer: OfferRead): number | null {
   if (!offer.list_price) return null;
@@ -39,17 +40,17 @@ export function OffersTable({
                   {offer.seller_name && (
                     <p className="text-xs text-slate-500">Sold by {offer.seller_name}</p>
                   )}
-                  <p className="mt-1 text-xs text-slate-400">{offer.freshness}</p>
+                  <p className="mt-1 text-xs text-slate-500">{offer.freshness}</p>
                 </div>
 
                 <div className="text-right">
-                  <p className="text-lg font-semibold text-slate-900">
-                    {formatPrice(offer.price, offer.currency)}
-                  </p>
+                  <Price value={offer.price} currency={offer.currency} size="lg" />
                   {offer.list_price && discount !== null && (
-                    <p className="text-xs text-slate-400">
-                      <span className="line-through">{formatPrice(offer.list_price, offer.currency)}</span>{" "}
-                      <span className="text-emerald-600">{discount}% off list price</span>
+                    <p className="text-xs text-slate-500">
+                      <span className="tabular-nums line-through">
+                        {formatPrice(offer.list_price, offer.currency)}
+                      </span>{" "}
+                      <span className="tabular-nums text-emerald-600">{discount}% off list price</span>
                     </p>
                   )}
                   {!offer.in_stock && (
@@ -67,7 +68,7 @@ export function OffersTable({
                 href={buildRetailerLink(offer.product_url)}
                 target="_blank"
                 rel="nofollow noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-700"
+                className="mt-3 inline-flex items-center gap-1 rounded-lg bg-orange-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
               >
                 Buy at {offer.retailer_name} &rarr;
               </a>

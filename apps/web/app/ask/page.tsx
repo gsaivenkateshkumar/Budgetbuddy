@@ -34,8 +34,8 @@ export default async function AskPage({ searchParams }: AskPageProps) {
 
   return (
     <Container className="py-10">
-      <div className="mx-auto flex max-w-2xl flex-col gap-6">
-        <div className="text-center">
+      <div className="flex flex-col gap-6">
+        <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Ask Budget Buddy</h1>
           <p className="mt-2 text-sm text-slate-600">
             Tell us what you&apos;re trying to buy or accomplish. Budget Buddy only answers with
@@ -47,7 +47,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
         {status.configured ? (
           <AskChat initialQuery={initialQuery} />
         ) : (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
+          <div className="mx-auto max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
             <p className="font-medium">AI features aren&apos;t configured on this server yet.</p>
             <p className="mt-1">Search and comparison still work in the meantime.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">

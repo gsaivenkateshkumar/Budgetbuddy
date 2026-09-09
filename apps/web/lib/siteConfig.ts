@@ -2,7 +2,7 @@ export const SITE_NAME = "Budget Buddy";
 export const SITE_TAGLINE = "AI Shopping Comparison & Recommendations";
 // Marketing copy used on the homepage — kept separate from SITE_TAGLINE,
 // which feeds page <title>s and shouldn't repeat the brand name in full.
-export const SITE_VALUE_PROP = "Shop smarter with Budget Buddy.";
+export const SITE_VALUE_PROP = "Buy smarter with Budget Buddy.";
 export const SITE_DESCRIPTION =
   "Budget Buddy is an AI-powered shopping comparison platform, operated by Promote, that compares products, prices, specifications, and retailer options to help you make better purchasing decisions.";
 

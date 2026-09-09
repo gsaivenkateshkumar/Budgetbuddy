@@ -1,9 +1,4 @@
-const EXAMPLE_PROMPTS = [
-  "Best laptop for programming under ₹70,000",
-  "Best phone for photography under ₹60,000",
-  "Compare iPhone and Galaxy",
-  "I need equipment to start a T-shirt printing business",
-];
+const EXAMPLE_PROMPTS = ["Laptop for college", "Phone under ₹30,000", "Home office setup", "Gaming setup"];
 
 export function HeroSearch() {
   return (
@@ -17,7 +12,7 @@ export function HeroSearch() {
           name="q"
           type="search"
           placeholder="What are you looking for? e.g. &ldquo;MacBook Air M2&rdquo;"
-          className="w-full flex-1 rounded-lg border border-slate-300 px-4 py-3 text-base text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          className="w-full flex-1 rounded-lg border border-slate-300 px-4 py-3 text-base text-slate-900 shadow-sm outline-none placeholder:text-slate-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         />
         <button
           type="submit"

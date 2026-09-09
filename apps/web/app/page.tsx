@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { DecisionIntelligence } from "@/components/home/DecisionIntelligence";
 import { GoalBasedShopping } from "@/components/home/GoalBasedShopping";
 import { GuidesPreview } from "@/components/home/GuidesPreview";
 import { HeroSearch } from "@/components/home/HeroSearch";
@@ -40,23 +41,22 @@ export default async function HomePage() {
               {SITE_VALUE_PROP}
             </h1>
             <p className="mx-auto max-w-xl text-base text-slate-600">
-              Compare products, prices, specifications, and retailer options in one place, and get
-              AI-powered recommendations based on your budget and requirements — so you don&apos;t just
-              find a product, you make a better decision.
+              Budget Buddy helps you compare products, prices, and trade-offs so you can make a
+              better buying decision — not just find the cheapest listing.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <LinkButton href="/search" variant="primary" size="lg">
-              Explore products
-            </LinkButton>
-            <LinkButton href="/ask" variant="outline" size="lg">
+            <LinkButton href="/ask" variant="primary" size="lg">
               Ask Budget Buddy
+            </LinkButton>
+            <LinkButton href="/search" variant="outline" size="lg">
+              Explore products
             </LinkButton>
           </div>
 
           <HeroSearch />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             {SITE_NAME} is an AI-powered shopping comparison platform operated by {COMPANY_NAME}.
           </p>
         </Container>
@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       <section className="border-t border-slate-200 bg-slate-50 py-16">
         <Container>
-          <WhyBudgetBuddy />
+          <DecisionIntelligence />
         </Container>
       </section>
 
@@ -81,6 +81,12 @@ export default async function HomePage() {
       </section>
 
       <section className="border-t border-slate-200 bg-slate-50 py-16">
+        <Container>
+          <WhyBudgetBuddy />
+        </Container>
+      </section>
+
+      <section className="py-16">
         <Container>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-slate-900">Explore the catalog</h2>
@@ -93,8 +99,8 @@ export default async function HomePage() {
             <ErrorState message={featured.error} />
           ) : featured.products.length === 0 ? (
             <EmptyState
-              title="Live retailer integrations are being added"
-              body={`${SITE_NAME} will surface supported merchant offers as they become available.`}
+              title="Product catalog is being expanded"
+              body="We're connecting verified retailer sources so Budget Buddy can compare real products, prices, and offers without inventing catalog data."
               actions={
                 <>
                   <LinkButton href="/ask" variant="primary" size="sm">
@@ -116,13 +122,13 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="py-16">
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
         <Container>
           <TrustSection />
         </Container>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-50 py-16">
+      <section className="py-16">
         <Container>
           <GuidesPreview />
         </Container>

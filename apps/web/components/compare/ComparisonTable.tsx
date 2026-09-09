@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ScoredCandidate } from "@/lib/api/types";
-import { formatPrice } from "@/lib/format";
 import { Badge } from "@/components/ui/Badge";
+import { Price } from "@/components/ui/Price";
 
 function collectSpecKeys(candidates: ScoredCandidate[]): { differing: string[]; common: string[] } {
   const allKeys = new Set<string>();
@@ -24,6 +24,7 @@ function formatSpecValue(value: unknown): string {
 
 export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] }) {
   const { differing, common } = collectSpecKeys(candidates);
+  const lowestPrice = Math.min(...candidates.map((c) => Number(c.evidence.price)));
 
   return (
     <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
@@ -60,11 +61,24 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
             <th scope="row" className="p-4 text-left text-xs font-medium text-slate-500">
               Price
             </th>
-            {candidates.map((c) => (
-              <td key={c.evidence.product_slug} className="p-4 font-semibold text-slate-900">
-                {formatPrice(c.evidence.price, c.evidence.currency)}
-              </td>
-            ))}
+            {candidates.map((c) => {
+              const isLowest = Number(c.evidence.price) === lowestPrice && candidates.length > 1;
+              return (
+                <td key={c.evidence.product_slug} className="p-4">
+                  <Price
+                    value={c.evidence.price}
+                    currency={c.evidence.currency}
+                    size="lg"
+                    className={isLowest ? "text-emerald-700" : undefined}
+                  />
+                  {isLowest && (
+                    <span className="ml-2 align-middle">
+                      <Badge tone="success">Lowest</Badge>
+                    </span>
+                  )}
+                </td>
+              );
+            })}
           </tr>
           <tr className="border-b border-slate-100">
             <th scope="row" className="p-4 text-left text-xs font-medium text-slate-500">
@@ -73,7 +87,7 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
             {candidates.map((c) => (
               <td key={c.evidence.product_slug} className="p-4 text-slate-700">
                 {c.evidence.best_retailer_slug}{" "}
-                <span className="text-slate-400">
+                <span className="text-slate-500">
                   ({c.evidence.offer_count} offer{c.evidence.offer_count === 1 ? "" : "s"})
                 </span>
               </td>
@@ -127,7 +141,7 @@ export function ComparisonTable({ candidates }: { candidates: ScoredCandidate[] 
           )}
           {common.map((key, i) => (
             <tr key={key} className={i % 2 === 0 ? "border-b border-slate-100" : "border-b border-slate-100 bg-slate-50/60"}>
-              <th scope="row" className="p-4 text-left text-xs font-medium capitalize text-slate-400">
+              <th scope="row" className="p-4 text-left text-xs font-medium capitalize text-slate-500">
                 {key.replace(/_/g, " ")}
               </th>
               {candidates.map((c) => (

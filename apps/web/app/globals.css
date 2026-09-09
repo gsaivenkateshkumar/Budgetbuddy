@@ -1,11 +1,14 @@
 @import "tailwindcss";
 
 /*
- * Budget Buddy design tokens.
- * Palette: Tailwind's built-in indigo (brand/trust), emerald (value/positive),
- * amber (freshness/caution — used sparingly, never as a discount badge),
- * slate (neutral text/surfaces). Light theme only for MVP — see
- * docs/product-decisions.md.
+ * Budget Buddy design tokens — see components/ui (Button/Badge variants in
+ * lib/ui.ts) for the canonical hierarchy.
+ * Palette: Tailwind's built-in indigo (AI/navigation/primary action),
+ * emerald (value, savings, best-value outcomes), orange (commercial
+ * outbound retailer actions only), amber (freshness/caution — used
+ * sparingly, never as a discount badge), red (destructive actions only),
+ * slate (structure, neutral text/surfaces). Light theme only for MVP —
+ * see docs/product-decisions.md.
  */
 :root {
   --background: #ffffff;

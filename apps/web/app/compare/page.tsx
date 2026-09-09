@@ -6,6 +6,7 @@ import { ProductPicker } from "@/components/compare/ProductPicker";
 import { LinkButton } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
+import { UnbiasedNotice } from "@/components/ai/UnbiasedNotice";
 import { compareProducts } from "@/lib/api/compare";
 import { listProducts } from "@/lib/api/products";
 import type { ProductSummary } from "@/lib/api/types";
@@ -53,8 +54,8 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
           <ErrorState message="Couldn't load the catalog right now — the API may not be running." />
         ) : products.length === 0 ? (
           <EmptyState
-            title="Live retailer integrations are being added"
-            body="Budget Buddy will surface supported merchant offers as they become available, so you can compare them here."
+            title="Product catalog is being expanded"
+            body="We're connecting verified retailer sources so Budget Buddy can compare real products here — without inventing catalog data."
             actions={
               <>
                 <LinkButton href="/ask" variant="primary" size="sm">
@@ -112,7 +113,10 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
               }
             />
           ) : (
-            <ComparisonTable candidates={result.candidates} />
+            <div className="flex flex-col gap-4">
+              <ComparisonTable candidates={result.candidates} />
+              <UnbiasedNotice />
+            </div>
           )}
         </div>
       </div>

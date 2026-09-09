@@ -21,7 +21,7 @@ export function TrustSection() {
           </li>
         ))}
       </ul>
-      <p className="mt-5 text-xs text-slate-400">
+      <p className="mt-5 text-xs text-slate-500">
         Read more in our{" "}
         <Link href="/affiliate-disclosure" className="font-medium text-indigo-600 hover:text-indigo-700">
           Affiliate Disclosure

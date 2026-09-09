@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/ui/Card";
-import { GUIDES } from "@/lib/guides";
+import { GUIDES, readingTimeMinutes } from "@/lib/guides";
 
 export const metadata: Metadata = {
   title: "Shopping Guides",
@@ -27,6 +27,7 @@ export default function GuidesPage() {
             <Link href={`/guides/${guide.slug}`} className="flex flex-col gap-2">
               <h2 className="text-sm font-semibold text-slate-900">{guide.title}</h2>
               <p className="text-sm text-slate-600">{guide.description}</p>
+              <p className="text-xs text-slate-500">{readingTimeMinutes(guide)} min read</p>
             </Link>
           </Card>
         ))}

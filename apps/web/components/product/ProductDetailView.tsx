@@ -74,7 +74,7 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
             <Card className="p-5">
               <h2 className="mb-3 text-sm font-semibold text-slate-900">Specifications</h2>
               {Object.keys(variant.specs).length === 0 ? (
-                <p className="text-sm text-slate-400">No structured specifications available.</p>
+                <p className="text-sm text-slate-500">No structured specifications available.</p>
               ) : (
                 <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
                   {Object.entries(variant.specs).map(([key, value]) => (
@@ -86,7 +86,7 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
                 </dl>
               )}
               {(variant.mpn || variant.gtin || variant.upc || variant.ean) && (
-                <p className="mt-3 text-xs text-slate-400">
+                <p className="mt-3 text-xs text-slate-500">
                   {variant.mpn && <>MPN: {variant.mpn} </>}
                   {variant.gtin && <>GTIN: {variant.gtin} </>}
                 </p>
@@ -115,7 +115,7 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
             ) : (
               <>
                 <OffersTable offers={variant.offers} bestOfferRetailerSlug={bestOfferRetailerSlug} />
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Budget Buddy may earn a commission from eligible purchases made through retailer
                   links, at no extra cost to you. See our{" "}
                   <a href="/affiliate-disclosure" className="underline hover:text-slate-600">
