@@ -14,7 +14,7 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-slate-50">
-      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:flex-wrap sm:items-start sm:gap-16">
+      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-16 sm:gap-y-6">
         <div className="flex flex-col gap-1">
           <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <span
@@ -28,7 +28,7 @@ export function SiteFooter() {
           <span className="text-sm text-slate-500">Operated by {COMPANY_NAME}</span>
         </div>
 
-        <nav aria-label="Footer">
+        <nav aria-label="Footer" className="sm:ml-auto">
           <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm sm:flex sm:flex-wrap sm:gap-x-6">
             {FOOTER_LINKS.map((link) => (
               <li key={link.href}>

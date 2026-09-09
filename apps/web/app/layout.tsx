@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-white text-slate-900">
         <AuthProvider>
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main className="flex flex-1 flex-col">{children}</main>
           <SiteFooter />
         </AuthProvider>
       </body>

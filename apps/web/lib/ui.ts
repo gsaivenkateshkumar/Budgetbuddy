@@ -14,6 +14,9 @@ const BUTTON_VARIANTS = {
   secondary: "border border-transparent bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
   outline: "border border-slate-300 text-slate-700 hover:border-indigo-300 hover:text-indigo-700",
   ghost: "border border-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+  // For destructive actions (e.g. log out, delete) — clearly interactive
+  // and distinct from "primary", never ambiguous with a disabled state.
+  danger: "border border-transparent bg-red-600 text-white hover:bg-red-700 disabled:hover:bg-red-600",
 } as const;
 
 const BUTTON_SIZES = {
