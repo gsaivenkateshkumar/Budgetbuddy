@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Container } from "./Container";
 
@@ -14,42 +14,53 @@ const NAV_LINKS = [
   { href: "/ask", label: "Ask AI" },
 ];
 
+// Sticky header height (h-16 below) — the IntersectionObserver rootMargin
+// keeps this in sync with the boundary at which the hero visually passes
+// under the header, so the two never drift out of sync.
+const HEADER_HEIGHT_PX = 64;
+
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const { user, loading } = useAuth();
   const pathname = usePathname();
-  const rafRef = useRef<number | null>(null);
   const isHomepage = pathname === "/";
 
   // Only the homepage has a dark hero (#home-hero in Hero.tsx) — everywhere
-  // else the header stays in its normal light state regardless of scroll.
-  // Defaulting to `isHomepage` means SSR/first paint already renders the
-  // correct state (dark at scrollY 0 on "/"), no post-hydration flash.
+  // else the header stays in its normal light state. Defaulting to
+  // `isHomepage` (a value already consistent between server and client,
+  // unlike `document`/`IntersectionObserver` feature checks) means SSR/first
+  // paint already renders the correct state for the common case, with no
+  // post-hydration flash or mismatch.
   const [overDarkHero, setOverDarkHero] = useState(isHomepage);
 
+  // IntersectionObserver instead of a scroll+rAF loop: no per-frame layout
+  // reads, no polling, and the browser only notifies us on the one
+  // transition we actually care about (the hero crossing under the header).
   useEffect(() => {
-    function onScroll() {
-      if (rafRef.current) return;
-      rafRef.current = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 8);
-        if (isHomepage) {
-          const hero = document.getElementById("home-hero");
-          setOverDarkHero(hero ? hero.getBoundingClientRect().bottom > 80 : false);
-        }
-        rafRef.current = null;
-      });
+    if (!isHomepage) return;
+    const hero = document.getElementById("home-hero");
+    if (!hero || typeof IntersectionObserver === "undefined") {
+      // Fail-safe: without observer support, default to the light header
+      // rather than risk it staying stuck dark over light content. This is
+      // a one-time corrective set on mount for a rare capability/DOM edge
+      // case (mirrors Reveal's fail-safe), not a derived-state loop, so the
+      // cascading-render concern the set-state-in-effect rule targets
+      // doesn't apply here.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setOverDarkHero(false);
+      return;
     }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setOverDarkHero(entry.isIntersecting),
+      { rootMargin: `-${HEADER_HEIGHT_PX}px 0px 0px 0px`, threshold: 0 }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
   }, [isHomepage]);
 
   const dark = isHomepage && overDarkHero;
@@ -62,11 +73,7 @@ export function SiteHeader() {
   return (
     <header
       className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
-        dark
-          ? "border-white/10 bg-black/70 backdrop-blur-xl"
-          : scrolled
-            ? "border-slate-200 bg-white/95 shadow-sm"
-            : "border-slate-200 bg-white/90"
+        dark ? "border-white/10 bg-black/70 backdrop-blur-xl" : "border-slate-200 bg-white/95 shadow-sm"
       }`}
     >
       <Container className="flex h-16 items-center justify-between">
@@ -140,7 +147,7 @@ export function SiteHeader() {
         <nav
           id="mobile-nav"
           aria-label="Primary mobile"
-          className={`border-t md:hidden ${dark ? "border-white/10" : "border-slate-200"}`}
+          className={`border-t md:hidden ${dark ? "border-white/10 bg-black/70" : "border-slate-200 bg-white"}`}
         >
           <Container>
             <ul className="flex flex-col py-2">

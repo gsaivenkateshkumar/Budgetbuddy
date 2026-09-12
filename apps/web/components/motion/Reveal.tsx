@@ -2,6 +2,14 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+// Hard fail-safe: if the IntersectionObserver never fires (a backgrounded
+// tab throttles/pauses observer callbacks, or the browser simply never
+// reports intersection for some edge case), content must still become
+// visible rather than sit at opacity: 0 forever. setTimeout at >=1s is not
+// meaningfully throttled in background tabs the way rAF/observers can be,
+// so this reliably fires even while hidden.
+const FAIL_SAFE_MS = 1200;
+
 /**
  * Restrained fade+translate reveal on scroll-into-view, for section-level
  * entrances (never per-paragraph — see globals.css `.reveal`). One
@@ -28,6 +36,9 @@ export function Reveal({
     const node = ref.current;
     if (!node) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Fail-safe: no observer support at all — stay visible rather than
+    // gate content on an API that doesn't exist.
+    if (typeof IntersectionObserver === "undefined") return;
 
     const rect = node.getBoundingClientRect();
     const alreadyInView = rect.top < window.innerHeight && rect.bottom > 0;
@@ -36,17 +47,33 @@ export function Reveal({
     setVisible(false);
     setArmed(true);
 
+    let settled = false;
+    function reveal() {
+      if (settled) return;
+      settled = true;
+      setVisible(true);
+      observer.disconnect();
+      window.clearTimeout(failSafeTimer);
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
+        if (entry.isIntersecting) reveal();
       },
       { threshold: 0.15 }
     );
     observer.observe(node);
-    return () => observer.disconnect();
+
+    // Never leave content permanently dependent on the observer actually
+    // firing — e.g. a throttled/backgrounded tab, or a viewport resize that
+    // moves the element without a corresponding intersection event.
+    const failSafeTimer = window.setTimeout(reveal, FAIL_SAFE_MS);
+
+    return () => {
+      settled = true;
+      observer.disconnect();
+      window.clearTimeout(failSafeTimer);
+    };
   }, []);
 
   return (

@@ -69,7 +69,7 @@ function BudgetPanel({ businessId }: { businessId: number }) {
     }
   }
 
-  if (!budget) return null;
+  if (!budget) return <div className="h-48 animate-pulse rounded-xl bg-slate-100" />;
 
   return (
     <Card className="p-6">
@@ -144,7 +144,7 @@ function RoadmapPanel({ businessId }: { businessId: number }) {
     }
   }
 
-  if (!tasks) return null;
+  if (!tasks) return <div className="h-48 animate-pulse rounded-xl bg-slate-100" />;
 
   const completed = tasks.filter((t) => t.status === "completed").length;
   const grouped = new Map<string, BusinessTask[]>();
@@ -207,10 +207,12 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSaved(false);
     if (!amount || Number(amount) <= 0) {
       setError("Enter an amount greater than 0.");
       return;
@@ -220,6 +222,7 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
       await createFinancialEntry(businessId, { type, amount, category: category || undefined, entry_date: date });
       setAmount("");
       setCategory("");
+      setSaved(true);
       onChange();
     } catch {
       setError("Couldn't save that entry.");
@@ -245,14 +248,20 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
           min="0"
           placeholder="Amount (₹)"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            setAmount(e.target.value);
+            setSaved(false);
+          }}
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
         <input
           type="text"
           placeholder="Category (optional)"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setSaved(false);
+          }}
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
         <input
@@ -268,6 +277,11 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
       {error && (
         <p className="mt-2 text-sm text-red-600" role="alert">
           {error}
+        </p>
+      )}
+      {saved && !error && (
+        <p className="mt-2 text-sm text-emerald-600" role="status">
+          Entry added.
         </p>
       )}
     </Card>
@@ -301,7 +315,13 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, businessId, tasksVersion]);
 
-  if (authLoading) return null;
+  if (authLoading) {
+    return (
+      <Container className="py-10">
+        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+      </Container>
+    );
+  }
 
   if (!user) {
     return (
@@ -326,7 +346,13 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
     );
   }
 
-  if (!business) return null;
+  if (!business) {
+    return (
+      <Container className="py-10">
+        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+      </Container>
+    );
+  }
 
   const isOperating = business.stage === "launched" || business.stage === "operating";
 

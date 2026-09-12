@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-const MAX_TILT_DEG = 7;
+const MAX_TILT_DEG = 4;
 
 /**
  * Restrained pointer-responsive depth for cards (LEVEL 2→3 in the surface
- * hierarchy): up to seven degrees of tilt plus a spotlight that follows the
+ * hierarchy): a few degrees of tilt plus a spotlight that follows the
  * pointer, both driven by CSS custom properties updated directly on the
  * DOM node inside a requestAnimationFrame — never React state — so a
  * mousemove never triggers a re-render. Inert on touch devices (no

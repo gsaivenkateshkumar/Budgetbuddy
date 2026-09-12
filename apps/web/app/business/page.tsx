@@ -31,7 +31,13 @@ export default function BusinessListPage() {
       .catch(() => setError("Couldn't load your businesses right now."));
   }, [user]);
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <Container className="py-10">
+        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+      </Container>
+    );
+  }
 
   if (!user) {
     return (
@@ -65,7 +71,13 @@ export default function BusinessListPage() {
 
       {error ? (
         <ErrorState message={error} />
-      ) : businesses === null ? null : businesses.length === 0 ? (
+      ) : businesses === null ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100" />
+          ))}
+        </div>
+      ) : businesses.length === 0 ? (
         <EmptyState
           title="You haven't created a business yet."
           body="Validate an idea to create your first business project."
