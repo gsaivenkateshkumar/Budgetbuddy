@@ -1,6 +1,7 @@
 """Import all models so Base.metadata is fully populated for Alembic
 autogenerate and for application startup."""
 from app.models.brand import Brand
+from app.models.business import BudgetItem, BusinessProject, BusinessTask, FinancialEntry, IdeaValidation
 from app.models.category import Category
 from app.models.image import Image
 from app.models.price_record import PriceRecord
@@ -22,4 +23,9 @@ __all__ = [
     "PriceRecord",
     "ReviewSummary",
     "User",
+    "BusinessProject",
+    "IdeaValidation",
+    "BudgetItem",
+    "BusinessTask",
+    "FinancialEntry",
 ]
