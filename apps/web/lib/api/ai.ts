@@ -1,4 +1,10 @@
 import { apiFetch } from "./client";
+import { getToken } from "@/lib/auth/session";
+
+function authHeaders(): HeadersInit {
+  const token = getToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export interface AIStatus {
   configured: boolean;
@@ -24,9 +30,14 @@ export interface ChatResponse {
   tool_calls: ToolCallSummary[];
 }
 
-export function sendChatMessage(message: string, history: ChatMessageIn[]): Promise<ChatResponse> {
+export function sendChatMessage(
+  message: string,
+  history: ChatMessageIn[],
+  businessId?: number
+): Promise<ChatResponse> {
   return apiFetch<ChatResponse>("/ai/chat", {
     method: "POST",
-    body: JSON.stringify({ message, history }),
+    headers: authHeaders(),
+    body: JSON.stringify({ message, history, business_id: businessId ?? null }),
   });
 }

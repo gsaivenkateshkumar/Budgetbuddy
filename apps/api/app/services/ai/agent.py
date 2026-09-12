@@ -1,8 +1,9 @@
-"""The Ask Budget Buddy agentic loop: sends the conversation to the
-configured provider, executes any tool calls against real backend data,
-and repeats until the provider answers in plain text or a round limit is
-hit. Runs entirely server-side within one request — the frontend only
-ever sees the final reply and, for transparency, which tools were used.
+"""The Ask Start Currency agentic loop: sends the conversation to the
+configured provider, executes any tool calls against real backend data
+(the user's own business project, budget, tasks, and financials), and
+repeats until the provider answers in plain text or a round limit is hit.
+Runs entirely server-side within one request — the frontend only ever
+sees the final reply and, for transparency, which tools were used.
 """
 import json
 from dataclasses import dataclass, field
@@ -10,48 +11,33 @@ from dataclasses import dataclass, field
 from sqlalchemy.orm import Session
 
 from app.services.ai.base import AIProvider
-from app.services.ai.tools import ALL_TOOLS, dispatch_tool
+from app.services.ai.business_tools import BUSINESS_TOOLS, dispatch_business_tool
 from app.services.ai.types import ChatMessage, ChatRole
 
-SYSTEM_PROMPT = """You are Ask Budget Buddy, the shopping assistant for Budget Buddy — \
-an AI-powered shopping intelligence platform for the Indian market (INR).
+SYSTEM_PROMPT = """You are Ask Start Currency, the AI business copilot for Start Currency — a platform \
+that helps people validate a business idea, plan its launch, budget it, and manage it operationally, \
+under the positioning "Turn your idea into a business."
 
-Your job is to help the user make a better purchasing decision, not just find the \
-cheapest option. Rules you must always follow:
+Rules you must always follow:
 
-1. You may only state commerce facts (products, prices, specs, availability, ratings, \
-retailers) that come from a tool result in this conversation. Never invent a product, \
-price, spec, review, or retailer.
-2. Use the search_products, get_product_details, compare_products, and get_prices \
-tools whenever you need real data — don't guess.
-3. If critical information is missing to help the user (e.g. budget, category), ask \
-one focused clarifying question before searching. Don't ask about details that \
-wouldn't change your answer.
-4. When you compare or recommend products, explain why using the evidence from tool \
-results (price, specs, reviews) — never a bare opinion.
-5. If you're not sure about something, say so plainly rather than guessing.
-6. Keep responses concise and focused on helping the user decide.
-7. If search_products returns zero results (total: 0), do not repeat the same or a \
-similar search hoping for a different outcome — tell the user directly that Budget \
-Buddy's catalog currently has no matching products for their request.
+1. You may only state facts about the user's business (name, stage, budget, tasks, revenue, expenses) \
+that come from a tool result in this conversation. Never invent numbers, tasks, or transactions.
+2. Any arithmetic (break-even, margin, totals) MUST come from calculate_break_even, calculate_margin, or \
+another tool result — never compute or restate a number yourself without one. If you need a number, call \
+the tool.
+3. Use get_business_project, get_business_budget, get_financial_summary, and get_launch_tasks whenever you \
+need the user's real business context instead of asking them to repeat it.
+4. If the user has no business project yet (a tool reports this), suggest they validate their idea or \
+create a business — don't fabricate one.
+5. Never promise guaranteed profit, success, ROI, or demand. Use measured language: promising, needs more \
+validation, execution risk, capital mismatch, etc. This is planning software, not financial, legal, tax, \
+or investment advice.
+6. When you give a financial projection or scenario, state the assumptions behind it plainly.
+7. Keep responses concise and focused on helping the user make progress on their business.
 """
 
 MAX_TOOL_ROUNDS = 4
-NO_PROGRESS_REPLY = "I wasn't able to finish researching that in time — could you narrow your question a bit?"
-
-# A deterministic backstop for rule 7 above: models don't always follow
-# instructions perfectly, especially smaller/faster ones. If search_products
-# comes back empty this many times in a turn, stop looping and say so
-# honestly rather than burning the remaining rounds on repeat searches that
-# were never going to succeed, or falling through to the generic
-# NO_PROGRESS_REPLY (which doesn't tell the user *why* — the empty catalog
-# — hiding the real cause behind a vague retry prompt).
-MAX_EMPTY_CATALOG_SEARCHES = 2
-EMPTY_CATALOG_REPLY = (
-    "I couldn't find any matching products in Budget Buddy's catalog for that — "
-    "it may not have coverage here yet. Try a different category or budget, or "
-    "check back later."
-)
+NO_PROGRESS_REPLY = "I wasn't able to finish that in time — could you narrow your question a bit?"
 
 
 @dataclass
@@ -61,7 +47,13 @@ class AgentTurnResult:
 
 
 async def run_agent_turn(
-    db: Session, provider: AIProvider, history: list[ChatMessage], user_message: str
+    db: Session,
+    provider: AIProvider,
+    history: list[ChatMessage],
+    user_message: str,
+    *,
+    user_id: int | None = None,
+    default_business_id: int | None = None,
 ) -> AgentTurnResult:
     messages: list[ChatMessage] = [
         ChatMessage(role=ChatRole.SYSTEM, content=SYSTEM_PROMPT),
@@ -69,10 +61,9 @@ async def run_agent_turn(
         ChatMessage(role=ChatRole.USER, content=user_message),
     ]
     tool_calls_made: list[dict] = []
-    empty_catalog_searches = 0
 
     for _ in range(MAX_TOOL_ROUNDS):
-        completion = await provider.complete(messages, tools=ALL_TOOLS)
+        completion = await provider.complete(messages, tools=BUSINESS_TOOLS)
 
         if not completion.tool_calls:
             return AgentTurnResult(reply=completion.content or "", tool_calls_made=tool_calls_made)
@@ -85,10 +76,10 @@ async def run_agent_turn(
 
         for call in completion.tool_calls:
             try:
-                result = dispatch_tool(db, call.name, call.arguments)
+                result = dispatch_business_tool(
+                    db, call.name, call.arguments, user_id=user_id, default_business_id=default_business_id
+                )
                 result_text = json.dumps(result)
-                if call.name == "search_products" and isinstance(result, dict) and result.get("total") == 0:
-                    empty_catalog_searches += 1
             except Exception as exc:  # noqa: BLE001 - surfaced to the model, not a crash
                 result_text = json.dumps({"error": str(exc)})
 
@@ -96,8 +87,5 @@ async def run_agent_turn(
             messages.append(
                 ChatMessage(role=ChatRole.TOOL, content=result_text, tool_call_id=call.id, name=call.name)
             )
-
-        if empty_catalog_searches >= MAX_EMPTY_CATALOG_SEARCHES:
-            return AgentTurnResult(reply=EMPTY_CATALOG_REPLY, tool_calls_made=tool_calls_made)
 
     return AgentTurnResult(reply=NO_PROGRESS_REPLY, tool_calls_made=tool_calls_made)

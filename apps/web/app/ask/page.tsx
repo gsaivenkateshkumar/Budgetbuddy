@@ -6,7 +6,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { getAIStatus } from "@/lib/api/ai";
 
 export const metadata: Metadata = {
-  title: { absolute: "Ask Budget Buddy" },
+  title: { absolute: "Ask Start Currency" },
 };
 
 function firstValue(value: string | string[] | undefined): string | undefined {
@@ -27,7 +27,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
   } catch {
     return (
       <Container className="py-16">
-        <ErrorState message="Couldn't reach Budget Buddy's server right now." />
+        <ErrorState message="Couldn't reach Start Currency's server right now." />
       </Container>
     );
   }
@@ -36,11 +36,11 @@ export default async function AskPage({ searchParams }: AskPageProps) {
     <Container className="py-10">
       <div className="flex flex-col gap-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Ask Budget Buddy</h1>
+          <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Ask Start Currency</h1>
           <p className="mt-2 text-sm text-slate-600">
-            Tell us what you&apos;re trying to buy or accomplish. Budget Buddy only answers with
-            products, prices, and specs it can actually find — if the catalog doesn&apos;t have a
-            match yet, it&apos;ll say so honestly instead of guessing.
+            Your AI business copilot. Ask about pricing, budget, hiring, or your launch plan — it
+            answers using your real business data, and says so honestly when it doesn&apos;t have
+            enough information yet.
           </p>
         </div>
 
@@ -49,13 +49,13 @@ export default async function AskPage({ searchParams }: AskPageProps) {
         ) : (
           <div className="mx-auto max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
             <p className="font-medium">AI features aren&apos;t configured on this server yet.</p>
-            <p className="mt-1">Search and comparison still work in the meantime.</p>
+            <p className="mt-1">Validation and the calculators still work in the meantime.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <LinkButton href="/search" variant="primary" size="sm">
-                Explore
+              <LinkButton href="/validate" variant="primary" size="sm">
+                Validate an idea
               </LinkButton>
-              <LinkButton href="/compare" variant="outline" size="sm">
-                Compare
+              <LinkButton href="/tools" variant="outline" size="sm">
+                Tools
               </LinkButton>
             </div>
           </div>

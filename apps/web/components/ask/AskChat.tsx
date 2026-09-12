@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { sendChatMessage, type ChatMessageIn } from "@/lib/api/ai";
+import { listBusinesses, type BusinessProject } from "@/lib/api/business";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { AskWorkspace, type WorkspaceActivity } from "./AskWorkspace";
@@ -13,26 +15,47 @@ interface DisplayMessage {
 }
 
 const TOOL_LABELS: Record<string, string> = {
-  search_products: "Searched the catalog",
-  get_product_details: "Looked up product details",
-  compare_products: "Compared products",
-  get_prices: "Checked retailer prices",
+  get_business_project: "Looked up your business",
+  get_business_budget: "Checked your budget",
+  calculate_break_even: "Calculated break-even",
+  calculate_margin: "Calculated margin",
+  get_financial_summary: "Checked your financials",
+  get_launch_tasks: "Checked your launch tasks",
+  create_launch_task: "Added a launch task",
+  update_launch_task: "Updated a launch task",
 };
 
 const EXAMPLE_PROMPTS = [
-  "Best laptop for engineering under ₹60,000",
-  "Phone with excellent camera and battery",
-  "What do I need for a home office?",
-  "Compare two products",
+  "Is my pricing sustainable?",
+  "Can I afford to hire someone?",
+  "What should I focus on this week?",
+  "Create a launch checklist.",
 ];
 
 export function AskChat({ initialQuery }: { initialQuery: string }) {
+  const { user } = useAuth();
   const [input, setInput] = useState(initialQuery);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [business, setBusiness] = useState<BusinessProject | null>(null);
   const autoSent = useRef(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    listBusinesses()
+      .then((list) => {
+        if (!cancelled) setBusiness(list[0] ?? null);
+      })
+      .catch(() => {
+        if (!cancelled) setBusiness(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   async function send(text: string) {
     const trimmed = text.trim();
@@ -46,13 +69,13 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
 
     try {
       const history: ChatMessageIn[] = messages.map((m) => ({ role: m.role, content: m.content }));
-      const response = await sendChatMessage(trimmed, history);
+      const response = await sendChatMessage(trimmed, history, business?.id);
       setMessages([
         ...nextMessages,
         { role: "assistant", content: response.reply, toolCalls: response.tool_calls },
       ]);
     } catch {
-      setError("Something went wrong reaching Budget Buddy's AI. Please try again.");
+      setError("Something went wrong reaching Start Currency's AI. Please try again.");
     } finally {
       setPending(false);
     }
@@ -89,8 +112,8 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
             {messages.length === 0 && !pending && (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 py-6 text-center">
                 <p className="text-sm text-slate-500">
-                  Ask about a product, a budget, or a goal — I&apos;ll search Budget Buddy&apos;s catalog
-                  and explain what I find.
+                  Ask about your pricing, budget, hiring, or launch plan — I&apos;ll use your real
+                  business data and explain what I find.
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {EXAMPLE_PROMPTS.map((prompt) => (
@@ -132,7 +155,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
               </div>
             ))}
             {pending && (
-              <div className="flex justify-start" role="status" aria-label="Budget Buddy is thinking">
+              <div className="flex justify-start" role="status" aria-label="Start Currency is thinking">
                 <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-slate-100 px-4 py-3">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
@@ -150,13 +173,13 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
             className="flex gap-2 border-t border-slate-200 p-4"
           >
             <label htmlFor="ask-input" className="sr-only">
-              Message Budget Buddy
+              Message Start Currency
             </label>
             <input
               id="ask-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="What are you trying to buy or accomplish?"
+              placeholder="Ask about your business..."
               className="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             />
             <Button type="submit" disabled={pending}>
@@ -172,7 +195,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
         )}
       </div>
 
-      <AskWorkspace activity={activity} />
+      <AskWorkspace activity={activity} business={business} />
     </div>
   );
 }

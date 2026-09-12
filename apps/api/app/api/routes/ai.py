@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.api.deps import get_current_user_optional
 from app.core.database import get_db
 from app.core.errors import AppError
+from app.models import User
 from app.schemas.ai import AIStatus, ChatRequest, ChatResponse, ToolCallSummary
 from app.services.ai.agent import run_agent_turn
 from app.services.ai.factory import get_ai_provider
@@ -20,7 +22,11 @@ def ai_status() -> AIStatus:
 
 
 @router.post("/chat", response_model=ChatResponse)
-async def ai_chat(request: ChatRequest, db: Session = Depends(get_db)) -> ChatResponse:
+async def ai_chat(
+    request: ChatRequest,
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_current_user_optional),
+) -> ChatResponse:
     provider = get_ai_provider()
     if provider.name == "none":
         raise AppError("AI is not configured on this server.", code="ai_not_configured", status_code=503)
@@ -31,7 +37,14 @@ async def ai_chat(request: ChatRequest, db: Session = Depends(get_db)) -> ChatRe
     ]
 
     try:
-        result = await run_agent_turn(db, provider, history, request.message)
+        result = await run_agent_turn(
+            db,
+            provider,
+            history,
+            request.message,
+            user_id=current_user.id if current_user else None,
+            default_business_id=request.business_id,
+        )
     except AIProviderError as exc:
         raise AppError(f"AI request failed: {exc}", code="ai_request_failed", status_code=502) from exc
 

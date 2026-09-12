@@ -28,3 +28,17 @@ def get_current_user(authorization: str | None = Header(default=None), db: Sessi
         raise AppError("Invalid or expired token.", code="invalid_token", status_code=401)
 
     return user
+
+
+def get_current_user_optional(
+    authorization: str | None = Header(default=None), db: Session = Depends(get_db)
+) -> User | None:
+    """Like get_current_user, but returns None instead of raising when no
+    (or an invalid) token is present — for endpoints like /ai/chat that
+    work anonymously but personalize with business context when signed in."""
+    if not authorization or not authorization.lower().startswith("bearer "):
+        return None
+    try:
+        return get_current_user(authorization, db)
+    except AppError:
+        return None
