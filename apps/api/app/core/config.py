@@ -27,23 +27,6 @@ class Settings(BaseSettings):
     # llama-3.3-70b-versatile (deprecated by Groq, shutdown 2026-08-16).
     groq_model: str = "openai/gpt-oss-120b"
 
-    # Amazon Creators API (PA-API 5's replacement — PA-API 5 retired
-    # 2026-05-15). Optional: ingestion fails gracefully without these, and
-    # the app never requires them to start. See
-    # app/services/retailers/adapters/amazon_creators.py and
-    # docs/data-sources.md for onboarding requirements and what's
-    # independently verified vs. inferred from public docs.
-    amazon_creators_credential_id: str | None = None
-    amazon_creators_credential_secret: str | None = None
-    amazon_partner_tag: str | None = None
-    amazon_marketplace: str = "www.amazon.in"
-    # India is grouped under the EU credential region for the Creators API
-    # per public documentation — verify against your own onboarding docs
-    # once an account is approved; configurable rather than hardcoded in
-    # case Amazon's regional routing differs for your account.
-    amazon_creators_token_url: str = "https://api.amazon.co.uk/auth/o2/token"
-    amazon_creators_api_base_url: str = "https://creatorsapi.amazon"
-
     jwt_secret: str = "dev-insecure-secret-change-me"
     jwt_algorithm: str = "HS256"
     jwt_access_token_expire_minutes: int = 60

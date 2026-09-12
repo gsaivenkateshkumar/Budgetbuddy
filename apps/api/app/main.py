@@ -4,13 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.ai import router as ai_router
 from app.api.routes.auth import router as auth_router
-from app.api.routes.brands import router as brands_router
 from app.api.routes.businesses import router as businesses_router
 from app.api.routes.calculators import router as calculators_router
-from app.api.routes.categories import router as categories_router
-from app.api.routes.compare import router as compare_router
 from app.api.routes.health import router as health_router
-from app.api.routes.products import router as products_router
 from app.core.config import get_settings
 from app.core.errors import register_exception_handlers
 from app.core.logging import configure_logging
@@ -46,8 +42,4 @@ app.include_router(health_router)
 app.include_router(auth_router)
 app.include_router(businesses_router)
 app.include_router(calculators_router)
-app.include_router(products_router)
-app.include_router(brands_router)
-app.include_router(categories_router)
-app.include_router(compare_router)
 app.include_router(ai_router)
