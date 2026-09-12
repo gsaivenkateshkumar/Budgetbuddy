@@ -6,19 +6,19 @@ import { Reveal } from "@/components/motion/Reveal";
 import { GUIDES, readingTimeMinutes } from "@/lib/guides";
 
 export const metadata: Metadata = {
-  title: "Shopping Guides",
+  title: "Business Guides",
   description:
-    "Practical, original guides to help you evaluate electronics purchases — laptops, RAM, smartphones, and general buying decisions.",
+    "Practical, original guides on validating a business idea, break-even, pricing, working capital, and planning your first 30 days.",
 };
 
 export default function GuidesPage() {
   return (
     <Container className="flex flex-col gap-8 py-10">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Shopping guides</h1>
+        <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Business guides</h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-600">
-          Practical, independent guides for evaluating a purchase — written to help you decide what
-          matters for your own use case, not to rank specific products.
+          Practical, original guides for validating and planning a business — written to help you
+          think through the decision, not to guarantee an outcome.
         </p>
       </div>
 

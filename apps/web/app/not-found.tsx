@@ -12,8 +12,8 @@ export default function RootNotFound() {
         <LinkButton href="/" variant="primary">
           Go home
         </LinkButton>
-        <LinkButton href="/search" variant="outline">
-          Browse the catalog
+        <LinkButton href="/validate" variant="outline">
+          Validate an idea
         </LinkButton>
       </div>
     </Container>
