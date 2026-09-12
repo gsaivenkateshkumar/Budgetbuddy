@@ -8,7 +8,7 @@ export function GuidesPreview() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-slate-900">Shopping guides</h2>
+        <h2 className="text-xl font-semibold text-slate-900">Business guides</h2>
         <Link href="/guides" className="text-sm font-medium text-violet-600 hover:text-violet-700">
           View all &rarr;
         </Link>

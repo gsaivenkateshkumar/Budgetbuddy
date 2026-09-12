@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     app_env: Literal["development", "test", "production"] = "development"
-    app_name: str = "Budget Buddy API"
+    app_name: str = "Start Currency API"
 
     database_url: str = "sqlite:///./budget_buddy.db"
 

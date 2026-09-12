@@ -1,10 +1,8 @@
-import Link from "next/link";
-
 const POINTS = [
-  "Product recommendations are computed independently of retailer or affiliate relationships.",
-  "Where Budget Buddy may earn a commission, it never affects organic ranking.",
-  "Retailer prices and availability can change — the retailer's checkout price always controls.",
-  "Checkout happens on the retailer's own website, under their terms and policies.",
+  "Financial calculations (break-even, margin, pricing) are computed by deterministic code, never estimated by an AI.",
+  "Your business, budget, task, and financial data is private to your account — never shown to other users.",
+  "Revenue, expense, and financial summary figures always come from entries you've actually recorded.",
+  "Start Currency never promises guaranteed profit, success, ROI, or demand for any business idea.",
 ];
 
 export function TrustSection() {
@@ -22,15 +20,8 @@ export function TrustSection() {
         ))}
       </ul>
       <p className="mt-5 text-xs text-slate-500">
-        Read more in our{" "}
-        <Link href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
-          Affiliate Disclosure
-        </Link>{" "}
-        and{" "}
-        <Link href="/terms" className="font-medium text-violet-600 hover:text-violet-700">
-          Terms of Use
-        </Link>
-        .
+        Start Currency is business planning software. It does not provide financial, legal, investment,
+        or tax advice — confirm important decisions with a qualified professional.
       </p>
     </div>
   );

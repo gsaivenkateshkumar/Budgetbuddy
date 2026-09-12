@@ -1,16 +1,17 @@
-export const SITE_NAME = "Budget Buddy";
-export const SITE_TAGLINE = "AI Shopping Comparison & Recommendations";
+export const SITE_NAME = "Start Currency";
+export const SITE_TAGLINE = "AI Business Builder & Operating Assistant";
 // Marketing copy used on the homepage — kept separate from SITE_TAGLINE,
 // which feeds page <title>s and shouldn't repeat the brand name in full.
-export const SITE_VALUE_PROP = "Buy smarter with Budget Buddy.";
+export const SITE_VALUE_PROP = "Turn your idea into a business.";
 export const SITE_DESCRIPTION =
-  "Budget Buddy is an AI-powered shopping comparison platform, operated by Promote, that compares products, prices, specifications, and retailer options to help you make better purchasing decisions.";
+  "Start Currency is an AI business builder, operated by Promote, that helps you validate a business idea, " +
+  "plan your launch, budget your startup costs, and manage revenue and expenses with an AI copilot.";
 
 // Set NEXT_PUBLIC_SITE_URL once deployed (e.g. the Vercel production URL)
 // so metadata, robots.txt, and the sitemap resolve absolute URLs correctly.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-// The company that builds and operates Budget Buddy. No legal suffix
+// The company that builds and operates Start Currency. No legal suffix
 // (Pvt Ltd / LLC / Inc) — none is established in project records, and
 // none should be implied until it is.
 export const COMPANY_NAME = "Promote";
@@ -28,3 +29,8 @@ export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? null;
 // "security check unavailable" state rather than silently skipping
 // CAPTCHA — the real check is enforced server-side regardless.
 export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? null;
+
+// Default currency for new business projects — India-first, but every
+// money field carries its own `currency` so this is a UI default, never
+// a hardcoded assumption in calculations.
+export const DEFAULT_CURRENCY = "INR";

@@ -11,15 +11,15 @@ export const metadata: Metadata = {
 const SUPPORT_CATEGORIES = [
   {
     title: "General support",
-    body: "Questions about using Budget Buddy, your account, or how a feature works.",
+    body: "Questions about using Start Currency, your account, or how a feature works.",
   },
   {
-    title: "Retailer or product data issue",
-    body: "Report incorrect pricing, a broken product page, or an outdated listing.",
+    title: "Bug report",
+    body: "Something not working as expected — a calculator, validation report, or your business workspace.",
   },
   {
-    title: "Partnership or affiliate inquiry",
-    body: "Retailer partnerships, affiliate programs, or business inquiries.",
+    title: "Business inquiry",
+    body: "Partnership, press, or other business inquiries.",
   },
   {
     title: "Privacy inquiry",

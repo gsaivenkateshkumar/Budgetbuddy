@@ -11,14 +11,14 @@
  */
 
 const BASE_BUTTON =
-  "depth-button inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2";
+  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2";
 
 /* Every variant carries a 1px border (transparent where there's no visible
  * border) so buttons of different variants placed side by side render at
  * the same height — a border-only variant like "outline" would otherwise
  * be 2px taller than a borderless one like "primary" at the same padding. */
 const BUTTON_VARIANTS = {
-  // Primary internal action: navigation, Compare, Ask Budget Buddy, Apply/Save.
+  // Primary internal action: navigation, Validate, Ask Start Currency, Apply/Save.
   primary: "border border-transparent bg-violet-600 text-white hover:bg-violet-700 disabled:hover:bg-violet-600",
   secondary: "border border-transparent bg-violet-50 text-violet-700 hover:bg-violet-100",
   outline: "border border-slate-300 text-slate-700 hover:border-violet-300 hover:text-violet-700",

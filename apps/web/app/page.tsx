@@ -1,34 +1,24 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
-import { DecisionIntelligence } from "@/components/home/DecisionIntelligence";
-import { GoalBasedShopping } from "@/components/home/GoalBasedShopping";
 import { GuidesPreview } from "@/components/home/GuidesPreview";
 import { Hero } from "@/components/home/Hero";
 import { HowItWorks } from "@/components/home/HowItWorks";
+import { PopularStarters } from "@/components/home/PopularStarters";
 import { TrustSection } from "@/components/home/TrustSection";
-import { WhyBudgetBuddy } from "@/components/home/WhyBudgetBuddy";
+import { ValidationMethodology } from "@/components/home/ValidationMethodology";
+import { WhyStartCurrency } from "@/components/home/WhyStartCurrency";
 import { LinkButton } from "@/components/ui/Button";
-import { ProductCard } from "@/components/product/ProductCard";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { ErrorState } from "@/components/ui/ErrorState";
+import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/motion/Reveal";
-import { listProducts } from "@/lib/api/products";
-import type { ProductSummary } from "@/lib/api/types";
 
-async function getFeaturedProducts(): Promise<
-  { products: ProductSummary[] } | { error: string }
-> {
-  try {
-    const page = await listProducts({ page_size: 4, sort: "relevance" });
-    return { products: page.items };
-  } catch {
-    return { error: "Couldn't load the catalog right now — the API may not be running." };
-  }
-}
+const TOOLS = [
+  { name: "Startup Budget Calculator", body: "Plan and allocate your available capital across real categories." },
+  { name: "Break-even Calculator", body: "Find out how many units or how much revenue you need to break even." },
+  { name: "Profit Margin Calculator", body: "See gross and operating margin from your actual revenue and costs." },
+  { name: "Pricing Calculator", body: "Work out a minimum viable price from cost, margin, and fees." },
+];
 
-export default async function HomePage() {
-  const featured = await getFeaturedProducts();
-
+export default function HomePage() {
   return (
     <>
       <Hero />
@@ -44,7 +34,7 @@ export default async function HomePage() {
       <section className="border-t border-slate-200 bg-slate-50 py-16">
         <Container>
           <Reveal>
-            <DecisionIntelligence />
+            <ValidationMethodology />
           </Reveal>
         </Container>
       </section>
@@ -52,7 +42,7 @@ export default async function HomePage() {
       <section className="py-16">
         <Container>
           <Reveal>
-            <GoalBasedShopping />
+            <PopularStarters />
           </Reveal>
         </Container>
       </section>
@@ -60,44 +50,31 @@ export default async function HomePage() {
       <section className="border-t border-slate-200 bg-slate-50 py-16">
         <Container>
           <Reveal>
-            <WhyBudgetBuddy />
+            <div>
+              <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-slate-900">Financial tools</h2>
+                <LinkButton href="/tools" variant="ghost" size="sm">
+                  View all tools &rarr;
+                </LinkButton>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {TOOLS.map((tool) => (
+                  <Card key={tool.name} hover className="p-5">
+                    <h3 className="text-sm font-semibold text-slate-900">{tool.name}</h3>
+                    <p className="mt-2 text-sm text-slate-600">{tool.body}</p>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </Reveal>
         </Container>
       </section>
 
       <section className="py-16">
         <Container>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-900">Explore the catalog</h2>
-            <Link href="/search" className="text-sm font-medium text-violet-600 hover:text-violet-700">
-              View all &rarr;
-            </Link>
-          </div>
-
-          {"error" in featured ? (
-            <ErrorState message={featured.error} />
-          ) : featured.products.length === 0 ? (
-            <EmptyState
-              title="Product catalog is being expanded"
-              body="We're connecting verified retailer sources so Budget Buddy can compare real products, prices, and offers without inventing catalog data."
-              actions={
-                <>
-                  <LinkButton href="/ask" variant="primary" size="sm">
-                    Ask Budget Buddy
-                  </LinkButton>
-                  <LinkButton href="/guides" variant="outline" size="sm">
-                    Browse guides
-                  </LinkButton>
-                </>
-              }
-            />
-          ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {featured.products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          )}
+          <Reveal>
+            <WhyStartCurrency />
+          </Reveal>
         </Container>
       </section>
 
@@ -113,6 +90,30 @@ export default async function HomePage() {
         <Container>
           <Reveal>
             <GuidesPreview />
+          </Reveal>
+        </Container>
+      </section>
+
+      <section className="border-t border-slate-200 bg-slate-900 py-16">
+        <Container>
+          <Reveal>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h2 className="text-2xl font-semibold text-white">Ready to turn your idea into a business?</h2>
+              <p className="max-w-xl text-sm text-slate-300">
+                Start with validation — it&apos;s free, structured, and takes a few minutes.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <LinkButton href="/validate" variant="primary" size="lg">
+                  Validate my idea
+                </LinkButton>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/40"
+                >
+                  Create an account
+                </Link>
+              </div>
+            </div>
           </Reveal>
         </Container>
       </section>

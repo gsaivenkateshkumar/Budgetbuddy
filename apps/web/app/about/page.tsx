@@ -5,7 +5,7 @@ import { COMPANY_NAME, SITE_NAME } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
   title: { absolute: `About ${SITE_NAME} | ${COMPANY_NAME}` },
-  description: `${SITE_NAME} is an AI-powered shopping comparison platform operated by ${COMPANY_NAME}, built to help consumers make better purchasing decisions.`,
+  description: `${SITE_NAME} is an AI business builder operated by ${COMPANY_NAME}, built to help people validate, plan, and manage a business.`,
 };
 
 export default function AboutPage() {
@@ -15,53 +15,44 @@ export default function AboutPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">About {SITE_NAME}</h1>
           <p className="mt-2 text-sm text-slate-500">
-            {SITE_NAME} is an AI-powered shopping comparison platform operated by {COMPANY_NAME}.
+            {SITE_NAME} is an AI business builder and operating assistant, operated by {COMPANY_NAME}.
           </p>
         </div>
 
         <Card className="flex flex-col gap-4 p-6 text-sm leading-relaxed text-slate-700 sm:p-8">
           <p>
-            {SITE_NAME} is an AI-powered product discovery and shopping comparison platform, developed
-            and operated by {COMPANY_NAME}. Our goal is to help consumers make better purchasing
-            decisions by bringing together product information, retailer options, prices,
-            specifications, and shopping intelligence in one place.
+            {SITE_NAME} helps people take a business idea from a rough thought to an operating
+            business — validating the idea, planning the launch, budgeting startup costs, and
+            tracking real revenue and expenses, with an AI copilot alongside every stage.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            Independent, requirement-first recommendations
-          </h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">Structured data, not just a chatbot</h2>
           <p>
-            {SITE_NAME} is designed to remain retailer-independent. Organic recommendations are based
-            on your stated requirements, product information, and overall value — not on which
-            retailer or affiliate program a link happens to belong to. Where {SITE_NAME} may earn a
-            commission from a purchase, that relationship is disclosed and never used to influence
-            ranking. See our{" "}
-            <a href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
-              Affiliate Disclosure
-            </a>{" "}
-            for details.
+            Where {SITE_NAME} does arithmetic — break-even, margin, pricing, budgets — that math is
+            computed by deterministic code, not guessed by an AI. Your business, budget, tasks, and
+            financial entries persist as structured data in your account, so you never have to
+            re-explain your business from scratch.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">How recommendations work</h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">Honest validation</h2>
           <p>
-            Where {SITE_NAME} shows comparisons or recommendations, they are computed from structured
-            product data — price, specifications, and available review signals — with the reasoning
-            behind each result shown alongside it, rather than presented as an unexplained ranking.
-            Ask Budget Buddy, our conversational assistant, answers using the same underlying catalog
-            data and does not invent products, prices, or specifications it hasn&apos;t retrieved.
+            Idea validation reports are scored against a fixed, published set of dimensions —
+            demand evidence, differentiation, business-model clarity, capital feasibility,
+            operational feasibility, and go-to-market readiness. Where information is missing, the
+            report says so and lowers its confidence, rather than inventing precision.
+            {" "}{SITE_NAME} never claims a business will succeed.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">Where we are today</h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">What this isn&apos;t</h2>
           <p>
-            {SITE_NAME} is initially focused on Indian consumers, with wider retailer and category
-            coverage planned over time. Retailer integrations and product coverage are actively being
-            added — we&apos;d rather show you honestly what&apos;s available today than overstate our
-            current catalog.
+            {SITE_NAME} is planning and operating software. It does not provide financial, legal,
+            investment, or tax advice, and it does not guarantee profit, demand, or return on any
+            business idea — confirm important decisions with a qualified professional.
           </p>
 
           <h2 className="mt-2 text-base font-semibold text-slate-900">Questions</h2>
           <p>
-            If you have a question about {SITE_NAME}, a product listing, or how we operate, visit our{" "}
+            If you have a question about {SITE_NAME} or how it works, visit our{" "}
             <a href="/contact" className="font-medium text-violet-600 hover:text-violet-700">
               Contact page
             </a>

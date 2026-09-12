@@ -7,10 +7,11 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { Container } from "./Container";
 
 const NAV_LINKS = [
-  { href: "/search", label: "Explore" },
-  { href: "/compare", label: "Compare" },
+  { href: "/validate", label: "Validate" },
+  { href: "/plan", label: "Plan" },
+  { href: "/business", label: "My Business" },
+  { href: "/tools", label: "Tools" },
   { href: "/ask", label: "Ask AI" },
-  { href: "/guides", label: "Guides" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -60,9 +61,9 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`site-header sticky top-0 z-40 border-b backdrop-blur transition-colors ${
+      className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
         dark
-          ? "border-white/10 bg-[#101c20]/95 backdrop-blur-xl"
+          ? "border-white/10 bg-black/70 backdrop-blur-xl"
           : scrolled
             ? "border-slate-200 bg-white/95 shadow-sm"
             : "border-slate-200 bg-white/90"
@@ -74,12 +75,12 @@ export function SiteHeader() {
           className={`flex items-center gap-2 text-lg font-semibold transition-colors ${dark ? "text-white" : "text-slate-900"}`}
         >
           <span
-            className="brand-mark flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-xs font-bold text-white"
             aria-hidden="true"
           >
-            bb.
+            SC
           </span>
-          Budget Buddy
+          Start Currency
         </Link>
 
         <nav aria-label="Primary" className="hidden md:block">

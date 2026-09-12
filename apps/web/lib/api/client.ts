@@ -19,7 +19,7 @@ export class ApiError extends Error {
 /** Thrown when the backend can't be reached at all (network/DNS/refused). */
 export class ApiUnreachableError extends Error {
   constructor(cause: unknown) {
-    super("Budget Buddy's server could not be reached.");
+    super("Start Currency's server could not be reached.");
     this.name = "ApiUnreachableError";
     this.cause = cause;
   }

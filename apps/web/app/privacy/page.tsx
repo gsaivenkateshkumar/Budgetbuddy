@@ -23,36 +23,37 @@ export default function PrivacyPage() {
             &ldquo;us&rdquo;), handles information in connection with your use of {SITE_NAME}.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            1. Information you provide
-          </h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">1. Account information</h2>
           <p>
-            If you create an account, we collect what you provide directly — such as your email
-            address, display name, and password (stored as a securely hashed value, never in plain
-            text). If you contact us, we collect what you include in that message.
-          </p>
-
-          <h2 className="mt-2 text-base font-semibold text-slate-900">2. Account data</h2>
-          <p>
-            An account lets you save preferences and comparisons across sessions. You can request
-            deletion of your account and associated data at any time — see Contact below.
+            If you create an account, we collect what you provide directly — your email address,
+            display name, and password (stored as a securely hashed value, never in plain text).
           </p>
 
           <h2 className="mt-2 text-base font-semibold text-slate-900">
-            3. Technical and usage data
+            2. Business and financial information you enter
           </h2>
+          <p>
+            {SITE_NAME} is built around the business information you choose to enter: your business
+            idea and description, industry, location, startup budget, target customer, and similar
+            planning details, plus any launch tasks, revenue entries, and expense entries you record.
+            This information is private to your account. We do not sell it, and we do not display it
+            to other users. You control what you enter — {SITE_NAME} never invents or infers financial
+            figures on your behalf.
+          </p>
+
+          <h2 className="mt-2 text-base font-semibold text-slate-900">3. Technical and usage data</h2>
           <p>
             Like most web services, our servers and hosting providers automatically log standard
             technical data (such as IP address, browser type, device type, pages visited, and
             timestamps) for security, debugging, and reliability purposes.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">4. Cookies</h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">4. Cookies and security services</h2>
           <p>
-            {SITE_NAME} may use cookies or similar local storage to keep you signed in and remember
-            basic preferences. Where third-party retailers or affiliate networks are involved in a
-            purchase you initiate from {SITE_NAME} (see Section 6), they may separately set their own
-            cookies once you leave our site.
+            {SITE_NAME} uses local browser storage to keep you signed in. Our login and registration
+            pages use Cloudflare Turnstile, a bot-protection challenge, which may process limited
+            technical signals (such as browser and network characteristics) under Cloudflare&apos;s own
+            privacy policy to verify you&apos;re not an automated script.
           </p>
 
           <h2 className="mt-2 text-base font-semibold text-slate-900">5. Analytics</h2>
@@ -61,56 +62,32 @@ export default function PrivacyPage() {
             pages are visited) so we can improve the product. We do not sell this data.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            6. Affiliate marketing and attribution
-          </h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">6. AI processing</h2>
           <p>
-            {SITE_NAME} may participate in affiliate marketing programs, including networks such as
-            Cuelinks (see our{" "}
-            <a href="/affiliate-disclosure" className="font-medium text-violet-600 hover:text-violet-700">
-              Affiliate Disclosure
-            </a>
-            ). When you click certain merchant links, the destination retailer or affiliate network may
-            use cookies or similar tracking technologies of their own to attribute an eligible
-            purchase back to that click. Data involved in this attribution may include information
-            such as a click identifier, timestamp, referring page, and general browser/device context
-            — typically in pseudonymous form, tied to the click rather than to your identity on{" "}
-            {SITE_NAME}. We do not control, and are not responsible for, the privacy practices of
-            third-party retailers or affiliate networks once you leave {SITE_NAME}.
+            Idea validation and Ask Start Currency send relevant details — your message, and, where
+            you&apos;re signed in with a business project, structured context from that business (such
+            as its budget, tasks, or financial summary) — to our AI service provider (currently Groq)
+            to generate a response. We do not send more of your data than is needed to answer the
+            specific request. Conversation history for Ask Start Currency is currently held in your
+            browser session, not stored server-side as a persistent chat log; validation reports are
+            stored with your business project so you can revisit them.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            7. Third-party retailer redirects
-          </h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">7. Data retention</h2>
           <p>
-            Clicking a retailer link takes you to that retailer&apos;s own website, governed by their
-            own privacy policy and terms. We encourage you to review those before completing a
-            purchase.
+            We retain account and business data for as long as your account is active, and
+            technical/log data for a limited period as needed for security and debugging. You may
+            request deletion at any time.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">8. AI interactions</h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">8. Security</h2>
           <p>
-            If you use Ask Budget Buddy, the messages you send are processed to generate a response
-            (including, where relevant, queries against our product catalog) and may be sent to our
-            AI service provider to generate that response. Conversation history for Ask Budget Buddy is
-            currently held in your browser session, not stored server-side as a persistent chat log.
+            We use reasonable technical safeguards (such as encrypted connections, hashed passwords,
+            and per-user access controls on business data) to protect information. No online service
+            can guarantee absolute security.
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">9. Data retention</h2>
-          <p>
-            We retain account data for as long as your account is active, and technical/log data for a
-            limited period as needed for security and debugging. You may request deletion at any time.
-          </p>
-
-          <h2 className="mt-2 text-base font-semibold text-slate-900">10. Security</h2>
-          <p>
-            We use reasonable technical safeguards (such as encrypted connections and hashed
-            passwords) to protect information. No online service can guarantee absolute security.
-          </p>
-
-          <h2 className="mt-2 text-base font-semibold text-slate-900">
-            11. Your rights and contact
-          </h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">9. Your rights and contact</h2>
           <p>
             You may request access to, correction of, or deletion of your personal data by contacting
             us — see our{" "}
@@ -125,11 +102,10 @@ export default function PrivacyPage() {
                 </a>
               </>
             ) : null}
-            . Where consent is legally or technically required for a particular use of cookies or
-            tracking, we intend for the site to support appropriate consent management.
+            .
           </p>
 
-          <h2 className="mt-2 text-base font-semibold text-slate-900">12. Policy updates</h2>
+          <h2 className="mt-2 text-base font-semibold text-slate-900">10. Policy updates</h2>
           <p>
             We may update this Privacy Policy from time to time. Material changes will be reflected by
             updating the &ldquo;Last updated&rdquo; date above.

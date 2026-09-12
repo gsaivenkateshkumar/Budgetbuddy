@@ -1,9 +1,8 @@
 /**
- * Original, evergreen shopping-education content — not copied retailer
- * descriptions, not live rankings. These guides help a reader evaluate a
- * purchase decision in general terms; they never cite a specific current
- * price or claim a live "best of" ranking, since Budget Buddy's catalog
- * coverage is still growing (see docs/data-sources.md).
+ * Original business-education content — not investment, legal, or tax
+ * advice. These guides explain general frameworks and calculations; they
+ * never claim a specific business idea will succeed, and they never cite
+ * fabricated statistics or case studies.
  */
 export type Guide = {
   slug: string;
@@ -14,78 +13,85 @@ export type Guide = {
 
 export const GUIDES: Guide[] = [
   {
-    slug: "best-laptop-specs-for-students-2026",
-    title: "Best Laptop Specifications for Students in 2026",
+    slug: "how-to-validate-a-business-idea",
+    title: "How to Validate a Business Idea Before You Spend Money",
     description:
-      "What actually matters — and what doesn't — when picking a laptop for coursework, research, and everyday use.",
+      "A practical framework for testing whether an idea is worth pursuing — before you commit real capital to it.",
     body: [
-      "Most students don't need the most powerful laptop on the shelf — they need one that handles note-taking, browser tabs, video calls, and the occasional heavier app (statistics software, design tools, IDEs) without slowing down or dying by lunchtime.",
-      "Processor: a current-generation mid-range chip (Intel Core i5/i7, AMD Ryzen 5/7, or Apple's M-series) is enough for nearly all coursework. Reserve a higher tier only if your program specifically requires it — video editing, 3D modeling, or heavy simulation work.",
-      "RAM: 8GB is a workable minimum for browsing and office work, but 16GB is the more comfortable baseline in 2026, especially with many browser tabs, virtual machines, or design software open at once. See our RAM comparison guide for the fuller trade-off.",
-      "Storage: prioritize an SSD over any amount of HDD storage — the speed difference affects everything from boot time to file search. 512GB is a reasonable middle ground; go higher only if you work with large local files (video, datasets).",
-      "Battery life: look for a manufacturer-rated 8+ hours under real use (rated figures are usually optimistic, so treat them as a ceiling, not a promise). A day of back-to-back classes without a charger is the practical bar.",
-      "Weight and build: 1.2–1.6 kg is comfortable for daily carry; anything heavier is worth it only if you rarely move it. A metal chassis tends to hold up better over a multi-year degree than an all-plastic one.",
-      "Display: 1080p (Full HD) is the practical minimum for comfortable reading and video; anything sharper is a nice-to-have, not a requirement, for most coursework.",
-      "What to deprioritize: dedicated graphics cards (unless you game or do GPU-accelerated work), the very latest processor generation, and premium finishes — none of these meaningfully change the day-to-day student experience, and all of them raise the price.",
+      "Validation isn't about proving your idea will work — it's about reducing the specific uncertainties that would sink it, as cheaply as possible, before you spend real money.",
+      "Start with the customer, not the product. Can you describe, in one sentence, who has this problem and why they'd pay to solve it? If you can't, that's the first thing to fix — everything else (pricing, marketing, operations) depends on getting this right.",
+      "Talk to potential customers before you build anything. Five real conversations with people who match your target customer tell you more than any amount of guessing. Ask about their current behavior and past spending, not hypothetical future intent — people are unreliable at predicting what they'd actually pay for.",
+      "Separate the idea from the assumptions underneath it. \"People want healthier food delivery\" is an idea. \"Office workers within 3km will pay a premium for a healthy lunch delivered in under 30 minutes\" is a testable assumption. List yours out and rank them by how much the business depends on each one being true.",
+      "Capital feasibility is part of validation, not a separate step. An idea that needs ₹5 lakh to test isn't automatically bad, but if your available budget is ₹50,000, that mismatch needs to be resolved — either by scoping down, financing, or choosing a different starting point — before you go further.",
+      "Competition is a signal, not a stop sign. Existing competitors usually mean there's real demand; the question is whether you have a genuine angle (price, service, niche, speed) or you're just building the same thing slower.",
+      "Treat your first validation as a snapshot, not a verdict. Revisit it as you learn more — a low score on \"demand evidence\" today just means you haven't gathered evidence yet, not that the idea is dead.",
     ],
   },
   {
-    slug: "how-to-choose-a-laptop-under-60000-inr",
-    title: "How to Choose a Laptop Under ₹60,000",
+    slug: "how-to-calculate-break-even",
+    title: "How to Calculate Break-Even (And What It Actually Tells You)",
     description:
-      "A practical framework for getting the most useful laptop at this price point, without chasing spec-sheet numbers that don't matter.",
+      "The break-even formula explained plainly, with what it does and doesn't tell you about whether a business is viable.",
     body: [
-      "At this price, you're making trade-offs — no laptop under ₹60,000 will be the fastest, lightest, and longest-lasting all at once. Start by ranking your own priorities (performance, portability, battery, display) before comparing options, so you're trading off deliberately rather than by accident.",
-      "Set a floor, not a ceiling: 8GB RAM and a 512GB SSD is a reasonable minimum to avoid the laptop feeling sluggish within a year. Below that, you're likely to outgrow the machine quickly rather than save meaningfully.",
-      "Check the actual processor generation, not just the family name. \"Core i5\" or \"Ryzen 5\" spans several years of hardware — a current-generation chip usually outperforms an older, higher-numbered variant from a couple of years back.",
-      "Read return and warranty terms before you buy, not after. At this price point, standard consumer warranty coverage (typically 1 year) and a clear return window matter more than any single spec.",
-      "Compare total cost, not sticker price alone — bundled accessories, extended warranty upsells, and financing costs can shift which option is actually cheaper.",
-      "Use Budget Buddy's comparison view once retailer listings are available in your category to see specs and prices side by side, and Ask Budget Buddy if you want a recommendation narrowed to your specific use case and budget.",
+      "Break-even is the point where your revenue exactly covers your costs — no profit, no loss. It answers one specific question: how much do I need to sell before this business stops losing money on a per-period basis?",
+      "The formula has three inputs: fixed costs (rent, salaries, subscriptions — costs that don't change with sales volume), selling price per unit, and variable cost per unit (materials, packaging, per-order fees — costs that scale with each sale).",
+      "Contribution per unit = selling price − variable cost per unit. This is what each sale actually contributes toward covering your fixed costs, after paying for the direct cost of making that sale.",
+      "Break-even units = fixed costs ÷ contribution per unit. Break-even revenue = break-even units × selling price. If your contribution per unit is zero or negative, break-even is mathematically impossible at that price — you lose more money the more you sell.",
+      "What break-even doesn't tell you: it doesn't say whether you'll actually reach that sales volume, how long it will take, or whether the market has room for it. It's a cost-structure calculation, not a demand forecast — pair it with real validation of demand, not just the arithmetic.",
+      "Use it to sanity-check pricing decisions. If your break-even volume is obviously unrealistic for your market size (e.g., you'd need to sell more units per month than there are potential customers), that's a sign to revisit your price, your cost structure, or both — before you launch, not after.",
     ],
   },
   {
-    slug: "8gb-vs-16gb-ram",
-    title: "8GB vs 16GB RAM: Which Should You Choose?",
-    description:
-      "A plain-language breakdown of what RAM actually does, and when the upgrade from 8GB to 16GB is worth paying for.",
+    slug: "how-much-working-capital-should-a-small-business-keep",
+    title: "How Much Working Capital Should a Small Business Keep?",
+    description: "A practical way to think about cash reserves for a small or early-stage business.",
     body: [
-      "RAM (memory) is where your device keeps everything it's actively using — open apps, browser tabs, background processes. Run out, and the system starts swapping to slower storage or closing things for you, which is what feels like \"lag.\"",
-      "8GB is workable for: web browsing with a moderate number of tabs, office documents, video calls, and light photo editing. It's the minimum that still feels usable in 2026, not a comfortable long-term buffer.",
-      "16GB is the better choice if you: regularly run 15+ browser tabs, use multiple heavier apps simultaneously (design tools, IDEs, virtual machines), do photo/video editing, or want the laptop to stay comfortable for 3–4 years rather than 1–2.",
-      "32GB+ is for specific workloads — large-scale video editing, 3D rendering, running multiple virtual machines, or heavy data/ML work. Most people don't need it, and it adds meaningful cost for no everyday benefit.",
-      "RAM upgradability matters too: some laptops solder RAM to the motherboard (no upgrade path later), while others have accessible slots. If you're budget-constrained now but might need more later, check whether the model you're considering allows an upgrade — it can be cheaper than buying more RAM upfront.",
-      "Rule of thumb: if the price difference between 8GB and 16GB versions of the same laptop is modest, take the 16GB version. If it's a large jump, it's a legitimate trade-off worth weighing against your actual usage.",
+      "Working capital is the cash you keep on hand to cover day-to-day operating expenses — separate from the money you need to launch. It exists to absorb the gap between when you pay costs and when customers actually pay you.",
+      "A common starting point is 3-6 months of fixed monthly operating costs (rent, salaries, subscriptions, minimum inventory) held in reserve, before counting on revenue to cover them. Seasonal or unpredictable-demand businesses generally need more; steady, contract-based businesses can often manage with less.",
+      "The riskier your revenue timing, the larger the reserve should be. A business that gets paid immediately at the point of sale (retail, most food service) needs less buffer than one that invoices clients and waits 30-60 days to get paid.",
+      "Don't confuse working capital with your total startup budget. Startup budget covers one-time setup costs (equipment, licensing, initial inventory); working capital covers the ongoing costs you'll face every month regardless of how sales are going, especially in the slow early months.",
+      "Undercapitalizing operations is one of the most common reasons a fundamentally sound business fails — not because the idea was bad, but because it ran out of cash before revenue caught up to expenses. When you're setting your startup budget, treat working capital as a required line item, not a leftover.",
     ],
   },
   {
-    slug: "how-to-compare-smartphones-before-buying",
-    title: "How to Compare Smartphones Before Buying",
-    description:
-      "The factors that actually affect day-to-day satisfaction with a phone — beyond the headline camera megapixel count.",
+    slug: "fixed-vs-variable-costs",
+    title: "Fixed vs. Variable Costs: Why the Difference Matters",
+    description: "What separates fixed and variable costs, and why getting this classification right changes your pricing and break-even math.",
     body: [
-      "Camera megapixels are a marketing number, not a quality measure. Sensor size, image processing software, and low-light performance matter far more than the raw megapixel count — look for real sample photos and reviews rather than the spec sheet alone.",
-      "Battery capacity (mAh) is only half the story. The same battery size performs very differently depending on the chipset's efficiency and the display's power draw — check independent battery-life test results, not just the mAh figure.",
-      "Software update commitment varies a lot by manufacturer and price tier. A phone that gets 4+ years of OS and security updates stays usable (and secure) far longer than one that gets one or two.",
-      "Display: refresh rate (90Hz/120Hz) noticeably improves everyday scrolling smoothness; panel type (AMOLED vs. LCD) affects contrast and color, particularly outdoors and for media consumption.",
-      "Storage and RAM: 128GB storage is a reasonable baseline if you don't store much media locally (cloud photo backup, streaming); 8GB RAM is comfortable for most current Android software.",
-      "Build and repairability: check IP water/dust resistance ratings if that matters for your use, and consider how expensive an eventual screen or battery replacement is likely to be — it affects the phone's real multi-year cost.",
-      "Before buying: compare at least two alternatives at a similar price point rather than evaluating one phone in isolation — Budget Buddy's compare view is built for exactly this, once listings are available for your category.",
+      "Fixed costs stay roughly the same regardless of how much you sell in a given period: rent, salaries, software subscriptions, insurance, loan payments. You pay them whether you make one sale or a hundred.",
+      "Variable costs scale directly with each unit sold: raw materials, packaging, per-transaction payment processing fees, delivery cost per order, sales commissions. Sell zero units, and these costs are close to zero.",
+      "Some costs are semi-variable — they have a fixed base plus a variable component (e.g., a phone plan with a base fee plus per-minute charges, or a part-time staff member whose hours flex with demand). For planning purposes, it's usually fine to split these into their fixed and variable pieces rather than forcing them into one category.",
+      "This classification directly drives your break-even calculation: only variable cost per unit is subtracted from price to get contribution margin; fixed costs are covered in aggregate by the total contribution from all units sold.",
+      "It also changes how you think about scaling. A business with mostly fixed costs (e.g., software) gets more profitable per additional customer as it grows, once fixed costs are covered. A business with mostly variable costs (e.g., a reseller) has more predictable, but generally lower, margin expansion as it scales.",
+      "When budgeting, list every recurring cost and mark it fixed or variable honestly — misclassifying a cost that's actually variable as fixed (or vice versa) will throw off your break-even and margin numbers.",
     ],
   },
   {
-    slug: "electronics-buying-checklist",
-    title: "A Practical Electronics Buying Checklist",
-    description:
-      "A short, retailer-neutral checklist to run through before any electronics purchase — not brand- or product-specific.",
+    slug: "how-to-price-a-product-or-service",
+    title: "How to Price a Product or Service",
+    description: "A framework for setting a starting price, and the assumptions worth checking before you commit to it.",
     body: [
-      "Define the job first. Write down what you actually need the device to do (and where your current one falls short) before looking at options — it keeps you from being pulled toward specs that don't matter for your use case.",
-      "Set a real budget, including accessories. Chargers, cases, extended warranties, and setup accessories can add 10–20% to the sticker price — budget for the total, not just the headline number.",
-      "Compare at least two to three alternatives at a similar price. A single listing in isolation makes even a mediocre deal look reasonable; side-by-side comparison is where the real differences show up.",
-      "Check the return window and warranty terms before purchase, not after — especially for electronics, where a defect often only shows up after a few weeks of real use.",
-      "Verify seller/retailer legitimacy for marketplace listings — established retailer storefronts and verified sellers on a marketplace are generally lower-risk than unfamiliar third-party sellers with no track record.",
-      "Read a few independent (non-retailer) reviews, not just the star rating — a 4.5-star average can hide a pattern of the same specific complaint.",
-      "Confirm what's actually in the box — some listings show accessories that aren't included, or region-specific variants that differ from what's pictured.",
-      "Wait 24 hours on any non-urgent purchase over your comfort threshold — it filters out most impulse buys you'd otherwise regret.",
+      "There are three common starting points for pricing: cost-plus (cost per unit plus a target margin), competitor-based (priced relative to existing alternatives), and value-based (priced according to what the outcome is worth to the customer). Most small businesses should sanity-check with all three, not rely on just one.",
+      "Cost-plus pricing is the easiest to compute and the easiest to get wrong in isolation — it guarantees you cover your costs, but says nothing about whether customers will actually pay that price, or whether you're leaving money on the table if your value to the customer is much higher than your cost.",
+      "To cover your cost and hit a target margin: price = cost ÷ (1 − desired margin %). A 100 cost with a 20% target margin needs a price of ₹125, not ₹120 — a common pricing mistake is adding the margin percentage directly to cost instead of working backward from the target margin on the final price.",
+      "Account for fees and taxes taken off the top of your selling price (payment processing, marketplace commissions, applicable taxes) before you calculate your real margin — a price that looks profitable before fees can be break-even or worse after them.",
+      "Compare against real alternatives your customer would consider, not just direct competitors. If you're priced significantly above alternatives, you need a clear, communicable reason why (quality, speed, service, exclusivity) — if you can't articulate it, the customer won't infer it either.",
+      "Price is not fixed forever. Plan an early review point (after your first 20-50 sales, or 4-6 weeks) to check whether your assumptions about cost, demand, and willingness to pay actually held up — adjusting is normal, not a sign of failure.",
+      "This is a planning framework, not tax or regulatory advice — confirm applicable taxes, GST/VAT treatment, and compliance requirements for your specific business with a qualified professional.",
+    ],
+  },
+  {
+    slug: "how-to-plan-your-first-30-days-in-business",
+    title: "How to Plan Your First 30 Days in Business",
+    description: "A week-by-week structure for the first month after you decide to move from idea to action.",
+    body: [
+      "The first 30 days should be about reducing the biggest unknowns as cheaply and quickly as possible — not about building a polished, complete operation from day one.",
+      "Week 1 — customer research: talk to real potential customers, sharpen who you're building for and what problem you're solving, and write down the assumptions you're most uncertain about.",
+      "Week 2 — offer and pricing: decide exactly what you're selling, in what form, and at what price. Run the numbers (cost, margin, rough break-even) before committing capital to it.",
+      "Week 3 — setup and sourcing: line up whatever you need to actually deliver the offer — suppliers, equipment, a way to take payment, a way to be found by your first customers. Keep this as lean as the offer allows; you can add polish after you have real customer feedback.",
+      "Week 4 — soft launch: sell to a small, real group rather than a full public launch. Treat every sale in this window as a source of feedback, not just revenue — what worked, what confused people, what they asked for that you didn't offer.",
+      "Record your first revenue and expense entries as soon as they happen, even if they're small. A habit of tracking from day one is far easier to build than retrofitting bookkeeping three months in once things get busy.",
+      "Expect this plan to change. The goal of the first 30 days isn't to execute a fixed plan perfectly — it's to convert guesses into evidence quickly enough that month two is based on what you've actually learned.",
     ],
   },
 ];

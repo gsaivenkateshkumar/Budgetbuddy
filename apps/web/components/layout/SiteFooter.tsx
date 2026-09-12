@@ -8,7 +8,6 @@ const FOOTER_LINKS = [
   { href: "/guides", label: "Guides" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Use" },
-  { href: "/affiliate-disclosure", label: "Affiliate Disclosure" },
 ];
 
 export function SiteFooter() {
@@ -21,7 +20,7 @@ export function SiteFooter() {
               className="flex h-6 w-6 items-center justify-center rounded-md bg-violet-600 text-[11px] font-bold text-white"
               aria-hidden="true"
             >
-              BB
+              SC
             </span>
             {SITE_NAME}
           </span>
