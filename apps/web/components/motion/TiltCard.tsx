@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
-const MAX_TILT_DEG = 3;
+const MAX_TILT_DEG = 7;
 
 /**
  * Restrained pointer-responsive depth for cards (LEVEL 2→3 in the surface
- * hierarchy): a couple degrees of tilt plus a spotlight that follows the
+ * hierarchy): up to seven degrees of tilt plus a spotlight that follows the
  * pointer, both driven by CSS custom properties updated directly on the
  * DOM node inside a requestAnimationFrame — never React state — so a
  * mousemove never triggers a re-render. Inert on touch devices (no
@@ -18,9 +18,14 @@ export function TiltCard({ children, className = "" }: { children: ReactNode; cl
   const ref = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
+  useEffect(() => () => {
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+  }, []);
+
   function handlePointerMove(event: React.PointerEvent<HTMLDivElement>) {
     if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const node = ref.current;
     if (!node) return;
@@ -53,6 +58,7 @@ export function TiltCard({ children, className = "" }: { children: ReactNode; cl
       className={`tilt-surface relative ${className}`}
       onPointerMove={handlePointerMove}
       onPointerLeave={reset}
+      onPointerCancel={reset}
     >
       <div className="tilt-spotlight pointer-events-none absolute inset-0 rounded-[inherit]" aria-hidden="true" />
       {children}

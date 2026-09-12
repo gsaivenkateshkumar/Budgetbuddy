@@ -1,36 +1,17 @@
+import { TiltCard } from "@/components/motion/TiltCard";
+import Link from "next/link";
+
 const STEPS = [
-  {
-    step: "1",
-    title: "Tell us what you need",
-    body: "Search for a product by name, or describe what you're trying to buy or accomplish in plain language.",
-  },
-  {
-    step: "2",
-    title: "Compare retailers and specs",
-    body: "See price, specifications, and retailer options for matching products side by side, not just a single listing.",
-  },
-  {
-    step: "3",
-    title: "Get an explained recommendation",
-    body: "Budget Buddy shows the reasoning behind each result — price, specs, and reviews — so you can decide with the full picture.",
-  },
+  { step: "01", icon: "⌕", title: "Start with a possibility.", body: "A new laptop? A better setup? Tell us what you need and what you want to spend.", href: "/search", action: "Explore products" },
+  { step: "02", icon: "⇄", title: "See the bigger picture.", body: "Bring prices, specifications, and retailer options together. Make the trade-offs clear.", href: "/compare", action: "Compare your options" },
+  { step: "03", icon: "✧", title: "Find your kind of perfect.", body: "Get a recommendation with reasoning you can understand. The final choice is always yours.", href: "/ask", action: "Meet your AI buddy" },
 ];
 
 export function HowItWorks() {
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-slate-900">How Budget Buddy works</h2>
-      <div className="mt-6 grid gap-6 sm:grid-cols-3">
-        {STEPS.map((item) => (
-          <div key={item.step} className="flex flex-col gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
-              {item.step}
-            </span>
-            <h3 className="text-sm font-semibold text-slate-900">{item.title}</h3>
-            <p className="text-sm text-slate-600">{item.body}</p>
-          </div>
-        ))}
-      </div>
+    <div className="journey">
+      <div className="journey-heading"><div><p className="section-kicker">FROM OVERWHELMED TO ALL SET</p><h2>Less searching. More certainty.</h2></div><p>Three simple steps.<br />One much better decision.</p></div>
+      <div className="journey-grid">{STEPS.map((item) => <TiltCard key={item.step} className="journey-card"><span className="journey-number">{item.step}</span><span className="journey-icon" aria-hidden="true">{item.icon}</span><h3>{item.title}</h3><p>{item.body}</p><Link href={item.href}>{item.action} <span aria-hidden="true">↗</span></Link></TiltCard>)}</div>
     </div>
   );
 }

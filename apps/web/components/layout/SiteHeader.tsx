@@ -60,9 +60,9 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
+      className={`site-header sticky top-0 z-40 border-b backdrop-blur transition-colors ${
         dark
-          ? "border-white/10 bg-black/70 backdrop-blur-xl"
+          ? "border-white/10 bg-[#101c20]/95 backdrop-blur-xl"
           : scrolled
             ? "border-slate-200 bg-white/95 shadow-sm"
             : "border-slate-200 bg-white/90"
@@ -74,10 +74,10 @@ export function SiteHeader() {
           className={`flex items-center gap-2 text-lg font-semibold transition-colors ${dark ? "text-white" : "text-slate-900"}`}
         >
           <span
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white"
+            className="brand-mark flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-sm font-bold text-white"
             aria-hidden="true"
           >
-            BB
+            bb.
           </span>
           Budget Buddy
         </Link>

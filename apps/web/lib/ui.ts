@@ -11,7 +11,7 @@
  */
 
 const BASE_BUTTON =
-  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2";
+  "depth-button inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2";
 
 /* Every variant carries a 1px border (transparent where there's no visible
  * border) so buttons of different variants placed side by side render at

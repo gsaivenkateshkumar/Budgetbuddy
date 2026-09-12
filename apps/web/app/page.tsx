@@ -33,11 +33,7 @@ export default async function HomePage() {
     <>
       <Hero />
 
-      {/* Smooth bridge from the dark cinematic hero into the site's light
-       * content sections — a gradient band instead of an abrupt cut. */}
-      <div aria-hidden="true" className="h-16 bg-gradient-to-b from-[#07080A] to-white sm:h-24" />
-
-      <section className="py-16">
+      <section id="how-it-works" className="py-16">
         <Container>
           <Reveal>
             <HowItWorks />
