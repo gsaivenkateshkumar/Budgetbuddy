@@ -1,14 +1,20 @@
-# Budget Buddy
+# Start Currency
 
-> Your AI Shopping Buddy.
+> Turn your idea into a business.
 
-Budget Buddy is an AI-powered shopping intelligence and product comparison
-platform. It helps users decide *what* to buy — comparing products and
-retailers on price, specifications, reviews, and overall value — rather than
-just chasing the lowest price.
+Start Currency is an AI business builder and operating assistant, operated
+by Promote. It helps people validate a business idea, plan a launch, budget
+startup costs, run break-even/margin/pricing calculations, track a launch
+roadmap, and manage real revenue and expenses — with an AI copilot that has
+context on the user's own business.
 
 Launch market: **India** (INR, English). The architecture is
 internationalization-ready for future markets/currencies/languages.
+
+Note: this repository was originally built as "Budget Buddy", a shopping-
+comparison product, before pivoting to Start Currency. Some historical
+Alembic migrations and unused database tables from that product remain for
+migration-history safety — see `docs/product-decisions.md`.
 
 ## Repository structure
 
@@ -89,7 +95,6 @@ See [docs/architecture.md](docs/architecture.md),
 [docs/development.md](docs/development.md),
 [docs/api.md](docs/api.md),
 [docs/deployment.md](docs/deployment.md),
-[docs/data-sources.md](docs/data-sources.md),
 [docs/security.md](docs/security.md), and
 [docs/product-decisions.md](docs/product-decisions.md).
 
