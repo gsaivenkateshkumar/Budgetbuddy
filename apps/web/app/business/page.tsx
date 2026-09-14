@@ -34,7 +34,7 @@ export default function BusinessListPage() {
   if (loading) {
     return (
       <Container className="py-10">
-        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+        <div className="h-64 rounded-xl bg-slate-100" />
       </Container>
     );
   }
@@ -74,7 +74,7 @@ export default function BusinessListPage() {
       ) : businesses === null ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100" />
+            <div key={i} className="h-28 rounded-xl bg-slate-100" />
           ))}
         </div>
       ) : businesses.length === 0 ? (

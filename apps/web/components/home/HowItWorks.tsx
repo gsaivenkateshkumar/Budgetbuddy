@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
-import { Reveal } from "@/components/motion/Reveal";
-import { TiltCard } from "@/components/motion/TiltCard";
 
 const STAGES = [
   {
@@ -51,23 +49,16 @@ export function HowItWorks() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {STAGES.map((stage, i) => (
-          <Reveal key={stage.label} delayMs={i * 60}>
-            <TiltCard className="h-full rounded-xl">
-              <Card hover className="flex h-full flex-col p-5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
-                  {i + 1}
-                </span>
-                <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
-                <p className="mt-1.5 flex-1 text-sm text-slate-600">{stage.body}</p>
-                <Link
-                  href={stage.href}
-                  className="mt-4 text-xs font-medium text-violet-600 hover:text-violet-700"
-                >
-                  {stage.action} &rarr;
-                </Link>
-              </Card>
-            </TiltCard>
-          </Reveal>
+          <Card key={stage.label} hover className="flex h-full flex-col p-5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
+              {i + 1}
+            </span>
+            <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
+            <p className="mt-1.5 flex-1 text-sm text-slate-600">{stage.body}</p>
+            <Link href={stage.href} className="mt-4 text-xs font-medium text-violet-600 hover:text-violet-700">
+              {stage.action} &rarr;
+            </Link>
+          </Card>
         ))}
       </div>
     </div>

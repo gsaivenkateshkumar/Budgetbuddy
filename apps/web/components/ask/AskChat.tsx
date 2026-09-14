@@ -121,7 +121,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
                       key={prompt}
                       type="button"
                       onClick={() => send(prompt)}
-                      className="press-scale rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-violet-300 hover:text-violet-700"
+                      className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-violet-300 hover:text-violet-700"
                     >
                       {prompt}
                     </button>
@@ -130,7 +130,7 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
               </div>
             )}
             {messages.map((m, i) => (
-              <div key={i} className={`message-in flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
                     m.role === "user"
@@ -155,11 +155,9 @@ export function AskChat({ initialQuery }: { initialQuery: string }) {
               </div>
             ))}
             {pending && (
-              <div className="flex justify-start" role="status" aria-label="Start Currency is thinking">
-                <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-slate-100 px-4 py-3">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400" />
+              <div className="flex justify-start" role="status">
+                <div className="rounded-2xl rounded-bl-sm bg-slate-100 px-4 py-3 text-sm text-slate-500">
+                  Thinking…
                 </div>
               </div>
             )}

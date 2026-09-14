@@ -59,7 +59,7 @@ export default function PlanPage() {
   if (loading) {
     return (
       <Container className="py-10">
-        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+        <div className="h-64 rounded-xl bg-slate-100" />
       </Container>
     );
   }

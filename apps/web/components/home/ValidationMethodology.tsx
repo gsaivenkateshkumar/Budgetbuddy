@@ -1,6 +1,4 @@
 import { Card } from "@/components/ui/Card";
-import { Reveal } from "@/components/motion/Reveal";
-import { TiltCard } from "@/components/motion/TiltCard";
 
 const DIMENSIONS = [
   { label: "Demand evidence", max: 20 },
@@ -24,16 +22,12 @@ export function ValidationMethodology() {
         explanation, grounded in that score.
       </p>
 
-      <div className="relative mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {DIMENSIONS.map((dim, i) => (
-          <Reveal key={dim.label} delayMs={i * 60}>
-            <TiltCard className="h-full rounded-xl">
-              <Card hover className="relative flex h-full items-center justify-between gap-3 p-5">
-                <span className="text-sm font-semibold text-slate-900">{dim.label}</span>
-                <span className="tabular-nums text-sm font-semibold text-violet-600">/{dim.max}</span>
-              </Card>
-            </TiltCard>
-          </Reveal>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {DIMENSIONS.map((dim) => (
+          <Card key={dim.label} hover className="flex h-full items-center justify-between gap-3 p-5">
+            <span className="text-sm font-semibold text-slate-900">{dim.label}</span>
+            <span className="tabular-nums text-sm font-semibold text-violet-600">/{dim.max}</span>
+          </Card>
         ))}
       </div>
 

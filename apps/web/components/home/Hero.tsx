@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FloatingPaths } from "@/components/ui/background-paths";
 import { HeroSearch } from "./HeroSearch";
 import { SITE_NAME } from "@/lib/siteConfig";
 
@@ -12,11 +11,6 @@ export function Hero() {
       id="home-hero"
       className="relative isolate min-h-[600px] overflow-hidden bg-[#07080A] px-4 py-20 sm:min-h-[680px] sm:px-6 sm:py-24 lg:min-h-[720px]"
     >
-      <div aria-hidden="true" className="absolute inset-0 z-0 opacity-70 sm:opacity-100">
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
-      </div>
-
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center gap-8 text-center">
         <p className="text-sm font-semibold uppercase tracking-wide text-violet-300">
           {SITE_NAME} — AI Business Builder
@@ -37,18 +31,16 @@ export function Hero() {
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/validate"
-            className="inline-flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_8px_30px_-8px_rgba(109,93,251,0.65)] transition hover:-translate-y-0.5 hover:bg-violet-500 active:translate-y-0"
+            className="inline-flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_8px_30px_-8px_rgba(109,93,251,0.65)] transition-colors hover:bg-violet-500"
           >
             Validate my idea
           </Link>
           <Link
             href="/plan"
-            className="group inline-flex items-center gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/[0.10]"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/[0.10]"
           >
             Plan a business
-            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">
-              &rarr;
-            </span>
+            <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
 

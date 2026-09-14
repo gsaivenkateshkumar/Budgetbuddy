@@ -69,7 +69,7 @@ function BudgetPanel({ businessId }: { businessId: number }) {
     }
   }
 
-  if (!budget) return <div className="h-48 animate-pulse rounded-xl bg-slate-100" />;
+  if (!budget) return <div className="h-48 rounded-xl bg-slate-100" />;
 
   return (
     <Card className="p-6">
@@ -144,7 +144,7 @@ function RoadmapPanel({ businessId }: { businessId: number }) {
     }
   }
 
-  if (!tasks) return <div className="h-48 animate-pulse rounded-xl bg-slate-100" />;
+  if (!tasks) return <div className="h-48 rounded-xl bg-slate-100" />;
 
   const completed = tasks.filter((t) => t.status === "completed").length;
   const grouped = new Map<string, BusinessTask[]>();
@@ -318,7 +318,7 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
   if (authLoading) {
     return (
       <Container className="py-10">
-        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+        <div className="h-64 rounded-xl bg-slate-100" />
       </Container>
     );
   }
@@ -349,7 +349,7 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
   if (!business) {
     return (
       <Container className="py-10">
-        <div className="h-64 animate-pulse rounded-xl bg-slate-100" />
+        <div className="h-64 rounded-xl bg-slate-100" />
       </Container>
     );
   }
