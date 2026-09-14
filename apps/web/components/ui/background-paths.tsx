@@ -37,7 +37,7 @@ export function FloatingPaths({ position }: { position: number }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ contain: "layout paint" }}>
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <svg
         className="h-full w-full"
         viewBox="0 0 696 316"
