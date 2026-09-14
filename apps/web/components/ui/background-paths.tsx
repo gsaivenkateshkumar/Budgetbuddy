@@ -5,13 +5,13 @@ import { motion, useReducedMotion } from "framer-motion";
 /* Adapted from the 21st.dev "Background Paths" reference component for the
  * homepage hero (see components/home/Hero.tsx). Kept dependency-light:
  * framer-motion drives the entrance/loop, everything else is plain SVG.
- * Reduced from the reference's 36 paths to 18 (36 animated nodes total
- * across both layers) after a stability/CPU pass — `pathOffset` animation
- * on an SVG path isn't a compositor-only operation like transform/opacity,
- * so a lower, continuously-running node count matters more than it would
- * for a purely CSS-transform effect. Only `pathLength`/`pathOffset`/`opacity`
- * are animated (no width/height/position), so there's no layout cost. */
-const PATH_COUNT = 18;
+ * Reduced to 12 paths per layer (24 animated nodes total across both
+ * layers) after a stability/repaint pass. Only `pathLength`/`opacity` are
+ * animated (no width/height/position), so there's no layout cost, and
+ * `pathOffset` was dropped entirely — continuously re-dashing a stroke on
+ * every frame isn't a compositor-only operation like transform/opacity, and
+ * was the main source of the repaint inconsistency visible during scroll. */
+const PATH_COUNT = 12;
 
 /* Every 7th path (deterministic on `i`, never Math.random — this renders
  * identically on server and client) gets a faint violet tint instead of
@@ -37,7 +37,7 @@ export function FloatingPaths({ position }: { position: number }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ contain: "layout paint" }}>
       <svg
         className="h-full w-full"
         viewBox="0 0 696 316"
@@ -53,9 +53,7 @@ export function FloatingPaths({ position }: { position: number }) {
             strokeWidth={path.width}
             initial={{ pathLength: 0.3, opacity: 0.35 }}
             animate={
-              shouldReduceMotion
-                ? { pathLength: 1, opacity: 0.3 }
-                : { pathLength: 1, opacity: [0.2, 0.5, 0.2], pathOffset: [0, 1, 0] }
+              shouldReduceMotion ? { pathLength: 1, opacity: 0.3 } : { pathLength: 1, opacity: [0.2, 0.5, 0.2] }
             }
             transition={
               shouldReduceMotion ? { duration: 0 } : { duration: 20 + path.id * 0.25, repeat: Infinity, ease: "linear" }
