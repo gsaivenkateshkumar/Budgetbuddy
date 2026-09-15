@@ -27,7 +27,7 @@ export function HeroSearch() {
         />
         <button
           type="submit"
-          className="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
+          className="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-500"
         >
           Validate
         </button>
@@ -38,7 +38,7 @@ export function HeroSearch() {
           <li key={prompt.label}>
             <a
               href={PROMPT_HREFS[prompt.label] ?? `/validate?idea=${encodeURIComponent(prompt.idea)}`}
-              className="inline-block rounded-full border border-white/[0.10] bg-white/[0.04] px-3 py-1.5 text-xs text-slate-300 transition-colors hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
+              className="inline-block rounded-full border border-white/[0.10] bg-white/[0.04] px-3 py-1.5 text-xs text-slate-300 hover:bg-violet-500/10 hover:text-white"
             >
               {prompt.label}
             </a>

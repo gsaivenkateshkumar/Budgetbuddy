@@ -45,13 +45,13 @@ export default function HomePage() {
           <div>
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-slate-900">Financial tools</h2>
-              <LinkButton href="/tools" variant="ghost" size="sm">
+              <LinkButton href="/tools" variant="ghost" size="sm" className="transition-none">
                 View all tools &rarr;
               </LinkButton>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {TOOLS.map((tool) => (
-                <Card key={tool.name} hover className="p-5">
+                <Card key={tool.name} className="p-5">
                   <h3 className="text-sm font-semibold text-slate-900">{tool.name}</h3>
                   <p className="mt-2 text-sm text-slate-600">{tool.body}</p>
                 </Card>
@@ -87,12 +87,12 @@ export default function HomePage() {
               Start with validation — it&apos;s free, structured, and takes a few minutes.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <LinkButton href="/validate" variant="primary" size="lg">
+              <LinkButton href="/validate" variant="primary" size="lg" className="transition-none">
                 Validate my idea
               </LinkButton>
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
               >
                 Create an account
               </Link>

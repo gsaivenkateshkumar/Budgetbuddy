@@ -15,7 +15,7 @@ export function GuidesPreview() {
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {featured.map((guide) => (
-          <Card key={guide.slug} hover className="p-5">
+          <Card key={guide.slug} className="p-5">
             <Link href={`/guides/${guide.slug}`} className="flex flex-col gap-2">
               <h3 className="text-sm font-semibold text-slate-900">{guide.title}</h3>
               <p className="text-sm text-slate-600">{guide.description}</p>

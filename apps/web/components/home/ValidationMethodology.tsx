@@ -24,7 +24,7 @@ export function ValidationMethodology() {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {DIMENSIONS.map((dim) => (
-          <Card key={dim.label} hover className="flex h-full items-center justify-between gap-3 p-5">
+          <Card key={dim.label} className="flex h-full items-center justify-between gap-3 p-5">
             <span className="text-sm font-semibold text-slate-900">{dim.label}</span>
             <span className="tabular-nums text-sm font-semibold text-violet-600">/{dim.max}</span>
           </Card>

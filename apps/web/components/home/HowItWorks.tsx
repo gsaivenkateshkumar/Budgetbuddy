@@ -49,7 +49,7 @@ export function HowItWorks() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {STAGES.map((stage, i) => (
-          <Card key={stage.label} hover className="flex h-full flex-col p-5">
+          <Card key={stage.label} className="flex h-full flex-col p-5">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
               {i + 1}
             </span>

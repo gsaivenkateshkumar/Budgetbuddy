@@ -25,7 +25,7 @@ export function SiteHeader() {
 
   // Pathname-only: the homepage header is always dark, every other route is
   // always light. No scroll listener, no IntersectionObserver, no per-frame
-  // state — a value this simple can't flicker.
+  // state. The homepage stays in normal flow with an opaque surface.
   const dark = pathname === "/";
   const accountLink = {
     href: user ? "/account" : "/login",
@@ -35,14 +35,14 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b ${
-        dark ? "border-white/10 bg-[#07080A]/95" : "border-slate-200 bg-white/95 shadow-sm backdrop-blur"
+      className={`border-b ${
+        dark ? "border-white/10 bg-[#07080A]" : "sticky top-0 z-50 border-slate-200 bg-white/95 shadow-sm backdrop-blur"
       }`}
     >
       <Container className="flex h-16 items-center justify-between">
         <Link
           href="/"
-          className={`flex items-center gap-2 text-lg font-semibold transition-colors ${dark ? "text-white" : "text-slate-900"}`}
+          className={`flex items-center gap-2 text-lg font-semibold ${dark ? "text-white" : "text-slate-900 transition-colors"}`}
         >
           <span
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-xs font-bold text-white"
@@ -62,7 +62,7 @@ export function SiteHeader() {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${dark ? "" : "transition"} ${
                       dark
                         ? active
                           ? "bg-white/10 text-violet-200"
@@ -82,7 +82,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className={`flex h-10 w-10 items-center justify-center rounded-md transition-colors md:hidden ${
+          className={`flex h-10 w-10 items-center justify-center rounded-md md:hidden ${dark ? "" : "transition-colors"} ${
             dark ? "text-slate-300 hover:bg-white/10" : "text-slate-600 hover:bg-slate-100"
           }`}
           aria-expanded={menuOpen}
