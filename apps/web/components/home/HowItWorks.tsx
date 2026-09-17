@@ -47,13 +47,15 @@ export function HowItWorks() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="relative grid gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
+        <div className="pointer-events-none absolute left-[10%] right-[10%] top-4 hidden h-px bg-violet-100 lg:block" aria-hidden="true" />
         {STAGES.map((stage, i) => (
-          <Card key={stage.label} className="flex h-full flex-col p-5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
+          <Card key={stage.label} className="group relative flex h-full flex-col border-slate-200 p-5 transition-colors duration-150 hover:border-violet-300 lg:rounded-none lg:border-y-0 lg:border-l-0 lg:first:rounded-l-xl lg:first:border-l lg:last:rounded-r-xl lg:last:border-r">
+            <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white ring-8 ring-white transition-colors duration-150 group-hover:bg-teal-600">
               {i + 1}
             </span>
-            <h3 className="mt-3 text-sm font-semibold text-slate-900">{stage.label}</h3>
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">0{i + 1}</p>
+            <h3 className="mt-1 text-sm font-semibold text-slate-900">{stage.label}</h3>
             <p className="mt-1.5 flex-1 text-sm text-slate-600">{stage.body}</p>
             <Link href={stage.href} className="mt-4 text-xs font-medium text-violet-600 hover:text-violet-700">
               {stage.action} &rarr;

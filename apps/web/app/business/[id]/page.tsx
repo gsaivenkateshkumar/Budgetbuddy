@@ -78,24 +78,26 @@ function BudgetPanel({ businessId }: { businessId: number }) {
         {rows.map((row, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
+              aria-label={`Budget category ${i + 1}`}
               value={row.category}
               onChange={(e) => setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, category: e.target.value } : r)))}
               placeholder="Category"
-              className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             />
             <input
+              aria-label={`Budget amount ${i + 1}`}
               type="number"
               min="0"
               value={row.amount}
               onChange={(e) => setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, amount: e.target.value } : r)))}
               placeholder="₹0"
-              className="w-32 rounded-lg border border-slate-300 px-3 py-2 text-right text-sm tabular-nums outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-28 rounded-lg border border-slate-300 px-3 py-2 text-right text-sm tabular-nums outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 sm:w-32"
             />
             <button
               type="button"
               aria-label="Remove row"
               onClick={() => setRows((prev) => prev.filter((_, idx) => idx !== i))}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-600"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600"
             >
               &times;
             </button>
@@ -186,7 +188,7 @@ function RoadmapPanel({ businessId }: { businessId: number }) {
                       className="h-4 w-4 accent-violet-600"
                       aria-label={`Mark "${task.title}" ${task.status === "completed" ? "pending" : "completed"}`}
                     />
-                    <span className={`text-sm ${task.status === "completed" ? "text-slate-400 line-through" : "text-slate-700"}`}>
+                    <span className={`text-sm ${task.status === "completed" ? "text-slate-600 line-through" : "text-slate-700"}`}>
                       {task.title}
                     </span>
                   </li>
@@ -200,7 +202,15 @@ function RoadmapPanel({ businessId }: { businessId: number }) {
   );
 }
 
-function FinancialsPanel({ businessId, onChange }: { businessId: number; onChange: () => void }) {
+function FinancialsPanel({
+  businessId,
+  summary,
+  onChange,
+}: {
+  businessId: number;
+  summary: FinancialSummary | null;
+  onChange: () => void;
+}) {
   const [type, setType] = useState<EntryType>("revenue");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -234,8 +244,23 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
   return (
     <Card className="p-6">
       <h2 className="text-lg font-semibold text-slate-900">Add revenue or expense</h2>
+      {summary && (
+        <dl className="mt-4 grid grid-cols-3 gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+          {[
+            ["Revenue", summary.total_revenue],
+            ["Expenses", summary.total_expenses],
+            ["Net", summary.net_result],
+          ].map(([label, value]) => (
+            <div key={label} className="min-w-0">
+              <dt className="text-xs font-medium text-slate-600">{label}</dt>
+              <dd className="mt-0.5 truncate text-sm font-semibold tabular-nums text-slate-900">₹{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       <form onSubmit={submit} className="mt-4 grid gap-3 sm:grid-cols-4">
         <select
+          aria-label="Financial entry type"
           value={type}
           onChange={(e) => setType(e.target.value as EntryType)}
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
@@ -244,6 +269,7 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
           <option value="expense">Expense</option>
         </select>
         <input
+          aria-label="Financial entry amount"
           type="number"
           min="0"
           placeholder="Amount (₹)"
@@ -255,6 +281,7 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
         <input
+          aria-label="Financial entry category"
           type="text"
           placeholder="Category (optional)"
           value={category}
@@ -265,6 +292,7 @@ function FinancialsPanel({ businessId, onChange }: { businessId: number; onChang
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
         <input
+          aria-label="Financial entry date"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -394,7 +422,7 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="flex flex-col gap-6">
+        <div className="min-w-0 flex flex-col gap-6">
           {validation === "none" ? (
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-slate-900">Validation</h2>
@@ -419,9 +447,13 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
           <BudgetPanel businessId={businessId} />
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="min-w-0 flex flex-col gap-6">
           <RoadmapPanel businessId={businessId} />
-          <FinancialsPanel businessId={businessId} onChange={() => setTasksVersion((v) => v + 1)} />
+          <FinancialsPanel
+            businessId={businessId}
+            summary={summary}
+            onChange={() => setTasksVersion((v) => v + 1)}
+          />
           {summary && summary.entry_count === 0 && (
             <p className="text-sm text-slate-500">No financial activity yet. Add your first revenue or expense entry above.</p>
           )}

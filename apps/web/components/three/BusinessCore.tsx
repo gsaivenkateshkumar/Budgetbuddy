@@ -6,7 +6,7 @@ import { type Group } from "three";
 import { SceneFallback } from "./SceneFallback";
 
 const NODES: [number, number, number][] = [
-  [-1.7, 1.1, 0], [1.75, 0.85, -0.25], [1.7, -1.2, 0.1], [-1.7, -1.15, -0.15],
+  [-1.85, 1.05, 0], [0, 1.9, -0.15], [1.85, 0.75, -0.25], [1.35, -1.25, 0.1], [-1.65, -1.2, -0.15],
 ];
 const CONNECTIONS = new Float32Array(NODES.flatMap((node) => [0, 0, 0, ...node]));
 
@@ -63,7 +63,7 @@ function Core({ onFailure }: { onFailure: () => void }) {
           </mesh>
           <mesh position={[0, 0, 0.25]}>
             <sphereGeometry args={[0.085, 12, 8]} />
-            <meshStandardMaterial color={i === 3 ? "#0F9F8F" : "#ada1fc"} roughness={0.6} />
+            <meshStandardMaterial color={i === 4 ? "#0F9F8F" : "#ada1fc"} roughness={0.6} />
           </mesh>
         </group>
       ))}

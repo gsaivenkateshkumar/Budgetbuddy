@@ -13,7 +13,11 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-slate-50">
-      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-16 sm:gap-y-6">
+      {/* sm:pr reserves the bottom-right corner column StartBot floats in —
+       * on a short page the footer sits at the natural viewport bottom via
+       * flex-grow (no amount of scroll padding elsewhere helps that), so the
+       * nav's own right edge needs to stay clear of it directly. */}
+      <Container className="flex flex-col gap-8 py-10 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-16 sm:gap-y-6 sm:pr-28 lg:pr-36">
         <div className="flex flex-col gap-1">
           <span className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <span

@@ -55,27 +55,29 @@ export function StartupBudgetCalculator() {
       </p>
 
       <div className="mt-4 flex flex-col gap-2">
-        {rows.map((row) => (
+        {rows.map((row, index) => (
           <div key={row.id} className="flex items-center gap-2">
             <input
+              aria-label={`Budget category ${index + 1}`}
               value={row.category}
               onChange={(e) => updateCategory(row.id, e.target.value)}
               placeholder="Category"
-              className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             />
             <input
+              aria-label={`Budget amount ${index + 1}`}
               type="number"
               min="0"
               value={row.amount}
               onChange={(e) => updateAmount(row.id, e.target.value)}
               placeholder="₹0"
-              className="w-32 rounded-lg border border-slate-300 px-3 py-2 text-right text-sm tabular-nums outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-28 rounded-lg border border-slate-300 px-3 py-2 text-right text-sm tabular-nums outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 sm:w-32"
             />
             <button
               type="button"
               onClick={() => removeRow(row.id)}
               aria-label={`Remove ${row.category || "row"}`}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-600"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600"
             >
               &times;
             </button>

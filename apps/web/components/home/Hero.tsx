@@ -10,11 +10,11 @@ export function Hero() {
   return (
     <section
       id="home-hero"
-      className="min-h-[600px] bg-[#07080A] px-4 py-20 sm:min-h-[680px] sm:px-6 sm:py-24 lg:min-h-[720px]"
+      className="min-h-[600px] bg-[#07080A] px-4 py-16 sm:min-h-[680px] sm:px-6 sm:py-24 lg:min-h-[720px]"
     >
       <div className="mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[3fr_2fr]">
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-violet-300">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-5 text-center sm:gap-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-violet-300 sm:text-sm">
             {SITE_NAME} — AI Business Builder
           </p>
 
@@ -25,7 +25,7 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="max-w-2xl text-base text-slate-300 sm:text-lg">
+          <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
             Validate your idea, plan your budget, build a launch roadmap, and manage your business with
             an AI copilot.
           </p>
@@ -33,13 +33,13 @@ export function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/validate"
-              className="inline-flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-500"
+              className="inline-flex min-h-11 items-center gap-2 rounded-2xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-violet-500 active:scale-[0.98]"
             >
               Validate my idea
             </Link>
             <Link
               href="/plan"
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-6 py-3 text-sm font-semibold text-white hover:bg-white/[0.10]"
+              className="inline-flex min-h-11 items-center gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-white/[0.10] active:scale-[0.98]"
             >
               Plan a business
               <span aria-hidden="true">&rarr;</span>
