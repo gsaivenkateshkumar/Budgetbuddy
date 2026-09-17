@@ -40,6 +40,47 @@ function emptyDraft(idea: string): Draft {
 
 const STEPS = ["Your idea", "Market", "Budget & time", "Customer & goals"];
 
+const CATEGORIES = [
+  "Retail & Goods",
+  "Manufacturing & Print",
+  "Food & Beverage",
+  "B2B Services",
+  "Technology / SaaS",
+  "Education & Content",
+];
+
+const STEP_TIPS: Record<number, { title: string; items: string[] }> = {
+  0: {
+    title: "What makes an effective idea summary?",
+    items: [
+      "What are you selling? Specify the concrete product, service, or offering.",
+      "Who is it for? Pinpoint the specific audience you're starting with.",
+      "Why choose you? Name the friction point your idea removes.",
+    ],
+  },
+  1: {
+    title: "Why market details help",
+    items: [
+      "A named category and location sharpen demand-evidence scoring.",
+      "Online/offline/hybrid affects operational-feasibility assumptions.",
+    ],
+  },
+  2: {
+    title: "Why budget & experience matter",
+    items: [
+      "Startup budget drives capital-feasibility scoring directly.",
+      "Experience and time commitment inform operational-risk confidence.",
+    ],
+  },
+  3: {
+    title: "Why customer & goals matter",
+    items: [
+      "A specific target customer sharpens differentiation scoring.",
+      "Clear goals shape the recommended next actions in your report.",
+    ],
+  },
+};
+
 export function ValidateFlow({ initialIdea }: { initialIdea: string }) {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -126,24 +167,33 @@ export function ValidateFlow({ initialIdea }: { initialIdea: string }) {
 
   const canGoNext = step === 0 ? draft.idea.trim().length > 0 && draft.description.trim().length > 0 : true;
 
+  const tips = STEP_TIPS[step];
+
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-6">
-      <ol className="flex items-center justify-center gap-2 text-xs text-slate-500">
+    <div className="mx-auto flex max-w-6xl flex-col gap-6">
+      <div role="tablist" aria-label="Validation steps" className="flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2">
         {STEPS.map((label, i) => (
-          <li key={label} className={`flex items-center gap-2 ${i === step ? "font-semibold text-violet-700" : ""}`}>
+          <div
+            key={label}
+            role="tab"
+            aria-selected={i === step}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold sm:text-sm ${
+              i === step ? "bg-violet-600 text-white" : i < step ? "text-violet-700" : "text-slate-500"
+            }`}
+          >
             <span
               className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                i <= step ? "bg-violet-600 text-white" : "bg-slate-200 text-slate-500"
+                i === step ? "bg-white/20" : i < step ? "bg-violet-100 text-violet-700" : "bg-slate-200"
               }`}
             >
               {i + 1}
             </span>
             {label}
-            {i < STEPS.length - 1 && <span className="text-slate-300">&rarr;</span>}
-          </li>
+          </div>
         ))}
-      </ol>
+      </div>
 
+      <div className="grid gap-6 lg:grid-cols-[13fr_7fr]">
       <Card className="flex flex-col gap-4 p-6">
         {step === 0 && (
           <>
@@ -178,16 +228,23 @@ export function ValidateFlow({ initialIdea }: { initialIdea: string }) {
         {step === 1 && (
           <>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="industry" className="text-sm font-medium text-slate-700">
-                Industry / category (optional)
-              </label>
-              <input
-                id="industry"
-                value={draft.industry}
-                onChange={(e) => update("industry", e.target.value)}
-                placeholder="e.g. Food, Retail, Services"
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-              />
+              <span className="text-sm font-medium text-slate-700">Industry / category (optional)</span>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => update("industry", cat)}
+                    className={`rounded-lg border px-3 py-2 text-left text-xs font-medium transition ${
+                      draft.industry === cat
+                        ? "border-violet-600 bg-violet-50 text-violet-700"
+                        : "border-slate-300 text-slate-700 hover:border-violet-300"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="flex flex-col gap-1.5">
               <label htmlFor="location" className="text-sm font-medium text-slate-700">
@@ -336,6 +393,21 @@ export function ValidateFlow({ initialIdea }: { initialIdea: string }) {
           )}
         </div>
       </Card>
+
+      <Card className="flex h-fit flex-col gap-4 p-6">
+        <p className="text-sm font-semibold text-slate-900">{tips.title}</p>
+        <ol className="flex flex-col gap-3">
+          {tips.items.map((item, i) => (
+            <li key={i} className="flex gap-3 text-sm text-slate-600">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-100 text-[11px] font-semibold text-violet-700">
+                {i + 1}
+              </span>
+              {item}
+            </li>
+          ))}
+        </ol>
+      </Card>
+      </div>
 
       {!loading && !user && (
         <p className="text-center text-xs text-slate-500">

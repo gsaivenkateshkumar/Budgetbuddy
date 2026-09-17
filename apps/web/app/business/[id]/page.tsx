@@ -386,17 +386,12 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
 
   return (
     <Container className="py-10">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold text-slate-900">{business.name}</h1>
-            <Badge stage={business.stage}>{STAGE_LABELS[business.stage] ?? business.stage}</Badge>
-          </div>
-          {business.description && <p className="mt-1 max-w-xl text-sm text-slate-600">{business.description}</p>}
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-semibold text-slate-900">{business.name}</h1>
+          <Badge stage={business.stage}>{STAGE_LABELS[business.stage] ?? business.stage}</Badge>
         </div>
-        <LinkButton href="/ask" variant="outline" size="sm">
-          Ask about this business
-        </LinkButton>
+        {business.description && <p className="mt-1 max-w-xl text-sm text-slate-600">{business.description}</p>}
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
@@ -421,7 +416,20 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
         )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-[8fr_4fr]">
+        <div className="min-w-0 flex flex-col gap-6">
+          <RoadmapPanel businessId={businessId} />
+          <BudgetPanel businessId={businessId} />
+          <FinancialsPanel
+            businessId={businessId}
+            summary={summary}
+            onChange={() => setTasksVersion((v) => v + 1)}
+          />
+          {summary && summary.entry_count === 0 && (
+            <p className="text-sm text-slate-500">No financial activity yet. Add your first revenue or expense entry above.</p>
+          )}
+        </div>
+
         <div className="min-w-0 flex flex-col gap-6">
           {validation === "none" ? (
             <Card className="p-6">
@@ -444,19 +452,15 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
             </Card>
           ) : null}
 
-          <BudgetPanel businessId={businessId} />
-        </div>
-
-        <div className="min-w-0 flex flex-col gap-6">
-          <RoadmapPanel businessId={businessId} />
-          <FinancialsPanel
-            businessId={businessId}
-            summary={summary}
-            onChange={() => setTasksVersion((v) => v + 1)}
-          />
-          {summary && summary.entry_count === 0 && (
-            <p className="text-sm text-slate-500">No financial activity yet. Add your first revenue or expense entry above.</p>
-          )}
+          <Card className="flex flex-col gap-3 border-violet-200 bg-violet-50 p-6">
+            <p className="text-sm font-semibold text-violet-900">Start Currency Copilot</p>
+            <p className="text-sm text-violet-800">
+              Ask about pricing, hiring, margins, or your launch plan using this business&apos;s real data.
+            </p>
+            <LinkButton href="/ask" variant="primary" size="sm" className="w-fit">
+              Ask about this business
+            </LinkButton>
+          </Card>
         </div>
       </div>
     </Container>
