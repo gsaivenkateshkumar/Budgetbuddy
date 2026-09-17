@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 import { Container } from "@/components/layout/Container";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { TurnstileWidget, type TurnstileWidgetHandle } from "@/components/auth/TurnstileWidget";
 import { ApiError } from "@/lib/api/client";
@@ -48,9 +50,15 @@ export default function LoginPage() {
   }
 
   return (
-    <Container className="flex max-w-md flex-col gap-6 py-16">
+    <Container className="flex flex-1 max-w-md flex-col justify-center gap-6 py-16">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Log in</h1>
+        <span
+          className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-600 text-xs font-bold text-white"
+          aria-hidden="true"
+        >
+          SC
+        </span>
+        <h1 className="mt-4 text-2xl font-semibold text-slate-900">Log in</h1>
         <p className="mt-1 text-sm text-slate-600">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="font-medium text-violet-600 hover:text-violet-700">
@@ -59,6 +67,7 @@ export default function LoginPage() {
         </p>
       </div>
 
+      <Card className="flex flex-col gap-4 p-6 shadow-sm">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-xs font-medium text-slate-600">
@@ -71,7 +80,7 @@ export default function LoginPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -85,7 +94,7 @@ export default function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
 
@@ -123,14 +132,11 @@ export default function LoginPage() {
           </p>
         )}
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-md bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:bg-slate-300"
-        >
+        <Button type="submit" disabled={pending}>
           {pending ? "Logging in…" : "Log in"}
-        </button>
+        </Button>
       </form>
+      </Card>
     </Container>
   );
 }
