@@ -31,62 +31,69 @@ export function PricingCalculator() {
   }
 
   return (
-    <Card className="p-6">
-      <h2 className="text-lg font-semibold text-slate-900">Pricing calculator</h2>
-      <p className="mt-1 text-sm text-slate-600">Work out a minimum viable selling price from cost and margin.</p>
+    <div className="grid gap-4 lg:grid-cols-[11fr_9fr]">
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold text-slate-900">Pricing calculator</h2>
+        <p className="mt-1 text-sm text-slate-600">Work out a minimum viable selling price from cost and margin.</p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-slate-700">Cost per unit (₹)</span>
-          <input
-            type="number"
-            min="0"
-            value={cost}
-            onChange={(e) => setCost(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-slate-700">Desired margin (%)</span>
-          <input
-            type="number"
-            min="0"
-            max="99"
-            value={margin}
-            onChange={(e) => setMargin(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-slate-700">Fees/taxes on sale (%, optional)</span>
-          <input
-            type="number"
-            min="0"
-            max="99"
-            value={fees}
-            onChange={(e) => setFees(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-          />
-        </label>
-      </div>
-
-      <Button type="button" onClick={calculate} disabled={pending} className="mt-4">
-        {pending ? "Calculating…" : "Calculate"}
-      </Button>
-
-      {error && (
-        <p className="mt-3 text-sm text-red-600" role="alert">
-          {error}
-        </p>
-      )}
-
-      {result && (
-        <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-          <p className="text-xs text-slate-500">Suggested minimum price</p>
-          <p className="text-2xl font-semibold tabular-nums text-slate-900">₹{result.suggested_price}</p>
-          <p className="mt-3 text-sm text-slate-700">{result.explanation}</p>
+        <div className="mt-4 flex flex-col gap-3">
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium text-slate-700">Cost per unit (₹)</span>
+            <input
+              type="number"
+              min="0"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium text-slate-700">Desired margin (%)</span>
+            <input
+              type="number"
+              min="0"
+              max="99"
+              value={margin}
+              onChange={(e) => setMargin(e.target.value)}
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium text-slate-700">Fees/taxes on sale (%, optional)</span>
+            <input
+              type="number"
+              min="0"
+              max="99"
+              value={fees}
+              onChange={(e) => setFees(e.target.value)}
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            />
+          </label>
         </div>
-      )}
-    </Card>
+
+        <Button type="button" onClick={calculate} disabled={pending} className="mt-4">
+          {pending ? "Calculating…" : "Calculate"}
+        </Button>
+
+        {error && (
+          <p className="mt-3 text-sm text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+      </Card>
+
+      <Card className="bg-slate-50 p-6">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Result</p>
+        {result ? (
+          <div className="mt-3">
+            <p className="text-xs text-slate-500">Suggested minimum price</p>
+            <p className="text-2xl font-semibold tabular-nums text-slate-900">₹{result.suggested_price}</p>
+            <p className="mt-3 text-sm text-slate-700">{result.explanation}</p>
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-slate-500">Enter your cost and margin to see the suggested price here.</p>
+        )}
+      </Card>
+    </div>
   );
 }
