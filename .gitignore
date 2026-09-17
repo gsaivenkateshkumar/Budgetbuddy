@@ -56,3 +56,7 @@ logs/
 coverage/
 htmlcov/
 .coverage
+
+# Local Stitch design reference (not part of the app)
+stitch-reference/
+stitch_start_currency_ui_ux_platform.zip

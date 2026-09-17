@@ -390,7 +390,7 @@ export default function BusinessWorkspacePage({ params }: { params: Promise<{ id
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-semibold text-slate-900">{business.name}</h1>
-            <Badge tone="info">{STAGE_LABELS[business.stage] ?? business.stage}</Badge>
+            <Badge stage={business.stage}>{STAGE_LABELS[business.stage] ?? business.stage}</Badge>
           </div>
           {business.description && <p className="mt-1 max-w-xl text-sm text-slate-600">{business.description}</p>}
         </div>

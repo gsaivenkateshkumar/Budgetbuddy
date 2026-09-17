@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/Card";
 import { LinkButton } from "@/components/ui/Button";
-import { badgeClass } from "@/lib/ui";
+import { stageBadgeClass } from "@/lib/ui";
 import type { BusinessProject } from "@/lib/api/business";
 
 const TOOL_LABELS: Record<string, string> = {
@@ -49,7 +49,7 @@ export function AskWorkspace({
           <div className="mt-3 flex flex-col gap-2">
             <div className="flex items-center justify-between gap-2">
               <span className="text-sm font-medium text-slate-900">{business.name}</span>
-              <span className={badgeClass("info")}>{STAGE_LABELS[business.stage] ?? business.stage}</span>
+              <span className={stageBadgeClass(business.stage)}>{STAGE_LABELS[business.stage] ?? business.stage}</span>
             </div>
             {business.startup_budget && (
               <p className="text-xs text-slate-500">

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { GuidesPreview } from "@/components/home/GuidesPreview";
 import { Hero } from "@/components/home/Hero";
@@ -79,23 +78,19 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-900 py-16">
+      <section className="py-16">
         <Container>
-          <div className="flex flex-col items-center gap-4 text-center">
-            <h2 className="text-2xl font-semibold text-white">Ready to turn your idea into a business?</h2>
-            <p className="max-w-xl text-sm text-slate-300">
-              Start with validation — it&apos;s free, structured, and takes a few minutes.
-            </p>
+          <div className="flex flex-col items-center gap-4 rounded-2xl bg-gradient-to-r from-violet-600 to-teal-600 px-6 py-12 text-center sm:flex-row sm:justify-between sm:text-left">
+            <div>
+              <h2 className="text-2xl font-semibold text-white">Ready to test your next venture?</h2>
+              <p className="mt-1 max-w-xl text-sm text-violet-100">
+                Start with validation — it&apos;s free, structured, and takes a few minutes.
+              </p>
+            </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <LinkButton href="/validate" variant="primary" size="lg" className="transition-none">
-                Validate my idea
+              <LinkButton href="/validate" variant="secondary" size="lg" className="!bg-white !text-violet-700 hover:!bg-violet-50">
+                Start Free Validation &rarr;
               </LinkButton>
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Create an account
-              </Link>
             </div>
           </div>
         </Container>

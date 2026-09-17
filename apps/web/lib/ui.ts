@@ -64,3 +64,19 @@ export type BadgeTone = keyof typeof BADGE_TONES;
 export function badgeClass(tone: BadgeTone = "neutral", className = "") {
   return `inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${BADGE_TONES[tone]} ${className}`.trim();
 }
+
+/* Business lifecycle badges — Validate/Plan/Launch/Manage/Grow tokens,
+ * mapped onto the app's 6 real BusinessProject.stage values. */
+const STAGE_BADGE: Record<string, string> = {
+  idea: "bg-[#EFF6FF] text-[#2563EB] ring-1 ring-inset ring-[#BFDBFE]",
+  validation: "bg-[#EFF6FF] text-[#2563EB] ring-1 ring-inset ring-[#BFDBFE]",
+  planning: "bg-[#F5F3FF] text-[#6D5DFB] ring-1 ring-inset ring-[#DDD6FE]",
+  pre_launch: "bg-[#FFFBEB] text-[#D97706] ring-1 ring-inset ring-[#FDE68A]",
+  launched: "bg-[#F1F5F9] text-[#475569] ring-1 ring-inset ring-[#CBD5E1]",
+  operating: "bg-[#F0FDFA] text-[#0F9F8F] ring-1 ring-inset ring-[#99F6E4]",
+};
+
+export function stageBadgeClass(stage: string, className = "") {
+  const tone = STAGE_BADGE[stage] ?? BADGE_TONES.neutral;
+  return `inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${tone} ${className}`.trim();
+}

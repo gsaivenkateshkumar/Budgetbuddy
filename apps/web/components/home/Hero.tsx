@@ -3,8 +3,6 @@ import { HeroSearch } from "./HeroSearch";
 import { SITE_NAME } from "@/lib/siteConfig";
 import { HeroScene } from "@/components/three/HeroScene";
 
-const HEADLINE_LINE_1 = "Turn your idea";
-const HEADLINE_LINE_2 = "into a business.";
 
 export function Hero() {
   return (
@@ -19,10 +17,7 @@ export function Hero() {
           </p>
 
           <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
-            <span className="block">{HEADLINE_LINE_1}</span>
-            <span className="block text-violet-100">
-              {HEADLINE_LINE_2}
-            </span>
+            Turn your idea into a <span className="text-violet-400">business</span>.
           </h1>
 
           <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">

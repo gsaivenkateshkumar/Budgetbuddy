@@ -68,7 +68,7 @@ export default function AccountPage() {
               <li key={b.id}>
                 <a href={`/business/${b.id}`} className="flex items-center justify-between gap-2 hover:text-violet-700">
                   <span className="text-slate-900">{b.name}</span>
-                  <Badge tone="neutral">{STAGE_LABELS[b.stage] ?? b.stage}</Badge>
+                  <Badge stage={b.stage}>{STAGE_LABELS[b.stage] ?? b.stage}</Badge>
                 </a>
               </li>
             ))}

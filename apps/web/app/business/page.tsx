@@ -94,7 +94,7 @@ export default function BusinessListPage() {
               <Card hover className="flex h-full flex-col gap-2 p-5">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm font-semibold text-slate-900">{b.name}</span>
-                  <Badge tone="info">{STAGE_LABELS[b.stage] ?? b.stage}</Badge>
+                  <Badge stage={b.stage}>{STAGE_LABELS[b.stage] ?? b.stage}</Badge>
                 </div>
                 {b.description && <p className="line-clamp-2 text-sm text-slate-600">{b.description}</p>}
               </Card>
